@@ -43,6 +43,8 @@ class LaunchScreenState extends State<LaunchScreen> {
   Future<void> initialConfig() async {
     try {
       await this.config.initial();
+      await this.myContext.initial();
+
       sleep(Duration(seconds: 3));
       widget.launchScreenRepository.toLoadedStatus();
 
@@ -58,6 +60,7 @@ class LaunchScreenState extends State<LaunchScreen> {
           ),
         ),
       );
+
     } catch (e) {
       widget.launchScreenRepository.toErrorStatus(e);
     }
