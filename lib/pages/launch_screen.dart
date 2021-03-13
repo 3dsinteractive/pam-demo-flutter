@@ -73,9 +73,9 @@ class LaunchScreenState extends State<LaunchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: StreamBuilder<bool>(
-        stream: widget.launchScreenRepository.isLoadedSC.stream,
-        builder: (BuildContext context, data) {
-          if (!data.hasData || data.data == false) {
+        stream: widget.launchScreenRepository.isLoadingSC.stream,
+        builder: (BuildContext context, snapshot) {
+          if (!snapshot.hasData || snapshot.data == true) {
             return Center(
               child: Container(
                 child: Icon(Icons.favorite),

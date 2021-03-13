@@ -28,7 +28,6 @@ class ProductDetailPageState extends State<ProductDetailPage> {
 
     productRepository =
         widget.context.repositories().productRepository(widget.config);
-    productRepository.fetch();
   }
 
   @override

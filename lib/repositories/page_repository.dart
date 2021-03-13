@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:singh_architecture/repositories/base_repository.dart';
 
-abstract class BasePageRepository extends BaseRepository {
+abstract class BasePageRepository extends BaseUIRepository {
   void initial({Function? callback});
 
   void setPageSize(int size);

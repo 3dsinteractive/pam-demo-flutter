@@ -7,8 +7,10 @@ class Requester {
     };
   }
 
-  static Future<http.Response> get(String url) async {
-    return await http.get(Uri.parse(url), headers: _getRequesterHeader());
+  static Future<http.Response> get(
+      String url, Map<String, dynamic> params) async {
+    return await http.get(Uri.parse(url).replace(queryParameters: params),
+        headers: _getRequesterHeader());
   }
 
   static Future<http.Response> post(

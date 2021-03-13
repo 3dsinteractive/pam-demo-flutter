@@ -27,15 +27,34 @@ class PagePageState extends State<ProductPage> {
     super.initState();
 
     productRepository = widget.context.repositories().productRepository(widget.config);
-    productRepository.fetch();
+    productRepository.fetch(isMock: true);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        child: Text("Product"),
-      ),
+    return StreamBuilder<bool>(
+      stream: productRepository.isLoadingSC.stream,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData || snapshot.data == true) {
+          return Container();
+        }
+
+        return Center(
+          child: Container(
+            child: ListView.builder(
+              itemCount: productRepository.items!.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  color: Colors.blueAccent,
+                  height: 100,
+                  margin: EdgeInsets.only(bottom: 16),
+                  child: Text(productRepository.items![index].Title),
+                );
+              },
+            ),
+          ),
+        );
+      },
     );
   }
 }

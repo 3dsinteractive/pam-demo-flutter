@@ -1,0 +1,4 @@
+class ObjectHelper {
+  ObjectHelper._();
+
+}

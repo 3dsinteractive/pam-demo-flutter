@@ -1,45 +1,38 @@
 import 'dart:async';
-import 'package:flutter/cupertino.dart';
 import 'package:singh_architecture/configs/config.dart';
+import 'package:singh_architecture/mocks/products/products.dart';
 import 'package:singh_architecture/repositories/product_repository.dart';
 import 'package:singh_architecture/repositories/types.dart';
 
-abstract class IBaseRepository {
-  bool get isLoading;
+class BaseDataRepository<T> implements IBaseDataRepository {
+  final IConfig config;
+  final IRepositoryOptions options;
 
-  bool get isLoaded;
-
-  bool get isError;
-
-  String get errorMessage;
-
-  StreamController<bool> get isLoadingSC;
-
-  StreamController<bool> get isLoadedSC;
-
-  StreamController<bool> get isErrorSC;
-
-  StreamController<String> get errorMessageSC;
-
-  void toLoadingStatus();
-
-  void toLoadedStatus();
-
-  void toErrorStatus(dynamic e);
-
-  void dispose();
-}
-
-class BaseRepository implements IBaseRepository {
   bool _isLoading = false;
   bool _isLoaded = false;
   bool _isError = false;
   String _errorMessage = "";
+  List<T>? items;
+  T? data;
 
-  StreamController<bool> _isLoadingSC = StreamController<bool>();
-  StreamController<bool> _isLoadedSC = StreamController<bool>();
-  StreamController<bool> _isErrorSC = StreamController<bool>();
-  StreamController<String> _errorMessageSC = StreamController<String>();
+  late StreamController<bool> _isLoadingSC;
+  late StreamController<bool> _isLoadedSC;
+  late StreamController<bool> _isErrorSC;
+  late StreamController<String> _errorMessageSC;
+  late StreamController<List<T>?> _itemsSC;
+  late StreamController<T?> _dataSC;
+
+  BaseDataRepository(
+    this.config,
+    this.options,
+  ) {
+    this._isLoadingSC = StreamController<bool>();
+    this._isLoadedSC = StreamController<bool>();
+    this._isErrorSC = StreamController<bool>();
+    this._errorMessageSC = StreamController<String>();
+    this._itemsSC = StreamController<List<T>?>();
+    this._dataSC = StreamController<T?>();
+  }
 
   @override
   bool get isLoading => this._isLoading;
@@ -51,7 +44,104 @@ class BaseRepository implements IBaseRepository {
   bool get isError => this._isError;
 
   @override
-  String get errorMessage => _errorMessage;
+  String get errorMessage => this._errorMessage;
+
+  @override
+  StreamController<bool> get isLoadingSC => this._isLoadingSC;
+
+  @override
+  StreamController<bool> get isLoadedSC => this._isLoadedSC;
+
+  @override
+  StreamController<bool> get isErrorSC => this._isErrorSC;
+
+  @override
+  StreamController<String> get errorMessageSC => this._errorMessageSC;
+
+  @override
+  StreamController<List<T>?> get itemsSC => this._itemsSC;
+
+  @override
+  StreamController<T?> get dataSC => this._dataSC;
+
+  @override
+  void toLoadingStatus() {
+    this._isLoading = true;
+    this._isLoadingSC.add(true);
+
+    this._isLoaded = false;
+    this._isLoadedSC.add(false);
+
+    this._isError = false;
+    this._isErrorSC.add(false);
+  }
+
+  @override
+  void toLoadedStatus() {
+    this._isLoading = false;
+    this._isLoadingSC.add(false);
+
+    this._isLoaded = true;
+    this._isLoadedSC.add(true);
+  }
+
+  @override
+  void toErrorStatus(e) {
+    this._isLoading = false;
+    this._isLoadingSC.add(false);
+
+    this._isError = true;
+    this._isErrorSC.add(true);
+
+    this._errorMessage = e.toString();
+    this._errorMessageSC.add(e.toString());
+    print("error: ${e.toString()}");
+  }
+
+  @override
+  Future<void> fetch(
+      {Map<String, dynamic>? params, bool isMock: false}) async {}
+
+  @override
+  void dispose() {
+    this._isLoadingSC.close();
+    this._isLoadedSC.close();
+    this._isErrorSC.close();
+    this._errorMessageSC.close();
+    this._itemsSC.close();
+    this._dataSC.close();
+  }
+}
+
+class BaseUIRepository implements IBaseUIRepository {
+  bool _isLoading = false;
+  bool _isLoaded = false;
+  bool _isError = false;
+  String _errorMessage = "";
+
+  late StreamController<bool> _isLoadingSC;
+  late StreamController<bool> _isLoadedSC;
+  late StreamController<bool> _isErrorSC;
+  late StreamController<String> _errorMessageSC;
+
+  BaseUIRepository() {
+    this._isLoadingSC = StreamController<bool>();
+    this._isLoadedSC = StreamController<bool>();
+    this._isErrorSC = StreamController<bool>();
+    this._errorMessageSC = StreamController<String>();
+  }
+
+  @override
+  bool get isLoading => this._isLoading;
+
+  @override
+  bool get isLoaded => this._isLoaded;
+
+  @override
+  bool get isError => this._isError;
+
+  @override
+  String get errorMessage => this._errorMessage;
 
   @override
   StreamController<bool> get isLoadingSC => this._isLoadingSC;
@@ -117,6 +207,60 @@ class NewRepository implements IRepositories {
 
   @override
   productRepository(IConfig config) {
-    return ProductRepository(config: config);
+    return ProductRepository(
+      config: config,
+      options: NewRepositoryOptions(
+        baseUrl: "${config.baseAPI()}/products",
+        mockItems: mockProducts,
+      ),
+    );
+  }
+}
+
+class NewRepositoryOptions implements IRepositoryOptions {
+  final String baseUrl;
+  final String? addUrl;
+  final String? updateUrl;
+  final String? deleteUrl;
+  final List<Map<String, dynamic>>? mockItems;
+  final Map<String, dynamic>? mockItem;
+
+  NewRepositoryOptions({
+    required this.baseUrl,
+    this.addUrl,
+    this.updateUrl,
+    this.deleteUrl,
+    this.mockItems,
+    this.mockItem,
+  });
+
+  @override
+  String getBaseUrl() {
+    return this.baseUrl;
+  }
+
+  @override
+  String? getAddUrl() {
+    return this.addUrl;
+  }
+
+  @override
+  String? getUpdateUrl() {
+    return this.updateUrl;
+  }
+
+  @override
+  String? getDeleteUrl() {
+    return this.deleteUrl;
+  }
+
+  @override
+  List<Map<String, dynamic>>? getMockItems() {
+    return this.mockItems;
+  }
+
+  @override
+  Map<String, dynamic>? getMockItem() {
+    return this.mockItem;
   }
 }

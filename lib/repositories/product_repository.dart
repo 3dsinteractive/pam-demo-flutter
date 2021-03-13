@@ -1,29 +1,41 @@
 import 'dart:convert';
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
 import 'package:singh_architecture/configs/config.dart';
+import 'package:singh_architecture/models/product_model.dart';
 import 'package:singh_architecture/repositories/base_repository.dart';
+import 'package:singh_architecture/repositories/types.dart';
 import 'package:singh_architecture/utils/requester.dart';
 
-class ProductRepository extends BaseRepository {
-  final IConfig? config;
+class ProductRepository extends BaseDataRepository<ProductModel> {
+  final IConfig config;
+  final IRepositoryOptions options;
 
   ProductRepository({
     required this.config,
-  });
+    required this.options,
+  }) : super(config, options);
 
-  List<dynamic>? items = List<dynamic>.empty(growable: true);
-
-  Future<void> fetch() async {
+  @override
+  Future<void> fetch(
+      {Map<String, dynamic>? params, bool isMock = false}) async {
     try {
       this.toLoadingStatus();
-      Response response =
-          await Requester.get("${this.config!.baseAPI()}/products");
-      Map<String, dynamic> data = json.decode(utf8.decode(response.bodyBytes));
+      late Map<String, dynamic> data;
 
-      if (data["items"] != null) {
-        this.items = data["items"];
+      if (params == null) {
+        params = {};
       }
+
+      if (isMock) {
+        data = {"items": this.options.getMockItems()};
+      } else {
+        Response response = await Requester.get(this.options.getBaseUrl(), params);
+        Map<String, dynamic> js = json.decode(utf8.decode(response.bodyBytes));
+        data = js;
+      }
+
+      this.items = ProductModel.toList(data["items"]);
+      this.itemsSC.add(this.items);
 
       this.toLoadedStatus();
     } catch (e) {
