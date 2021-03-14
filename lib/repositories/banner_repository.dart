@@ -2,16 +2,16 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart';
 import 'package:singh_architecture/configs/config.dart';
-import 'package:singh_architecture/models/product_model.dart';
+import 'package:singh_architecture/models/banner_model.dart';
 import 'package:singh_architecture/repositories/base_repository.dart';
 import 'package:singh_architecture/repositories/types.dart';
 import 'package:singh_architecture/utils/requester.dart';
 
-class ProductRepository extends BaseDataRepository<ProductModel> {
+class BannerRepository extends BaseDataRepository<BannerModel> {
   final IConfig config;
   final IRepositoryOptions options;
 
-  ProductRepository({
+  BannerRepository({
     required this.config,
     required this.options,
   }) : super(config, options);
@@ -31,12 +31,13 @@ class ProductRepository extends BaseDataRepository<ProductModel> {
         sleep(Duration(seconds: 2));
         data = {"items": this.options.getMockItems()};
       } else {
-        Response response = await Requester.get(this.options.getBaseUrl(), params);
+        Response response =
+            await Requester.get(this.options.getBaseUrl(), params);
         Map<String, dynamic> js = json.decode(utf8.decode(response.bodyBytes));
         data = js;
       }
 
-      this.items = ProductModel.toList(data["items"]);
+      this.items = BannerModel.toList(data["items"]);
       this.itemsSC.add(this.items);
 
       this.toLoadedStatus();

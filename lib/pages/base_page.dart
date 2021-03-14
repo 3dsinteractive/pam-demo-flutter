@@ -21,7 +21,15 @@ class BasePageState extends State<BasePage> {
   @override
   void initState() {
     super.initState();
+
     widget.pageRepository.initial();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    widget.pageRepository.dispose();
   }
 
   @override
@@ -29,6 +37,8 @@ class BasePageState extends State<BasePage> {
     return Container(
       child: ListView(
         padding: EdgeInsets.zero,
+        scrollDirection: Axis.horizontal,
+        physics: NeverScrollableScrollPhysics(),
         children: widget.widgets.map((Widget w) {
           return Container(
             width: MediaQuery.of(context).size.width,

@@ -8,6 +8,8 @@ const double h5 = 20;
 const double h6 = 18;
 const double p = 16;
 const double s = 14;
+const double s2 = 12;
+const double s3 = 10;
 
 const FontWeight fontWeightBold = FontWeight.bold;
 const FontWeight fontWeightNormal = FontWeight.normal;

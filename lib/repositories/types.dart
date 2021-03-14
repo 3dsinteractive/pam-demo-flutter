@@ -1,10 +1,12 @@
 import 'dart:async';
-
-import 'package:singh_architecture/configs/config.dart';
+import 'package:singh_architecture/repositories/banner_repository.dart';
+import 'package:singh_architecture/repositories/category_repository.dart';
 import 'package:singh_architecture/repositories/product_repository.dart';
 
 abstract class IRepositories {
-  ProductRepository productRepository(IConfig config);
+  ProductRepository productRepository();
+  BannerRepository bannerRepository();
+  CategoryRepository categoryRepository();
 }
 
 abstract class IRepositoryOptions {
