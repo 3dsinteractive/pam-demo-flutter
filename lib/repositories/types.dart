@@ -1,11 +1,14 @@
 import 'dart:async';
 import 'package:singh_architecture/repositories/banner_repository.dart';
 import 'package:singh_architecture/repositories/category_repository.dart';
+import 'package:singh_architecture/repositories/locale_repository.dart';
 import 'package:singh_architecture/repositories/product_repository.dart';
 
 abstract class IRepositories {
   ProductRepository productRepository();
+
   BannerRepository bannerRepository();
+
   CategoryRepository categoryRepository();
 }
 
@@ -51,6 +54,12 @@ abstract class IBaseDataRepository<T> {
   void toErrorStatus(dynamic e);
 
   void fetch({
+    Map<String, dynamic>? params,
+    bool isMock: false,
+  });
+
+  void get(
+    String id, {
     Map<String, dynamic>? params,
     bool isMock: false,
   });

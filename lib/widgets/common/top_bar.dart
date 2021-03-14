@@ -4,10 +4,12 @@ import 'package:singh_architecture/styles/colors.dart';
 import 'package:singh_architecture/styles/fonts.dart';
 
 class TopBar extends StatefulWidget {
-  final Function(String q) onSearch;
+  final Widget prefixWidget;
+  final Widget postfixWidget;
 
   TopBar({
-    required this.onSearch,
+    required this.prefixWidget,
+    required this.postfixWidget,
   });
 
   @override
@@ -22,10 +24,6 @@ class TopBarState extends State<TopBar> {
     return Container(
       alignment: Alignment.center,
       height: 85,
-      padding: EdgeInsets.only(
-        left: 32,
-        right: 32,
-      ),
       decoration: BoxDecoration(
         color: colorPrimary,
         borderRadius: BorderRadius.only(
@@ -33,34 +31,12 @@ class TopBarState extends State<TopBar> {
           bottomRight: Radius.circular(32),
         ),
       ),
-      child: Container(
-        height: 40,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 50,
-              child: Icon(
-                Icons.search,
-              ),
-            ),
-            Expanded(
-              child: Container(
-                child: TextField(
-                  onChanged: widget.onSearch,
-                  style: TextStyle(
-                    fontSize: h6,
-                  ),
-                  decoration:
-                      InputDecoration.collapsed(hintText: "ค้นหาสินค้า ..."),
-                ),
-              ),
-            ),
-          ],
-        ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          widget.prefixWidget,
+          widget.postfixWidget,
+        ],
       ),
     );
   }

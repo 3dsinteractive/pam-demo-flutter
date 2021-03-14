@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:singh_architecture/configs/config.dart';
 import 'package:singh_architecture/cores/context.dart';
 import 'package:singh_architecture/repositories/banner_repository.dart';
 import 'package:singh_architecture/styles/colors.dart';
+import 'package:singh_architecture/utils/object_helper.dart';
 import 'package:singh_architecture/widgets/banners/banner_item.dart';
 
 class BannerHeadLine extends StatefulWidget {
@@ -36,13 +38,17 @@ class BannerHeadLineState extends State<BannerHeadLine> {
     this.currentPageSC = StreamController<int>();
     this.currentPageSC.add(0);
 
-    widget.bannerRepository.fetch(isMock: true);
+    SchedulerBinding.instance?.addPostFrameCallback((_) {
+      widget.bannerRepository.fetch(isMock: true);
+    });
   }
 
   @override
   void dispose() {
     super.dispose();
+
     this.currentPageSC.close();
+    this.widget.bannerRepository.dispose();
   }
 
   @override
@@ -50,13 +56,17 @@ class BannerHeadLineState extends State<BannerHeadLine> {
     return StreamBuilder<bool>(
       stream: widget.bannerRepository.isLoadingSC.stream,
       builder: (context, snapshot) {
-        if (!snapshot.hasData || snapshot.data == true) {
+        if (ObjectHelper.isSnapshotStateLoading(snapshot)) {
           return Container(
+            margin: widget.margin,
             height: 175,
+            alignment: Alignment.center,
             decoration: BoxDecoration(
               color: colorPrimaryLight,
               borderRadius: BorderRadius.circular(16),
             ),
+            child: CircularProgressIndicator(),
+            // child: BannerItemLoading(),
           );
         }
 
@@ -85,36 +95,35 @@ class BannerHeadLineState extends State<BannerHeadLine> {
               ),
             ),
             StreamBuilder<int>(
-              stream: this.currentPageSC.stream,
-              builder: (context, snapshot) {
-                return Container(
-                  margin: EdgeInsets.only(
-                    bottom: 16,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(
-                        widget.bannerRepository.items?.length ?? 0, (index) {
-                      return AnimatedContainer(
-                        duration: Duration(milliseconds: 250),
-                        margin: EdgeInsets.only(
-                          left: 8,
-                          right: 8,
-                        ),
-                        height: 10,
-                        width: 10,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: index == snapshot.data
-                              ? colorPrimary
-                              : colorGray,
-                        ),
-                      );
-                    }),
-                  ),
-                );
-              }
-            )
+                stream: this.currentPageSC.stream,
+                builder: (context, snapshot) {
+                  return Container(
+                    margin: EdgeInsets.only(
+                      bottom: 16,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(
+                          widget.bannerRepository.items?.length ?? 0, (index) {
+                        return AnimatedContainer(
+                          duration: Duration(milliseconds: 250),
+                          margin: EdgeInsets.only(
+                            left: 8,
+                            right: 8,
+                          ),
+                          height: 10,
+                          width: 10,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: index == snapshot.data
+                                ? colorPrimary
+                                : colorGray,
+                          ),
+                        );
+                      }),
+                    ),
+                  );
+                })
           ],
         );
       },

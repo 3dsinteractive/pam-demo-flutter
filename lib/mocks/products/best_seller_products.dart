@@ -1286,7 +1286,7 @@ List<Map<String, dynamic>> mockBestSellerProducts = [
     "brand": {
       "background_color": "#FFFFFF",
       "logo_image_url":
-          "http://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1lzwZ7VFtEsslqtFbDLYRCfHYLH.jpg",
+          "https://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1lzwZ7VFtEsslqtFbDLYRCfHYLH.jpg",
       "tag_id": "1lwx4Gwql10CtkYx5zUH3wpffQa",
       "title": "Apple"
     },
@@ -1317,7 +1317,7 @@ List<Map<String, dynamic>> mockBestSellerProducts = [
         "content_type": "image",
         "gallery_id": "",
         "image_url":
-            "http://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1m381fT7N8Iqc6SndOew4TR2EOe.jpg",
+            "https://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1m381fT7N8Iqc6SndOew4TR2EOe.jpg",
         "video_url": ""
       }
     ],
@@ -1334,7 +1334,7 @@ List<Map<String, dynamic>> mockBestSellerProducts = [
     "option_images": [
       {
         "image_url":
-            "http://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1m381fT7N8Iqc6SndOew4TR2EOe.jpg",
+            "https://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1m381fT7N8Iqc6SndOew4TR2EOe.jpg",
         "options": [
           {
             "alias": "white",
@@ -1496,7 +1496,7 @@ List<Map<String, dynamic>> mockBestSellerProducts = [
         "content_type": "image",
         "gallery_id": "",
         "image_url":
-            "http://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1m3HeVJHrp2M1Jy9B0HFkYxtIUC.jpg",
+            "https://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1m3HeVJHrp2M1Jy9B0HFkYxtIUC.jpg",
         "video_url": ""
       }
     ],
@@ -1513,7 +1513,7 @@ List<Map<String, dynamic>> mockBestSellerProducts = [
     "option_images": [
       {
         "image_url":
-            "http://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1m3HeVJHrp2M1Jy9B0HFkYxtIUC.jpg",
+            "https://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1m3HeVJHrp2M1Jy9B0HFkYxtIUC.jpg",
         "options": [
           {
             "alias": "white",

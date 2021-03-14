@@ -1,13 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:singh_architecture/cores/constants.dart';
 
 abstract class IConfig {
   Future<void> initial();
 
   String? appName();
 
-  LANGUAGE? defaultLanguage();
+  String? defaultLanguage();
 
   String? baseAPI();
 }
@@ -15,7 +14,7 @@ abstract class IConfig {
 class Config implements IConfig {
   Map<String, dynamic>? env;
   String? _appName;
-  LANGUAGE? _defaultLanguage;
+  String? _defaultLanguage;
   String? _baseAPI;
 
   Future<void> initial() async {
@@ -36,14 +35,9 @@ class Config implements IConfig {
   }
 
   @override
-  LANGUAGE? defaultLanguage() {
+  String? defaultLanguage() {
     if (this._defaultLanguage == null) {
-      String? lang = env?["default_language"];
-      if (lang == "en") {
-        this._defaultLanguage = LANGUAGE.EN;
-      } else {
-        this._defaultLanguage = LANGUAGE.TH;
-      }
+      this._defaultLanguage = env?["default_language"];
     }
     return this._defaultLanguage;
   }

@@ -1,13 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:singh_architecture/configs/config.dart';
+import 'package:singh_architecture/cores/constants.dart';
 import 'package:singh_architecture/cores/context.dart';
 import 'package:singh_architecture/pages/base_page.dart';
 import 'package:singh_architecture/pages/product_page.dart';
 import 'package:singh_architecture/repositories/page_repository.dart';
 import 'package:singh_architecture/styles/colors.dart';
 import 'package:singh_architecture/styles/fonts.dart';
-import 'package:singh_architecture/widgets/common/top_bar.dart';
+import 'package:singh_architecture/widgets/common/top_bar_search.dart';
 
 class MainFeature extends StatefulWidget {
   final IContext context;
@@ -51,7 +52,7 @@ class MainFeatureState extends State<MainFeature> {
             height: MediaQuery.of(context).padding.top,
             color: colorPrimary,
           ),
-          TopBar(onSearch: (q) {}),
+          TopBarSearch(onSearch: (q) {}),
           Expanded(
             child: Container(
               child: BasePage(
@@ -69,6 +70,7 @@ class MainFeatureState extends State<MainFeature> {
             ),
           ),
           Container(
+            width: MediaQuery.of(context).size.width,
             color: colorPrimary,
             padding: EdgeInsets.only(
               top: 12,
@@ -89,9 +91,10 @@ class MainFeatureState extends State<MainFeature> {
                         ),
                         Container(
                           child: Text(
-                            "หน้าแรก",
+                            widget.context.localeRepository().getString(Locales.home),
+                            overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                              fontSize: h6,
+                              fontSize: s,
                               color: Colors.white,
                             ),
                           ),
@@ -112,9 +115,10 @@ class MainFeatureState extends State<MainFeature> {
                         ),
                         Container(
                           child: Text(
-                            "ตระกร้า",
+                            widget.context.localeRepository().getString(Locales.cart),
+                            overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                              fontSize: h6,
+                              fontSize: s,
                               color: Colors.white,
                             ),
                           ),
@@ -135,9 +139,10 @@ class MainFeatureState extends State<MainFeature> {
                         ),
                         Container(
                           child: Text(
-                            "แจ้งเตือน",
+                            widget.context.localeRepository().getString(Locales.notification),
+                            overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                              fontSize: h6,
+                              fontSize: s,
                               color: Colors.white,
                             ),
                           ),
@@ -158,9 +163,10 @@ class MainFeatureState extends State<MainFeature> {
                         ),
                         Container(
                           child: Text(
-                            "บัญชี",
+                            widget.context.localeRepository().getString(Locales.account),
+                            overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                              fontSize: h6,
+                              fontSize: s,
                               color: Colors.white,
                             ),
                           ),

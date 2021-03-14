@@ -1,12 +1,14 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:singh_architecture/configs/config.dart';
 import 'package:singh_architecture/cores/context.dart';
 import 'package:singh_architecture/features/main_feature.dart';
 import 'package:singh_architecture/middlewares/scaffold_middle_ware.dart';
 import 'package:singh_architecture/repositories/page_repository.dart';
 import 'package:singh_architecture/repositories/product_repository.dart';
+import 'package:singh_architecture/utils/time_helper.dart';
 
 class LaunchScreen extends StatefulWidget {
   final BasePageRepository launchScreenRepository;
@@ -36,16 +38,18 @@ class LaunchScreenState extends State<LaunchScreen> {
     );
 
     widget.launchScreenRepository.toLoadingStatus();
-    this.initialConfig();
+
+    SchedulerBinding.instance?.addPostFrameCallback((_) {
+      this.initialConfig();
+    });
   }
 
   Future<void> initialConfig() async {
     try {
       await this.config.initial();
       await this.myContext.initial();
-
-      // sleep(Duration(seconds: 3));
-      widget.launchScreenRepository.toLoadedStatus();
+      await this.myContext.localeRepository().loadLocale();
+      await TimeHelper.sleep();
 
       Navigator.of(context).push(
         MaterialPageRoute(
@@ -59,6 +63,8 @@ class LaunchScreenState extends State<LaunchScreen> {
           ),
         ),
       );
+
+      widget.launchScreenRepository.toLoadedStatus();
     } catch (e) {
       widget.launchScreenRepository.toErrorStatus(e);
     }
@@ -67,6 +73,7 @@ class LaunchScreenState extends State<LaunchScreen> {
   @override
   void dispose() {
     super.dispose();
+
     widget.launchScreenRepository.dispose();
   }
 
@@ -76,15 +83,11 @@ class LaunchScreenState extends State<LaunchScreen> {
       body: StreamBuilder<bool>(
         stream: widget.launchScreenRepository.isLoadingSC.stream,
         builder: (BuildContext context, snapshot) {
-          if (!snapshot.hasData || snapshot.data == true) {
-            return Center(
-              child: Container(
-                child: Icon(Icons.favorite),
-              ),
-            );
-          }
-
-          return Center();
+          return Center(
+            child: Container(
+              child: Icon(Icons.favorite),
+            ),
+          );
         },
       ),
     );

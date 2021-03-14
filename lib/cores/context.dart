@@ -1,6 +1,7 @@
 import 'package:singh_architecture/configs/config.dart';
 import 'package:singh_architecture/cores/shared_preferences.dart';
 import 'package:singh_architecture/repositories/base_repository.dart';
+import 'package:singh_architecture/repositories/locale_repository.dart';
 import 'package:singh_architecture/repositories/types.dart';
 
 abstract class IContext {
@@ -8,12 +9,15 @@ abstract class IContext {
 
   IRepositories repositories();
 
+  LocaleRepository localeRepository();
+
   ISharedPreferences sharedPreferences();
 }
 
 class Context implements IContext {
   final IConfig config;
   IRepositories? _repositories;
+  LocaleRepository? _localeRepository;
   late ISharedPreferences _sharedPreferences;
 
   Context({
@@ -34,6 +38,19 @@ class Context implements IContext {
       );
     }
     return this._repositories!;
+  }
+
+  @override
+  LocaleRepository localeRepository() {
+    if (this._localeRepository == null) {
+      this._localeRepository = LocaleRepository(
+        config: this.config,
+        options: NewRepositoryOptions(
+          baseUrl: "",
+        ),
+      );
+    }
+    return this._localeRepository!;
   }
 
   @override

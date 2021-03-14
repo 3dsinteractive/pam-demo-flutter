@@ -6,7 +6,7 @@ import 'package:singh_architecture/cores/context.dart';
 class GeneralMiddleWare extends StatefulWidget {
   final IContext context;
   final IConfig config;
-  final Widget Function(IContext, IConfig) child;
+  final Widget child;
 
   GeneralMiddleWare({
     required this.context,
@@ -23,6 +23,6 @@ class GeneralMiddleWare extends StatefulWidget {
 class GeneralMiddleWareState extends State<GeneralMiddleWare> {
   @override
   Widget build(BuildContext context) {
-    return widget.child(widget.context, widget.config);
+    return widget.child;
   }
 }

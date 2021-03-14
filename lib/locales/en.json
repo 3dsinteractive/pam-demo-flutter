@@ -1,3 +1,11 @@
 {
-  "product": "Product"
+  "home": "Home",
+  "cart": "Cart",
+  "notification": "Notification",
+  "account": "Profile",
+  "search_label": "Search Product ...",
+  "product": "Product",
+  "product_new_arrival": "New Arrival",
+  "product_best_seller": "Best Seller",
+  "view_more": "View More"
 }

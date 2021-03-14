@@ -448,7 +448,7 @@ List<Map<String, dynamic>> mockNewArrivalProducts = [
     "brand": {
       "background_color": "#FFFFFF",
       "logo_image_url":
-          "http://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1lzwWFOg5w24mQtOCytQVYJPZPr.jpg",
+          "https://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1lzwWFOg5w24mQtOCytQVYJPZPr.jpg",
       "tag_id": "1lwxCv3Xl5ZgEYRnZ73yEKcajx0",
       "title": "OPPO"
     },
@@ -1000,7 +1000,7 @@ List<Map<String, dynamic>> mockNewArrivalProducts = [
     "brand": {
       "background_color": "#FFFFFF",
       "logo_image_url":
-          "http://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1lzwWFOg5w24mQtOCytQVYJPZPr.jpg",
+          "https://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1lzwWFOg5w24mQtOCytQVYJPZPr.jpg",
       "tag_id": "1lwxCv3Xl5ZgEYRnZ73yEKcajx0",
       "title": "OPPO"
     },
@@ -1297,7 +1297,7 @@ List<Map<String, dynamic>> mockNewArrivalProducts = [
     "brand": {
       "background_color": "#FFFFFF",
       "logo_image_url":
-          "http://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1lzw1zqTjK31mydtuKjbCjN73Sd.jpg",
+          "https://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1lzw1zqTjK31mydtuKjbCjN73Sd.jpg",
       "tag_id": "1lx8kg9YZrLik9nhPqGHkoXeLxk",
       "title": "Huawei"
     },
@@ -1885,7 +1885,7 @@ List<Map<String, dynamic>> mockNewArrivalProducts = [
     "brand": {
       "background_color": "#FFFFFF",
       "logo_image_url":
-          "http://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1lzwZ7VFtEsslqtFbDLYRCfHYLH.jpg",
+          "https://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1lzwZ7VFtEsslqtFbDLYRCfHYLH.jpg",
       "tag_id": "1lwx4Gwql10CtkYx5zUH3wpffQa",
       "title": "Apple"
     },
@@ -1927,28 +1927,28 @@ List<Map<String, dynamic>> mockNewArrivalProducts = [
         "content_type": "image",
         "gallery_id": "",
         "image_url":
-            "http://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1mMnHxk4VbMPCnxw5k3jyGmwnfE.jpg",
+            "https://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1mMnHxk4VbMPCnxw5k3jyGmwnfE.jpg",
         "video_url": ""
       },
       {
         "content_type": "image",
         "gallery_id": "",
         "image_url":
-            "http://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1mMnKmAP8Vc0RIgCKiv5tZau9Li.jpg",
+            "https://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1mMnKmAP8Vc0RIgCKiv5tZau9Li.jpg",
         "video_url": ""
       },
       {
         "content_type": "image",
         "gallery_id": "",
         "image_url":
-            "http://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1mMnMVKpsVBOfEoY3VV7dAJo6Qf.jpg",
+            "https://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1mMnMVKpsVBOfEoY3VV7dAJo6Qf.jpg",
         "video_url": ""
       },
       {
         "content_type": "image",
         "gallery_id": "",
         "image_url":
-            "http://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1mMpkXU2PebIRohDyu3zi4lLG3U.jpg",
+            "https://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1mMpkXU2PebIRohDyu3zi4lLG3U.jpg",
         "video_url": ""
       }
     ],
@@ -1965,7 +1965,7 @@ List<Map<String, dynamic>> mockNewArrivalProducts = [
     "option_images": [
       {
         "image_url":
-            "http://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1mMpkXU2PebIRohDyu3zi4lLG3U.jpg",
+            "https://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1mMpkXU2PebIRohDyu3zi4lLG3U.jpg",
         "options": [
           {
             "alias": "graphite",
@@ -1982,7 +1982,7 @@ List<Map<String, dynamic>> mockNewArrivalProducts = [
       },
       {
         "image_url":
-            "http://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1mMnHxk4VbMPCnxw5k3jyGmwnfE.jpg",
+            "https://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1mMnHxk4VbMPCnxw5k3jyGmwnfE.jpg",
         "options": [
           {
             "alias": "silver",
@@ -1999,7 +1999,7 @@ List<Map<String, dynamic>> mockNewArrivalProducts = [
       },
       {
         "image_url":
-            "http://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1mMnKmAP8Vc0RIgCKiv5tZau9Li.jpg",
+            "https://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1mMnKmAP8Vc0RIgCKiv5tZau9Li.jpg",
         "options": [
           {
             "alias": "gold",
@@ -2016,7 +2016,7 @@ List<Map<String, dynamic>> mockNewArrivalProducts = [
       },
       {
         "image_url":
-            "http://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1mMnMVKpsVBOfEoY3VV7dAJo6Qf.jpg",
+            "https://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1mMnMVKpsVBOfEoY3VV7dAJo6Qf.jpg",
         "options": [
           {
             "alias": "blue-blue",
@@ -2293,7 +2293,7 @@ List<Map<String, dynamic>> mockNewArrivalProducts = [
     "brand": {
       "background_color": "#FFFFFF",
       "logo_image_url":
-          "http://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1lzvyVvDYAkBL1dHDYPANVytKHN.jpg",
+          "https://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1lzvyVvDYAkBL1dHDYPANVytKHN.jpg",
       "tag_id": "1lx8rCCEh2NqEnm41EUuGVkQ5Zc",
       "title": "Vivo"
     },
@@ -2888,7 +2888,7 @@ List<Map<String, dynamic>> mockNewArrivalProducts = [
     "brand": {
       "background_color": "#FFFFFF",
       "logo_image_url":
-          "http://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1lzwZ7VFtEsslqtFbDLYRCfHYLH.jpg",
+          "https://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1lzwZ7VFtEsslqtFbDLYRCfHYLH.jpg",
       "tag_id": "1lwx4Gwql10CtkYx5zUH3wpffQa",
       "title": "Apple"
     },
@@ -2930,21 +2930,21 @@ List<Map<String, dynamic>> mockNewArrivalProducts = [
         "content_type": "image",
         "gallery_id": "",
         "image_url":
-            "http://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1mMv0sDZpqLK7fgIUAzkMO3jhc2.jpg",
+            "https://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1mMv0sDZpqLK7fgIUAzkMO3jhc2.jpg",
         "video_url": ""
       },
       {
         "content_type": "image",
         "gallery_id": "",
         "image_url":
-            "http://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1mMv2VSBPpXJLtw9FYp8iLjhhAM.jpg",
+            "https://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1mMv2VSBPpXJLtw9FYp8iLjhhAM.jpg",
         "video_url": ""
       },
       {
         "content_type": "image",
         "gallery_id": "",
         "image_url":
-            "http://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1mMv22w2bHspYCZ1AZY9DecF2eG.jpg",
+            "https://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1mMv22w2bHspYCZ1AZY9DecF2eG.jpg",
         "video_url": ""
       }
     ],
@@ -2961,7 +2961,7 @@ List<Map<String, dynamic>> mockNewArrivalProducts = [
     "option_images": [
       {
         "image_url":
-            "http://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1mMv0sDZpqLK7fgIUAzkMO3jhc2.jpg",
+            "https://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1mMv0sDZpqLK7fgIUAzkMO3jhc2.jpg",
         "options": [
           {
             "alias": "graphite",
@@ -2978,7 +2978,7 @@ List<Map<String, dynamic>> mockNewArrivalProducts = [
       },
       {
         "image_url":
-            "http://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1mMv2VSBPpXJLtw9FYp8iLjhhAM.jpg",
+            "https://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1mMv2VSBPpXJLtw9FYp8iLjhhAM.jpg",
         "options": [
           {
             "alias": "silver",
@@ -2995,7 +2995,7 @@ List<Map<String, dynamic>> mockNewArrivalProducts = [
       },
       {
         "image_url":
-            "http://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1mMv22w2bHspYCZ1AZY9DecF2eG.jpg",
+            "https://s3-ap-southeast-1.amazonaws.com/pam-jaymart-prd/ecom/public/1mMv22w2bHspYCZ1AZY9DecF2eG.jpg",
         "options": [
           {
             "alias": "blue-blue",

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:singh_architecture/configs/config.dart';
 import 'package:singh_architecture/cores/context.dart';
 import 'package:singh_architecture/mocks/banners/banners.dart';
@@ -11,6 +12,7 @@ import 'package:singh_architecture/repositories/base_repository.dart';
 import 'package:singh_architecture/repositories/category_repository.dart';
 import 'package:singh_architecture/repositories/page_repository.dart';
 import 'package:singh_architecture/repositories/product_repository.dart';
+import 'package:singh_architecture/utils/object_helper.dart';
 import 'package:singh_architecture/widgets/banners/banner_head_line.dart';
 import 'package:singh_architecture/widgets/categories/category_head_line.dart';
 import 'package:singh_architecture/widgets/products/product_head_line.dart';
@@ -44,7 +46,10 @@ class ProductPageState extends State<ProductPage> {
     this.pageRepository = PageRepository();
     this.pageRepository.toLoadingStatus();
 
-    this.initialRepositories();
+    SchedulerBinding.instance?.addPostFrameCallback((_) {
+      this.pageRepository.initial();
+      this.initialRepositories();
+    });
   }
 
   @override
@@ -100,12 +105,15 @@ class ProductPageState extends State<ProductPage> {
     return StreamBuilder<bool>(
       stream: this.pageRepository.isLoadingSC.stream,
       builder: (context, snapshot) {
-        if (!snapshot.hasData || snapshot.data == true) {
-          return Container();
+        if (ObjectHelper.isSnapshotStateLoading(snapshot)) {
+          // if (true) {
+          return Container(
+            alignment: Alignment.center,
+            child: CircularProgressIndicator(),
+          );
         }
 
         return Container(
-
           child: ListView(
             padding: EdgeInsets.all(8),
             children: [

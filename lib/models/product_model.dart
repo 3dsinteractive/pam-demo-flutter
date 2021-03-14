@@ -7,6 +7,7 @@ class ProductModel {
   final String Price;
   final double Rating;
   final String Description;
+  final List<String> Galleries;
 
   ProductModel({
     required this.Id,
@@ -15,6 +16,7 @@ class ProductModel {
     required this.Price,
     required this.Rating,
     required this.Description,
+    required this.Galleries,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> rawJson) {
@@ -26,6 +28,7 @@ class ProductModel {
       Rating: 4,
       // Rating: double.parse(rawJson["rating"]),
       Description: rawJson["description"] ?? "",
+      Galleries: ((rawJson["galleries"] ?? []) as List<dynamic>).map((url) => url["image_url"] as String).toList()
     );
   }
 

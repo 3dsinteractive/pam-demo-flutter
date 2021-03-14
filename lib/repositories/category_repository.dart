@@ -6,6 +6,7 @@ import 'package:singh_architecture/models/category_model.dart';
 import 'package:singh_architecture/repositories/base_repository.dart';
 import 'package:singh_architecture/repositories/types.dart';
 import 'package:singh_architecture/utils/requester.dart';
+import 'package:singh_architecture/utils/time_helper.dart';
 
 class CategoryRepository extends BaseDataRepository<CategoryModel> {
   final IConfig config;
@@ -28,7 +29,7 @@ class CategoryRepository extends BaseDataRepository<CategoryModel> {
       }
 
       if (isMock) {
-        sleep(Duration(seconds: 2));
+        await TimeHelper.sleep();
         data = {"items": this.options.getMockItems()};
       } else {
         Response response =
