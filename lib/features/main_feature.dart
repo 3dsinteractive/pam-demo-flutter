@@ -5,11 +5,13 @@ import 'package:singh_architecture/cores/constants.dart';
 import 'package:singh_architecture/cores/context.dart';
 import 'package:singh_architecture/models/cart_model.dart';
 import 'package:singh_architecture/pages/base_page.dart';
+import 'package:singh_architecture/pages/cart_page.dart';
 import 'package:singh_architecture/pages/product_page.dart';
 import 'package:singh_architecture/repositories/page_repository.dart';
 import 'package:singh_architecture/styles/colors.dart';
 import 'package:singh_architecture/styles/fonts.dart';
 import 'package:singh_architecture/utils/object_helper.dart';
+import 'package:singh_architecture/widgets/common/top_bar.dart';
 import 'package:singh_architecture/widgets/common/top_bar_search.dart';
 
 class MainFeature extends StatefulWidget {
@@ -52,34 +54,21 @@ class MainFeatureState extends State<MainFeature> {
     return Container(
       child: Column(
         children: [
-          Container(
-            height: MediaQuery.of(context).padding.top,
-            color: colorPrimary,
-          ),
           Expanded(
             child: Container(
-              child: Stack(
-                children: [
-                  BasePage(
-                    pageRepository: this.pageRepository,
-                    widgets: [
-                      ProductPage(
-                        context: widget.context,
-                        config: widget.config,
-                      ),
-                      Container(),
-                    ],
+              child: BasePage(
+                pageRepository: this.pageRepository,
+                widgets: [
+                  ProductPage(
+                    context: widget.context,
+                    config: widget.config,
                   ),
-                  Container(
-                    child: StreamBuilder<int>(
-                      stream: this.pageRepository.pageIndexSC.stream,
-                      builder: (context, snapshot) {
-                        return TopBarSearch(
-                          isHide: (snapshot.data == 1),
-                          onSearch: (q) {},
-                        );
-                      },
-                    ),
+                  CartPage(
+                    onBack: (){
+                      this.pageRepository.prevPage();
+                    },
+                    context: widget.context,
+                    config: widget.config,
                   ),
                 ],
               ),
@@ -160,12 +149,13 @@ class MainFeatureState extends State<MainFeature> {
                                           .isLoadingSC
                                           .stream,
                                       builder: (context, snapshot) {
-                                        if (ObjectHelper.isSnapshotStateLoading(snapshot) || widget.context
-                                            .repositories()
-                                            .cartRepository()
-                                            .data
-                                            ?.Products
-                                            .length == 0) {
+                                        if (widget.context
+                                                    .repositories()
+                                                    .cartRepository()
+                                                    .data
+                                                    ?.Products
+                                                    .length ==
+                                                0) {
                                           return Container();
                                         }
 

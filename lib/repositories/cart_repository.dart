@@ -19,8 +19,7 @@ class CartRepository extends BaseDataRepository<CartModel> {
     this.data = CartModel(
       Id: "c01",
       Products: [],
-      Total: "0",
-      TotalNumber: 0,
+      Total: 0,
     );
     this.dataSC.add(this.data);
   }
@@ -52,12 +51,21 @@ class CartRepository extends BaseDataRepository<CartModel> {
       if (cpIndex == null) {
         cartProduct = product;
         cartProduct.Quantity = quantity;
+        cartProduct.Total = product.Price * quantity;
         this.data!.Products.add(cartProduct);
-        this.dataSC.add(this.data!);
       } else {
         this.data!.Products[cpIndex].Quantity += quantity;
-        this.dataSC.add(this.data!);
+        this.data!.Products[cpIndex].Total = this.data!.Products[cpIndex].Quantity * this.data!.Products[cpIndex].Price;
       }
+
+      double totalCartPrice = 0;
+
+      for (int i = 0; i < this.data!.Products.length; i++) {
+        totalCartPrice += this.data!.Products[i].Total;
+      }
+
+      this.data!.Total = totalCartPrice;
+      this.dataSC.add(this.data!);
 
       this.toLoadedStatus();
     } catch (e) {
@@ -84,6 +92,7 @@ class CartRepository extends BaseDataRepository<CartModel> {
         if (this.data!.Products[i].Id == product.Id) {
           if (this.data!.Products[i].Quantity <= 1) {
             this.data!.Products.removeAt(i);
+            this.data!.Total = 0;
             this.dataSC.add(this.data!);
             break;
           }
@@ -95,8 +104,35 @@ class CartRepository extends BaseDataRepository<CartModel> {
 
       if (cpIndex != null) {
         this.data!.Products[cpIndex].Quantity -= 1;
+        this.data!.Products[cpIndex].Total = this.data!.Products[cpIndex].Price * this.data!.Products[cpIndex].Quantity;
+        double totalCartPrice = 0;
+
+        for (int i = 0; i < this.data!.Products.length; i++) {
+          totalCartPrice += this.data!.Products[i].Total;
+        }
+
+        this.data!.Total = totalCartPrice;
         this.dataSC.add(this.data!);
       }
+
+      this.toLoadedStatus();
+    } catch (e) {
+      this.toErrorStatus(e);
+    }
+  }
+
+  Future<void> mockCheckout() async {
+    this.toLoadingStatus();
+
+    try {
+      await TimeHelper.sleep();
+
+      this.data = CartModel(
+        Id: "c01",
+        Products: [],
+        Total: 0,
+      );
+      this.dataSC.add(this.data!);
 
       this.toLoadedStatus();
     } catch (e) {

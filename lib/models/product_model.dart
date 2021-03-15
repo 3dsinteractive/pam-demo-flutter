@@ -4,7 +4,7 @@ class ProductModel {
   final String Id;
   final String ThumbnailURL;
   final String Title;
-  final String Price;
+  final double Price;
   final double Rating;
   final String Description;
   final List<String> Galleries;
@@ -24,7 +24,7 @@ class ProductModel {
       Id: rawJson["product_id"],
       ThumbnailURL: rawJson["thumbnail_url"],
       Title: rawJson["title"] ?? "",
-      Price: rawJson["price_number"] ?? "0",
+      Price: double.parse(rawJson["price_number"] ?? "0"),
       Rating: 4,
       // Rating: double.parse(rawJson["rating"]),
       Description: rawJson["description"] ?? "",

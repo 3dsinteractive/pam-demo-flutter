@@ -4,12 +4,14 @@ import 'package:singh_architecture/styles/colors.dart';
 import 'package:singh_architecture/styles/fonts.dart';
 
 class TopBar extends StatefulWidget {
-  final Widget prefixWidget;
-  final Widget postfixWidget;
+  final String? title;
+  final Widget? prefixWidget;
+  final Widget? postfixWidget;
 
   TopBar({
-    required this.prefixWidget,
-    required this.postfixWidget,
+    this.title,
+    this.prefixWidget,
+    this.postfixWidget,
   });
 
   @override
@@ -23,7 +25,10 @@ class TopBarState extends State<TopBar> {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      height: 85,
+      height: 85 + MediaQuery.of(context).padding.top,
+      padding: EdgeInsets.only(
+        top: MediaQuery.of(context).padding.top,
+      ),
       decoration: BoxDecoration(
         color: colorPrimary,
         borderRadius: BorderRadius.only(
@@ -34,8 +39,39 @@ class TopBarState extends State<TopBar> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          widget.prefixWidget,
-          widget.postfixWidget,
+          Expanded(
+            flex: 1,
+            child: Container(
+              alignment: Alignment.center,
+              child: widget.prefixWidget ?? Container(),
+            ),
+          ),
+          widget.title != null
+              ? Expanded(
+                  flex: 5,
+                  child: Container(
+                    alignment: Alignment.center,
+                    child: Text(
+                      widget.title!,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: h6,
+                      ),
+                    ),
+                  ),
+                )
+              : Expanded(
+                  flex: 5,
+                  child: Container(),
+                ),
+          Expanded(
+            flex: 1,
+            child: Container(
+              alignment: Alignment.center,
+              child: widget.postfixWidget ?? Container(),
+            ),
+          ),
         ],
       ),
     );

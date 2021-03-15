@@ -66,8 +66,4 @@ class DialogTreeRoute extends OverlayRoute {
 
     return overlays;
   }
-
-  Future show(BuildContext context) async {
-    return await Navigator.of(context, rootNavigator: false).push(this);
-  }
 }

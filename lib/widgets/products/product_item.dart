@@ -62,7 +62,7 @@ class ProductItemState extends State<ProductItem> {
             Container(
               width: 125,
               child: Text(
-                widget.product.Price,
+                widget.product.Price.toString(),
                 style: TextStyle(
                   color: colorSecondary,
                   fontSize: p,

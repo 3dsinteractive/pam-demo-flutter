@@ -6,11 +6,12 @@ class CartProductModel extends ProductModel {
   final String Id;
   final String ThumbnailURL;
   final String Title;
-  final String Price;
+  late double Price;
   final double Rating;
   final String Description;
   final List<String> Galleries;
   late int Quantity;
+  late double Total;
 
   CartProductModel({
     required this.Id,
@@ -21,6 +22,7 @@ class CartProductModel extends ProductModel {
     required this.Description,
     required this.Galleries,
     required this.Quantity,
+    required this.Total,
   }) : super(
           Id: Id,
           ThumbnailURL: ThumbnailURL,
@@ -33,14 +35,17 @@ class CartProductModel extends ProductModel {
 
   factory CartProductModel.fromJson(Map<String, dynamic> rawJson) {
     return CartProductModel(
-        Id: rawJson["product_id"] ?? "",
-        ThumbnailURL: rawJson["thumbnail_url"] ?? "",
-        Title: rawJson["title"] ?? "",
-        Price: rawJson["price_number"] ?? "0",
-        Rating: 4,
-        Description: rawJson["description"] ?? "",
-        Galleries: ((rawJson["galleries"] ?? []) as List<dynamic>).map((url) => url["image_url"] as String).toList(),
-        Quantity: rawJson["quantity"] ?? 1,
+      Id: rawJson["product_id"] ?? "",
+      ThumbnailURL: rawJson["thumbnail_url"] ?? "",
+      Title: rawJson["title"] ?? "",
+      Price: double.parse(rawJson["price_number"] ?? "0"),
+      Rating: 4,
+      Description: rawJson["description"] ?? "",
+      Galleries: ((rawJson["galleries"] ?? []) as List<dynamic>)
+          .map((url) => url["image_url"] as String)
+          .toList(),
+      Quantity: int.parse(rawJson["quantity"] ?? "1"),
+      Total: (double.parse((rawJson["quantity"] ?? "1")) * (double.parse(rawJson["price_number"] ?? "0"))),
     );
   }
 
@@ -61,22 +66,19 @@ class CartProductModel extends ProductModel {
 class CartModel {
   final String Id;
   final List<CartProductModel> Products;
-  late String Total;
-  late double TotalNumber;
+  late double Total;
 
   CartModel({
     required this.Id,
     required this.Products,
     required this.Total,
-    required this.TotalNumber,
   });
 
   factory CartModel.fromJson(Map<String, dynamic> rawJson) {
     return CartModel(
       Id: rawJson["id"] ?? "",
       Products: CartProductModel.toList(rawJson["products"]),
-      Total: rawJson["total"] ?? "",
-      TotalNumber: rawJson["total_number"] ?? 0,
+      Total: double.parse(rawJson["total"] ?? "0"),
     );
   }
 

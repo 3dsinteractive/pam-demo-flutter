@@ -14,6 +14,7 @@ import 'package:singh_architecture/repositories/product_repository.dart';
 import 'package:singh_architecture/utils/object_helper.dart';
 import 'package:singh_architecture/widgets/banners/banner_head_line.dart';
 import 'package:singh_architecture/widgets/categories/category_head_line.dart';
+import 'package:singh_architecture/widgets/common/top_bar_search.dart';
 import 'package:singh_architecture/widgets/products/product_head_line.dart';
 
 class ProductPage extends StatefulWidget {
@@ -110,51 +111,58 @@ class ProductPageState extends State<ProductPage> {
           );
         }
 
-        return Container(
-          padding: widget.padding,
-          child: ListView(
-            padding: EdgeInsets.all(8),
-            children: [
-              BannerHeadLine(
-                margin: EdgeInsets.only(
-                  top: 85,
-                  bottom: 8,
-                ),
-                context: widget.context,
-                config: widget.config,
-                bannerRepository: this.bannerRepository,
+        return Stack(
+          children: [
+            Container(
+              padding: widget.padding,
+              child: ListView(
+                padding: EdgeInsets.all(8),
+                children: [
+                  BannerHeadLine(
+                    margin: EdgeInsets.only(
+                      top: 110,
+                      bottom: 8,
+                    ),
+                    context: widget.context,
+                    config: widget.config,
+                    bannerRepository: this.bannerRepository,
+                  ),
+                  CategoryHeadLine(
+                    margin: EdgeInsets.only(
+                      top: 8,
+                      bottom: 8,
+                    ),
+                    context: widget.context,
+                    config: widget.config,
+                    categoryRepository: this.categoryRepository,
+                  ),
+                  ProductHeadLine(
+                    margin: EdgeInsets.only(
+                      top: 8,
+                      bottom: 8,
+                    ),
+                    context: widget.context,
+                    config: widget.config,
+                    title: "สินค้ามาใหม่",
+                    productRepository: this.newArrivalProductRepository,
+                  ),
+                  ProductHeadLine(
+                    margin: EdgeInsets.only(
+                      top: 8,
+                      bottom: 8,
+                    ),
+                    context: widget.context,
+                    config: widget.config,
+                    title: "สินค้าขายดี",
+                    productRepository: this.bestSellerProductRepository,
+                  ),
+                ],
               ),
-              CategoryHeadLine(
-                margin: EdgeInsets.only(
-                  top: 8,
-                  bottom: 8,
-                ),
-                context: widget.context,
-                config: widget.config,
-                categoryRepository: this.categoryRepository,
-              ),
-              ProductHeadLine(
-                margin: EdgeInsets.only(
-                  top: 8,
-                  bottom: 8,
-                ),
-                context: widget.context,
-                config: widget.config,
-                title: "สินค้ามาใหม่",
-                productRepository: this.newArrivalProductRepository,
-              ),
-              ProductHeadLine(
-                margin: EdgeInsets.only(
-                  top: 8,
-                  bottom: 8,
-                ),
-                context: widget.context,
-                config: widget.config,
-                title: "สินค้าขายดี",
-                productRepository: this.bestSellerProductRepository,
-              ),
-            ],
-          ),
+            ),
+            TopBarSearch(
+              onSearch: (q) {},
+            )
+          ],
         );
       },
     );

@@ -1,16 +1,29 @@
-import 'package:singh_architecture/models/types.dart';
-
 class ArrayHelper {
   ArrayHelper._();
 
-  static List<T>? responseToItemsI<T>(Map<String, dynamic> data) {
-    List<T> items = [];
-    List<Map<String, dynamic>> rawItems = data["items"];
+  static bool isAllTrue(List<bool> list) {
+    bool allTrue = true;
 
-    for (int i = 0; i < rawItems.length; i++) {
-      items.add((T as IBaseModel).innerFromJson(rawItems[i]));
+    for (int i = 0; i < list.length; i++) {
+      if (!list[i]) {
+        allTrue = false;
+        break;
+      }
     }
 
-    return items;
+    return allTrue;
+  }
+
+  static bool isAllFalse(List<bool> list) {
+    bool allTrue = true;
+
+    for (int i = 0; i < list.length; i++) {
+      if (list[i]) {
+        allTrue = false;
+        break;
+      }
+    }
+
+    return allTrue;
   }
 }

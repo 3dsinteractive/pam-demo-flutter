@@ -26,8 +26,9 @@ class TopBarSearchState extends State<TopBarSearch> {
       duration: Duration(milliseconds: 150),
       child: Container(
         alignment: Alignment.center,
-        height: 85,
+        height: 85 + MediaQuery.of(context).padding.top,
         padding: EdgeInsets.only(
+          top: MediaQuery.of(context).padding.top,
           left: 32,
           right: 32,
         ),
