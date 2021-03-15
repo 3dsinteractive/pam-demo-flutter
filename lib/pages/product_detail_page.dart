@@ -86,7 +86,7 @@ class ProductDetailPageState extends State<ProductDetailPage> {
                       children: [
                         Container(
                           margin: EdgeInsets.only(
-                            top: 108,
+                            top: 85 + MediaQuery.of(context).padding.top,
                           ),
                           child: ProductSlider(
                             imageURLs:

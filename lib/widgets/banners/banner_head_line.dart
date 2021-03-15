@@ -57,7 +57,7 @@ class BannerHeadLineState extends State<BannerHeadLine> {
         if (ObjectHelper.isSnapshotStateLoading(snapshot)) {
           return Container(
             margin: widget.margin,
-            height: 175,
+            height: MediaQuery.of(context).size.width / 1.777777778,
             alignment: Alignment.center,
             decoration: BoxDecoration(
               color: colorPrimaryLighter,
@@ -73,7 +73,7 @@ class BannerHeadLineState extends State<BannerHeadLine> {
           children: [
             Container(
               margin: widget.margin,
-              height: 175,
+              height: MediaQuery.of(context).size.width / 1.777777778,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
               ),

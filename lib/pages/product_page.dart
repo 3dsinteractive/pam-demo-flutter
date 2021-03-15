@@ -120,7 +120,7 @@ class ProductPageState extends State<ProductPage> {
                 children: [
                   BannerHeadLine(
                     margin: EdgeInsets.only(
-                      top: 110,
+                      top: 85 + MediaQuery.of(context).padding.top,
                       bottom: 8,
                     ),
                     context: widget.context,
