@@ -75,10 +75,6 @@ class ProductFeatureState extends State<ProductFeature> {
                     context: widget.context,
                     config: widget.config,
                   ),
-                  ProductDetailPage(
-                    context: widget.context,
-                    config: widget.config,
-                  ),
                 ],
               ),
             ),

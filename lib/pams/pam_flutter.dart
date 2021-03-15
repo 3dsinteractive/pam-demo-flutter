@@ -2,6 +2,9 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:singh_architecture/pams/types.dart';
+import 'dart:io' show Platform;
+
+import 'package:uuid/uuid.dart';
 
 class PamSDK {
   PamSDK._();
@@ -32,9 +35,7 @@ class PamSDK {
   }
 
   static Future<void> initialSharedPreferences() async {
-    if (_sharedPreferences == null) {
-      _sharedPreferences = await SharedPreferences.getInstance();
-    }
+    _sharedPreferences = await SharedPreferences.getInstance();
   }
 
   static String pamServer() {
@@ -84,8 +85,24 @@ class PamSDK {
     return _sharedPreferences.remove(key);
   }
 
-  static String getSessionId() {
-    return "";
+  static Future<String> getSessionId() async {
+    int? expire = getIntFromSharedPref("session_expire_in_mils");
+    String? session = getStringFromSharedPref("session_id");
+
+    if ((expire == null || session == null) || (DateTime.now().millisecondsSinceEpoch - expire > (1000 * 60 * 60))) {
+      int newExpire = DateTime.now().millisecondsSinceEpoch + 1000 * 60 * 60;
+      session = Uuid().v4();
+
+      await saveIntToSharedPref("session_expire_in_mils", newExpire);
+      await saveStringToSharedPref("session_id", session);
+    }else{
+      int newExpire = DateTime.now().millisecondsSinceEpoch + 1000 * 60 * 60;
+
+      await saveIntToSharedPref("session_expire_in_mils", newExpire);
+      await saveStringToSharedPref("session_id", session);
+    }
+
+    return session;
   }
 
   static String? getContactId() {
@@ -102,15 +119,28 @@ class PamSDK {
   }
 
   static Future<void> userLogout() async {
-    await track(PamStandardEvent.logout, {
-      "_delete_media": {
-        "android_notification": "",
+    Map<String, dynamic> payload = {};
+    if (Platform.isAndroid) {
+      payload["_delete_media"] = {"android_notification": ""};
+    } else if (Platform.isIOS) {
+      payload["_delete_media"] = {"ios_notification": ""};
+    }
 
-      },
-    });
+    await track(PamStandardEvent.logout, payload);
+    await removeToSharedPref("customer_id");
+    await removeToSharedPref("login_contact_id");
   }
 
-  // static Future<void> savePushKey(String token) {}
+  static Future<void> savePushKey(String token) {
+    Map<String, dynamic> payload = {};
+    if (Platform.isAndroid) {
+      payload["android_notification"] = token;
+    } else if (Platform.isIOS) {
+      payload["ios_notification"] = token;
+    }
+
+    return track(PamStandardEvent.save_push, payload);
+  }
 
   static Future<void> track(
       String eventName, Map<String, dynamic> payload) async {}
