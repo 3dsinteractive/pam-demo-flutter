@@ -8,7 +8,6 @@ import 'package:singh_architecture/features/main_feature.dart';
 import 'package:singh_architecture/middlewares/scaffold_middle_ware.dart';
 import 'package:singh_architecture/repositories/page_repository.dart';
 import 'package:singh_architecture/repositories/product_repository.dart';
-import 'package:singh_architecture/utils/time_helper.dart';
 
 class LaunchScreen extends StatefulWidget {
   final BasePageRepository launchScreenRepository;
@@ -38,10 +37,7 @@ class LaunchScreenState extends State<LaunchScreen> {
     );
 
     widget.launchScreenRepository.toLoadingStatus();
-
-    SchedulerBinding.instance?.addPostFrameCallback((_) {
-      this.initialConfig();
-    });
+    this.initialConfig();
   }
 
   Future<void> initialConfig() async {
@@ -49,7 +45,6 @@ class LaunchScreenState extends State<LaunchScreen> {
       await this.config.initial();
       await this.myContext.initial();
       await this.myContext.localeRepository().loadLocale();
-      await TimeHelper.sleep();
 
       Navigator.of(context).push(
         MaterialPageRoute(

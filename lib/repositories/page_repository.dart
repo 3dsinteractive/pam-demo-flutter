@@ -3,6 +3,10 @@ import 'dart:async';
 import 'package:singh_architecture/repositories/base_repository.dart';
 
 abstract class BasePageRepository extends BaseUIRepository {
+  StreamController<int> get pageIndexSC;
+
+  StreamController<int> get pageSizeSC;
+
   void initial({Function? callback});
 
   void setPageSize(int size);
@@ -22,22 +26,22 @@ class PageRepository extends BasePageRepository {
   int _pageIndex = 0;
   int _pageSize = 0;
 
-  StreamController<int>? _pageIndexSC;
-  StreamController<int>? _pageSizeSC;
+  late StreamController<int> _pageIndexSC;
+  late StreamController<int> _pageSizeSC;
 
   int get currentPage => this._pageIndex;
 
   int get pageSize => this._pageSize;
 
-  StreamController<int>? get pageIndexSC => this._pageIndexSC;
+  StreamController<int> get pageIndexSC => this._pageIndexSC;
 
-  StreamController<int>? get pageSizeSC => this._pageSizeSC;
+  StreamController<int> get pageSizeSC => this._pageSizeSC;
 
   @override
   void initial({Function? callback}) {
     this._pageIndex = 0;
-    this._pageIndexSC = StreamController<int>();
-    this._pageSizeSC = StreamController<int>();
+    this._pageIndexSC = StreamController<int>.broadcast();
+    this._pageSizeSC = StreamController<int>.broadcast();
 
     this.notifyValueChange();
     callback?.call();
@@ -69,15 +73,15 @@ class PageRepository extends BasePageRepository {
 
   @override
   void notifyValueChange() {
-    this._pageIndexSC!.add(this._pageIndex);
-    this._pageSizeSC!.add(this._pageSize);
+    this._pageIndexSC.add(this._pageIndex);
+    this._pageSizeSC.add(this._pageSize);
   }
 
   @override
   void dispose() {
     super.dispose();
 
-    this._pageIndexSC!.close();
-    this._pageSizeSC!.close();
+    this._pageIndexSC.close();
+    this._pageSizeSC.close();
   }
 }

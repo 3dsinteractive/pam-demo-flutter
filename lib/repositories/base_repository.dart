@@ -1,14 +1,20 @@
+// ignore_for_file: close_sinks
+
 import 'dart:async';
+import 'package:rxdart/rxdart.dart';
 import 'package:singh_architecture/configs/config.dart';
 import 'package:singh_architecture/mocks/banners/banners.dart';
+import 'package:singh_architecture/mocks/carts/carts.dart';
 import 'package:singh_architecture/mocks/categories/categories.dart';
 import 'package:singh_architecture/mocks/products/product_detail.dart';
 import 'package:singh_architecture/mocks/products/products.dart';
+import 'package:singh_architecture/models/cart_model.dart';
 import 'package:singh_architecture/repositories/banner_repository.dart';
+import 'package:singh_architecture/repositories/cart_repository.dart';
 import 'package:singh_architecture/repositories/category_repository.dart';
-import 'package:singh_architecture/repositories/locale_repository.dart';
 import 'package:singh_architecture/repositories/product_repository.dart';
 import 'package:singh_architecture/repositories/types.dart';
+import 'package:singh_architecture/utils/time_helper.dart';
 
 class BaseDataRepository<T> implements IBaseDataRepository {
   final IConfig config;
@@ -32,12 +38,7 @@ class BaseDataRepository<T> implements IBaseDataRepository {
     this.config,
     this.options,
   ) {
-    this._isLoadingSC = StreamController<bool>();
-    this._isLoadedSC = StreamController<bool>();
-    this._isErrorSC = StreamController<bool>();
-    this._errorMessageSC = StreamController<String>();
-    this._itemsSC = StreamController<List<T>?>();
-    this._dataSC = StreamController<T?>();
+    this.initial();
   }
 
   @override
@@ -101,16 +102,55 @@ class BaseDataRepository<T> implements IBaseDataRepository {
 
     this._errorMessage = e.toString();
     this._errorMessageSC.add(e.toString());
+
     print("error: ${e.toString()}");
   }
 
   @override
-  Future<void> fetch(
-      {Map<String, dynamic>? params, bool isMock: false}) async {}
+  Future<void> fetch({Map<String, dynamic>? params, bool isMock: false}) async {
+    this.toLoadingStatus();
+    TimeHelper.sleep();
+    this.toLoadedStatus();
+  }
 
   @override
   Future<void> get(String id,
-      {Map<String, dynamic>? params, bool isMock: false}) async {}
+      {Map<String, dynamic>? params, bool isMock: false}) async {
+    this.toLoadingStatus();
+    TimeHelper.sleep();
+    this.toLoadedStatus();
+  }
+
+  @override
+  void forceValueNotify() {
+    this._isLoadingSC.add(true);
+    this._isLoadedSC.add(false);
+    this._isErrorSC.add(false);
+    this._errorMessageSC.add("");
+
+    this._itemsSC.add(null);
+    this._dataSC.add(null);
+
+
+    this._isLoadingSC.add(this.isLoading);
+    this._isLoadedSC.add(this.isLoaded);
+    this._isErrorSC.add(this.isError);
+    this._errorMessageSC.add(this.errorMessage);
+
+    this._itemsSC.add(this.items);
+    this._dataSC.add(this.data);
+  }
+
+  @override
+  void initial() {
+    this._isLoadingSC = BehaviorSubject<bool>();
+    this._isLoadedSC = BehaviorSubject<bool>();
+    this._isErrorSC = BehaviorSubject<bool>();
+    this._errorMessageSC = BehaviorSubject<String>();
+
+    this._itemsSC = BehaviorSubject<List<T>?>();
+    this._dataSC = BehaviorSubject<T?>();
+  }
 
   @override
   void dispose() {
@@ -118,8 +158,6 @@ class BaseDataRepository<T> implements IBaseDataRepository {
     this._isLoadedSC.close();
     this._isErrorSC.close();
     this._errorMessageSC.close();
-    this._itemsSC.close();
-    this._dataSC.close();
   }
 }
 
@@ -196,6 +234,7 @@ class BaseUIRepository implements IBaseUIRepository {
 
     this._errorMessage = e.toString();
     this._errorMessageSC.add(e.toString());
+
     print("error: ${e.toString()}");
   }
 
@@ -210,43 +249,70 @@ class BaseUIRepository implements IBaseUIRepository {
 
 class NewRepository implements IRepositories {
   final IConfig config;
+  ProductRepository? _productRepository;
+  BannerRepository? _bannerRepository;
+  CategoryRepository? _categoryRepository;
+  CartRepository? _cartRepository;
 
   NewRepository({
     required this.config,
   });
 
   @override
-  productRepository() {
-    return ProductRepository(
-      config: this.config,
-      options: NewRepositoryOptions(
-        baseUrl: "${config.baseAPI()}/products",
-        mockItems: mockProducts,
-        mockItem: mockProductDetail,
-      ),
-    );
+  ProductRepository productRepository() {
+    if (this._productRepository == null) {
+      this._productRepository = ProductRepository(
+        config: this.config,
+        options: NewRepositoryOptions(
+          baseUrl: "${config.baseAPI()}/products",
+          mockItems: mockProducts,
+          mockItem: mockProductDetail,
+        ),
+      );
+    }
+    return this._productRepository!;
   }
 
   @override
   BannerRepository bannerRepository() {
-    return BannerRepository(
-      config: this.config,
-      options: NewRepositoryOptions(
-        baseUrl: "${config.baseAPI()}/banners",
-        mockItems: mockBanners,
-      ),
-    );
+    if (this._bannerRepository == null) {
+      this._bannerRepository = BannerRepository(
+        config: this.config,
+        options: NewRepositoryOptions(
+          baseUrl: "${config.baseAPI()}/banners",
+          mockItems: mockBanners,
+        ),
+      );
+    }
+    return this._bannerRepository!;
   }
 
   @override
   CategoryRepository categoryRepository() {
-    return CategoryRepository(
-      config: this.config,
-      options: NewRepositoryOptions(
-        baseUrl: "${config.baseAPI()}/categories",
-        mockItems: mockCategories,
-      ),
-    );
+    if (this._categoryRepository == null) {
+      this._categoryRepository = CategoryRepository(
+        config: this.config,
+        options: NewRepositoryOptions(
+          baseUrl: "${config.baseAPI()}/categories",
+          mockItems: mockCategories,
+        ),
+      );
+    }
+    return this._categoryRepository!;
+  }
+
+  @override
+  CartRepository cartRepository() {
+    if (this._cartRepository == null) {
+      this._cartRepository = CartRepository(
+        config: this.config,
+        options: NewRepositoryOptions(
+          baseUrl: "${config.baseAPI()}/cart",
+          mockItem: mockCart,
+        ),
+      );
+    }
+    return this._cartRepository!;
   }
 }
 

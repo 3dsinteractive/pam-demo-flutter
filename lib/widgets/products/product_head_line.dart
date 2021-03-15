@@ -38,10 +38,7 @@ class ProductHeadLineState extends State<ProductHeadLine> {
     super.initState();
 
     widget.productRepository.toLoadingStatus();
-
-    SchedulerBinding.instance?.addPostFrameCallback((_) {
-      widget.productRepository.fetch(isMock: true);
-    });
+    widget.productRepository.fetch(isMock: true);
   }
 
   @override

@@ -35,9 +35,7 @@ class CategoryHeadLineState extends State<CategoryHeadLine> {
 
     widget.categoryRepository.toLoadingStatus();
 
-    SchedulerBinding.instance?.addPostFrameCallback((_) {
-      widget.categoryRepository.fetch(isMock: true);
-    });
+    widget.categoryRepository.fetch(isMock: true);
   }
 
   @override

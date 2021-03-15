@@ -40,6 +40,7 @@ class ProductItemState extends State<ProductItem> {
               height: 125,
               width: 125,
               child: CachedImage(
+                fit: BoxFit.scaleDown,
                 image: widget.product.ThumbnailURL,
               ),
             ),

@@ -38,9 +38,7 @@ class BannerHeadLineState extends State<BannerHeadLine> {
     this.currentPageSC = StreamController<int>();
     this.currentPageSC.add(0);
 
-    SchedulerBinding.instance?.addPostFrameCallback((_) {
-      widget.bannerRepository.fetch(isMock: true);
-    });
+    widget.bannerRepository.fetch(isMock: true);
   }
 
   @override
@@ -62,7 +60,7 @@ class BannerHeadLineState extends State<BannerHeadLine> {
             height: 175,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: colorPrimaryLight,
+              color: colorPrimaryLighter,
               borderRadius: BorderRadius.circular(16),
             ),
             child: CircularProgressIndicator(),

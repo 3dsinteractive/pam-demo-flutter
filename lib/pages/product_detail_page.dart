@@ -7,7 +7,9 @@ import 'package:singh_architecture/mocks/products/best_seller_products.dart';
 import 'package:singh_architecture/mocks/products/new_arrival_products.dart';
 import 'package:singh_architecture/mocks/products/product_detail.dart';
 import 'package:singh_architecture/mocks/products/products.dart';
+import 'package:singh_architecture/models/cart_model.dart';
 import 'package:singh_architecture/repositories/base_repository.dart';
+import 'package:singh_architecture/repositories/cart_repository.dart';
 import 'package:singh_architecture/repositories/product_repository.dart';
 import 'package:singh_architecture/styles/colors.dart';
 import 'package:singh_architecture/styles/fonts.dart';
@@ -33,7 +35,7 @@ class ProductDetailPage extends StatefulWidget {
 }
 
 class ProductDetailPageState extends State<ProductDetailPage> {
-  late ProductRepository productRepository;
+  late final ProductRepository productRepository;
 
   @override
   void initState() {
@@ -43,12 +45,17 @@ class ProductDetailPageState extends State<ProductDetailPage> {
       config: widget.config,
       options: NewRepositoryOptions(
         baseUrl: "${widget.config.baseAPI()}/products",
-        mockItems: [...mockProducts, ...mockNewArrivalProducts, ...mockBestSellerProducts],
+        mockItems: [
+          ...mockProducts,
+          ...mockNewArrivalProducts,
+          ...mockBestSellerProducts
+        ],
         mockItem: mockProductDetail,
       ),
     );
 
     this.productRepository.get(widget.id, isMock: true);
+    widget.context.repositories().cartRepository().fetch();
   }
 
   @override
@@ -61,213 +68,225 @@ class ProductDetailPageState extends State<ProductDetailPage> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<bool>(
-      stream: this.productRepository.isLoadingSC.stream,
-      builder: (context, snapshot) {
-        if (ObjectHelper.isSnapshotStateLoading(snapshot)) {
-          return Center(
-            child: Container(
-              child: CircularProgressIndicator(),
-            ),
-          );
-        }
-
-        return Container(
-          child: Column(
-            children: [
-              Container(
-                height: MediaQuery.of(context).padding.top,
-                color: colorPrimary,
-              ),
-              TopBar(
-                prefixWidget: GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Container(
-                    padding: EdgeInsets.only(
-                      left: 16,
-                    ),
-                    child: Icon(
-                      Icons.arrow_back_ios,
-                      color: Colors.white,
-                    ),
-                  ),
+      stream: widget.context.repositories().cartRepository().isLoadingSC.stream,
+      builder: (context, cartSS) {
+        return StreamBuilder<bool>(
+          stream: this.productRepository.isLoadingSC.stream,
+          builder: (context, productSS) {
+            if (ObjectHelper.isSnapshotStateLoading(cartSS) || ObjectHelper.isSnapshotStateLoading(productSS)) {
+              return Center(
+                child: Container(
+                  child: CircularProgressIndicator(),
                 ),
-                postfixWidget: Container(
-                  height: 85,
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Container(
+              );
+            }
+
+            return Container(
+              child: Column(
+                children: [
+                  Container(
+                    height: MediaQuery.of(context).padding.top,
+                    color: colorPrimary,
+                  ),
+                  TopBar(
+                    prefixWidget: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Container(
                         padding: EdgeInsets.only(
-                          right: 16,
+                          left: 16,
                         ),
                         child: Icon(
-                          Icons.shopping_cart,
+                          Icons.arrow_back_ios,
                           color: Colors.white,
                         ),
                       ),
-                      Positioned(
-                        top: 15,
-                        right: 5,
-                        child: Container(
-                          alignment: Alignment.center,
-                          padding: EdgeInsets.all(6),
-                          decoration: BoxDecoration(
-                            color: colorSecondary,
-                            shape: BoxShape.circle,
-                          ),
-                          child: Text(
-                            "1",
-                            style: TextStyle(
+                    ),
+                    postfixWidget: Container(
+                      height: 85,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.only(
+                              right: 16,
+                            ),
+                            child: Icon(
+                              Icons.shopping_cart,
                               color: Colors.white,
                             ),
                           ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  child: ListView(
-                    padding: EdgeInsets.zero,
-                    children: [
-                      Container(
-                        child: ProductSlider(
-                          imageURLs:
-                              (this.productRepository.data?.Galleries ?? []),
-                        ),
-                      ),
-                      Container(
-                        color: Colors.white,
-                        padding: EdgeInsets.all(8),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(
-                                bottom: 8,
-                              ),
-                              child: Text(
-                                this.productRepository.data?.Title ?? "",
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                  fontSize: h3,
-                                  fontWeight: fontWeightBold,
-                                ),
-                              ),
+                          Positioned(
+                            top: 15,
+                            right: 5,
+                            child: (!cartSS.hasData || widget.context.repositories().cartRepository().data?.Products.length == 0) ? Container() : Container(
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.all(6),
+                            decoration: BoxDecoration(
+                              color: colorSecondary,
+                              shape: BoxShape.circle,
                             ),
-                            Container(
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Container(
-                                      child: Text(
-                                        "฿ ${this.productRepository.data?.Price}",
-                                        style: TextStyle(
-                                          fontSize: h5,
-                                          fontWeight: fontWeightBold,
-                                          color: colorSecondary,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    child: Icon(
-                                      Icons.favorite_outline,
-                                      color: Colors.redAccent,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        color: Colors.white,
-                        padding: EdgeInsets.only(
-                          top: 8,
-                          bottom: 8,
-                          left: 16,
-                          right: 16,
-                        ),
-                        child: Html(
-                            data:
-                                this.productRepository.data?.Description ?? ""),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        padding: EdgeInsets.only(
-                          top: 16,
-                          bottom: 16,
-                        ),
-                        color: colorPrimary,
-                        alignment: Alignment.center,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(
-                                right: 8,
-                              ),
-                              child: Icon(
-                                Icons.shopping_cart,
+                            child: Text(
+                              widget.context.repositories().cartRepository().data?.Products.length.toString() ?? "0",
+                              style: TextStyle(
                                 color: Colors.white,
                               ),
                             ),
-                            Container(
-                              child: Text(
-                                "เพิ่มลงรถเข็น",
-                                style: TextStyle(
-                                  fontSize: h6,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                          ),
+                        ],
                       ),
                     ),
-                    Expanded(
-                      child: Container(
-                        padding: EdgeInsets.only(
-                          top: 16,
-                          bottom: 16,
-                        ),
-                        color: colorSecondary,
-                        alignment: Alignment.center,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(),
-                            Container(
-                              child: Text(
-                                "ซื้อสินค้า",
-                                style: TextStyle(
-                                  fontSize: h6,
-                                  color: Colors.white,
-                                ),
-                              ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      child: ListView(
+                        padding: EdgeInsets.zero,
+                        children: [
+                          Container(
+                            child: ProductSlider(
+                              imageURLs:
+                                  (this.productRepository.data?.Galleries ??
+                                      []),
                             ),
-                          ],
-                        ),
+                          ),
+                          Container(
+                            color: Colors.white,
+                            padding: EdgeInsets.all(8),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(
+                                    bottom: 8,
+                                  ),
+                                  child: Text(
+                                    this.productRepository.data?.Title ?? "",
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                      fontSize: h3,
+                                      fontWeight: fontWeightBold,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Container(
+                                          child: Text(
+                                            "฿ ${this.productRepository.data?.Price}",
+                                            style: TextStyle(
+                                              fontSize: h5,
+                                              fontWeight: fontWeightBold,
+                                              color: colorSecondary,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        child: Icon(
+                                          Icons.favorite_outline,
+                                          color: Colors.redAccent,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            color: Colors.white,
+                            padding: EdgeInsets.only(
+                              top: 8,
+                              bottom: 8,
+                              left: 16,
+                              right: 16,
+                            ),
+                            child: Html(
+                                data:
+                                    this.productRepository.data?.Description ??
+                                        ""),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  Container(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              widget.context.repositories().cartRepository().mockAddToCart(this.productRepository.data!.Id);
+                            },
+                            child: Container(
+                              padding: EdgeInsets.only(
+                                top: 16,
+                                bottom: 16,
+                              ),
+                              color: colorPrimary,
+                              alignment: Alignment.center,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.only(
+                                      right: 8,
+                                    ),
+                                    child: Icon(
+                                      Icons.shopping_cart,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  Container(
+                                    child: Text(
+                                      "เพิ่มลงรถเข็น",
+                                      style: TextStyle(
+                                        fontSize: h6,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            padding: EdgeInsets.only(
+                              top: 16,
+                              bottom: 16,
+                            ),
+                            color: colorSecondary,
+                            alignment: Alignment.center,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(),
+                                Container(
+                                  child: Text(
+                                    "ซื้อสินค้า",
+                                    style: TextStyle(
+                                      fontSize: h6,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            );
+          },
         );
       },
     );

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:singh_architecture/repositories/banner_repository.dart';
+import 'package:singh_architecture/repositories/cart_repository.dart';
 import 'package:singh_architecture/repositories/category_repository.dart';
-import 'package:singh_architecture/repositories/locale_repository.dart';
 import 'package:singh_architecture/repositories/product_repository.dart';
 
 abstract class IRepositories {
@@ -10,6 +10,8 @@ abstract class IRepositories {
   BannerRepository bannerRepository();
 
   CategoryRepository categoryRepository();
+
+  CartRepository cartRepository();
 }
 
 abstract class IRepositoryOptions {
@@ -63,6 +65,10 @@ abstract class IBaseDataRepository<T> {
     Map<String, dynamic>? params,
     bool isMock: false,
   });
+
+  void forceValueNotify();
+
+  void initial();
 
   void dispose();
 }

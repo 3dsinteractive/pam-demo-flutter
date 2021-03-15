@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:singh_architecture/configs/config.dart';
 import 'package:singh_architecture/cores/context.dart';
 import 'package:singh_architecture/mocks/banners/banners.dart';
@@ -20,10 +19,12 @@ import 'package:singh_architecture/widgets/products/product_head_line.dart';
 class ProductPage extends StatefulWidget {
   final IContext context;
   final IConfig config;
+  final EdgeInsets? padding;
 
   ProductPage({
     required this.context,
     required this.config,
+    this.padding,
   });
 
   @override
@@ -46,10 +47,7 @@ class ProductPageState extends State<ProductPage> {
     this.pageRepository = PageRepository();
     this.pageRepository.toLoadingStatus();
 
-    SchedulerBinding.instance?.addPostFrameCallback((_) {
-      this.pageRepository.initial();
-      this.initialRepositories();
-    });
+    this.initialRepositories();
   }
 
   @override
@@ -106,7 +104,6 @@ class ProductPageState extends State<ProductPage> {
       stream: this.pageRepository.isLoadingSC.stream,
       builder: (context, snapshot) {
         if (ObjectHelper.isSnapshotStateLoading(snapshot)) {
-          // if (true) {
           return Container(
             alignment: Alignment.center,
             child: CircularProgressIndicator(),
@@ -114,11 +111,13 @@ class ProductPageState extends State<ProductPage> {
         }
 
         return Container(
+          padding: widget.padding,
           child: ListView(
             padding: EdgeInsets.all(8),
             children: [
               BannerHeadLine(
                 margin: EdgeInsets.only(
+                  top: 85,
                   bottom: 8,
                 ),
                 context: widget.context,
