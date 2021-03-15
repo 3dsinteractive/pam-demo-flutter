@@ -1,0 +1,5 @@
+{
+  "pam-server": "https://your-pam-domain.pams.ai",
+  "public-db-alias": "your-public-customer-database-alias",
+  "login-db-alias": "your-login-customer-database-alias"
+}
