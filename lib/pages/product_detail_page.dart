@@ -159,6 +159,9 @@ class ProductDetailPageState extends State<ProductDetailPage> {
                   ),
                 ),
                 Container(
+                  padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).padding.bottom,
+                  ),
                   child: Row(
                     children: [
                       Expanded(
@@ -253,6 +256,12 @@ class ProductDetailPageState extends State<ProductDetailPage> {
                     context: widget.context,
                     config: widget.config,
                     child: CartPage(
+                      checkoutPadding: EdgeInsets.only(
+                        top: 16,
+                        bottom: 16 + MediaQuery.of(context).padding.bottom,
+                        left: 24,
+                        right: 24,
+                      ),
                       context: widget.context,
                       config: widget.config,
                     ),

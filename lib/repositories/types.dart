@@ -55,12 +55,18 @@ abstract class IBaseDataRepository<T> {
 
   void toErrorStatus(dynamic e);
 
-  void fetch({
+  Future<void> fetch({
     Map<String, dynamic>? params,
     bool isMock: false,
   });
 
-  void get(
+  Future<void> fetchAfterId(
+    String afterId, {
+    Map<String, dynamic>? params,
+    bool isMock: false,
+  });
+
+  Future<void> get(
     String id, {
     Map<String, dynamic>? params,
     bool isMock: false,

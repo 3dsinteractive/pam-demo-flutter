@@ -16,12 +16,14 @@ class CartPage extends StatefulWidget {
   final IContext context;
   final IConfig config;
   final EdgeInsets? padding;
+  final EdgeInsets? checkoutPadding;
   final void Function()? onBack;
 
   CartPage({
     required this.context,
     required this.config,
     this.padding,
+    this.checkoutPadding,
     this.onBack,
   });
 
@@ -311,12 +313,7 @@ class CartPageState extends State<CartPage> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.only(
-                  top: 16,
-                  bottom: 16,
-                  left: 24,
-                  right: 24,
-                ),
+                padding: widget.checkoutPadding,
                 color: Colors.white,
                 child: Row(
                   children: [

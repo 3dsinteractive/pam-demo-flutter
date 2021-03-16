@@ -114,6 +114,14 @@ class BaseDataRepository<T> implements IBaseDataRepository {
   }
 
   @override
+  Future<void> fetchAfterId(String afterId,
+      {Map<String, dynamic>? params, bool isMock = false}) async {
+    this.toLoadingStatus();
+    TimeHelper.sleep();
+    this.toLoadedStatus();
+  }
+
+  @override
   Future<void> get(String id,
       {Map<String, dynamic>? params, bool isMock: false}) async {
     this.toLoadingStatus();
@@ -130,7 +138,6 @@ class BaseDataRepository<T> implements IBaseDataRepository {
 
     this._itemsSC.add(null);
     this._dataSC.add(null);
-
 
     this._isLoadingSC.add(this.isLoading);
     this._isLoadedSC.add(this.isLoaded);

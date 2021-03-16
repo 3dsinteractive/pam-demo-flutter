@@ -5,6 +5,14 @@ import 'package:singh_architecture/styles/colors.dart';
 import 'package:singh_architecture/styles/fonts.dart';
 
 class ProductItemLoading extends StatefulWidget {
+  final double? height;
+  final double? width;
+
+  ProductItemLoading({
+    this.height,
+    this.width,
+  });
+
   @override
   State<StatefulWidget> createState() {
     return ProductItemLoadingState();
@@ -38,6 +46,7 @@ class ProductItemLoadingState extends State<ProductItemLoading> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: Colors.white,
       child: Column(
         children: [
           Container(
@@ -46,8 +55,8 @@ class ProductItemLoadingState extends State<ProductItemLoading> {
               right: 8,
               bottom: 8,
             ),
-            height: 125,
-            width: 125,
+            height: widget.width,
+            width: widget.width,
             child: Container(
               alignment: Alignment.center,
               child: CircularProgressIndicator(),

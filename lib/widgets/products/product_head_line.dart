@@ -5,6 +5,7 @@ import 'package:singh_architecture/configs/config.dart';
 import 'package:singh_architecture/cores/context.dart';
 import 'package:singh_architecture/middlewares/scaffold_middle_ware.dart';
 import 'package:singh_architecture/pages/product_detail_page.dart';
+import 'package:singh_architecture/pages/products_page.dart';
 import 'package:singh_architecture/repositories/product_repository.dart';
 import 'package:singh_architecture/styles/colors.dart';
 import 'package:singh_architecture/styles/fonts.dart';
@@ -39,13 +40,6 @@ class ProductHeadLineState extends State<ProductHeadLine> {
 
     widget.productRepository.toLoadingStatus();
     widget.productRepository.fetch(isMock: true);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-
-    widget.productRepository.dispose();
   }
 
   @override
@@ -98,7 +92,10 @@ class ProductHeadLineState extends State<ProductHeadLine> {
                     scrollDirection: Axis.horizontal,
                     itemCount: 3,
                     itemBuilder: (context, index) {
-                      return ProductItemLoading();
+                      return ProductItemLoading(
+                        height: 125,
+                        width: 125,
+                      );
                     },
                   ),
                 ),
@@ -133,12 +130,30 @@ class ProductHeadLineState extends State<ProductHeadLine> {
                         ),
                       ),
                     ),
-                    Container(
-                      child: Text(
-                        "ดูเพิ่มเติม >",
-                        style: TextStyle(
-                          fontSize: s2,
-                          color: colorGray,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return ScaffoldMiddleWare(
+                                context: widget.context,
+                                config: widget.config,
+                                child: ProductsPage(
+                                  context: widget.context,
+                                  config: widget.config,
+                                ),
+                              );
+                            },
+                          ),
+                        );
+                      },
+                      child: Container(
+                        child: Text(
+                          "ดูเพิ่มเติม >",
+                          style: TextStyle(
+                            fontSize: s2,
+                            color: colorGray,
+                          ),
                         ),
                       ),
                     ),
@@ -164,6 +179,8 @@ class ProductHeadLineState extends State<ProductHeadLine> {
                                   id: id));
                         }));
                       },
+                      height: 125,
+                      width: 125,
                       product: widget.productRepository.items![index],
                     );
                   },

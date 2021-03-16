@@ -9,10 +9,14 @@ import 'package:singh_architecture/widgets/common/cached_image.dart';
 class ProductItem extends StatefulWidget {
   final ProductModel product;
   final Function(String id) onClick;
+  final double? height;
+  final double? width;
 
   ProductItem({
     required this.product,
     required this.onClick,
+    this.height,
+    this.width,
   });
 
   @override
@@ -29,6 +33,7 @@ class ProductItemState extends State<ProductItem> {
         widget.onClick(widget.product.Id);
       },
       child: Container(
+        color: Colors.white,
         child: Column(
           children: [
             Container(
@@ -37,8 +42,8 @@ class ProductItemState extends State<ProductItem> {
                 right: 8,
                 bottom: 8,
               ),
-              height: 125,
-              width: 125,
+              height: widget.width,
+              width: widget.width,
               child: CachedImage(
                 fit: BoxFit.scaleDown,
                 image: widget.product.ThumbnailURL,

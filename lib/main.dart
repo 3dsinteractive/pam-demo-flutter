@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:pam_flutter/pam_flutter.dart';
 import 'package:singh_architecture/pages/launch_screen.dart';
 import 'package:singh_architecture/repositories/page_repository.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  Pam.initial(enableLog: true).then((e) {
-    runApp(
-      MyApp(),
-    );
-  });
+  runApp(
+    MyApp(),
+  );
 }
 
 class MyApp extends StatelessWidget {

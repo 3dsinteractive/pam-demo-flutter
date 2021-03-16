@@ -42,14 +42,6 @@ class BannerHeadLineState extends State<BannerHeadLine> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-
-    this.currentPageSC.close();
-    this.widget.bannerRepository.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return StreamBuilder<bool>(
       stream: widget.bannerRepository.isLoadingSC.stream,

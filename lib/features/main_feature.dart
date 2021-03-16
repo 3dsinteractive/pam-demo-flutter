@@ -1,15 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pam_flutter/pam_flutter.dart';
 import 'package:singh_architecture/configs/config.dart';
 import 'package:singh_architecture/cores/constants.dart';
 import 'package:singh_architecture/cores/context.dart';
+import 'package:singh_architecture/models/cart_model.dart';
 import 'package:singh_architecture/pages/base_page.dart';
 import 'package:singh_architecture/pages/cart_page.dart';
-import 'package:singh_architecture/pages/product_page.dart';
+import 'package:singh_architecture/pages/home_page.dart';
 import 'package:singh_architecture/repositories/page_repository.dart';
 import 'package:singh_architecture/styles/colors.dart';
 import 'package:singh_architecture/styles/fonts.dart';
+import 'package:singh_architecture/utils/object_helper.dart';
+import 'package:singh_architecture/widgets/common/top_bar.dart';
+import 'package:singh_architecture/widgets/common/top_bar_search.dart';
 
 class MainFeature extends StatefulWidget {
   final IContext context;
@@ -33,7 +36,6 @@ class MainFeatureState extends State<MainFeature> {
   void initState() {
     super.initState();
 
-    Pam.appReady();
     this.pageRepository = PageRepository();
     this.pageRepository.initial();
 
@@ -57,7 +59,7 @@ class MainFeatureState extends State<MainFeature> {
               child: BasePage(
                 pageRepository: this.pageRepository,
                 widgets: [
-                  ProductPage(
+                  HomePage(
                     context: widget.context,
                     config: widget.config,
                   ),
@@ -65,6 +67,12 @@ class MainFeatureState extends State<MainFeature> {
                     onBack: (){
                       this.pageRepository.prevPage();
                     },
+                    checkoutPadding: EdgeInsets.only(
+                      top: 16,
+                      bottom: 16,
+                      left: 24,
+                      right: 24,
+                    ),
                     context: widget.context,
                     config: widget.config,
                   ),
