@@ -36,7 +36,7 @@ dependencies:
   uuid: ^3.0.1
   device_info: ^2.0.0
   package_info: ^2.0.0
-  pam_flutter: ^0.0.5
+  pam_flutter: ^1.0.5
 
 dev_dependencies:
   flutter_test:
@@ -57,7 +57,7 @@ flutter:
   assets:
     - lib/env.json
     - lib/locales/
-    - lib/pam-config.json
+    - pam-config.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
