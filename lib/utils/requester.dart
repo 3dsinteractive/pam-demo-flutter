@@ -1,8 +1,11 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 
 class Requester {
   static Map<String, String> _getRequesterHeader() {
     return {
+      HttpHeaders.contentTypeHeader: "application/json; charset=utf-8",
       "x-timestamp": "2021-03-10 12:22:12",
     };
   }
@@ -16,18 +19,18 @@ class Requester {
   static Future<http.Response> post(
       String url, Map<String, dynamic> payload) async {
     return await http.post(Uri.parse(url),
-        body: payload, headers: _getRequesterHeader());
+        body: jsonEncode(payload), headers: _getRequesterHeader());
   }
 
   static Future<http.Response> put(
       String url, Map<String, dynamic> payload) async {
     return await http.put(Uri.parse(url),
-        body: payload, headers: _getRequesterHeader());
+        body: jsonEncode(payload), headers: _getRequesterHeader());
   }
 
   static Future<http.Response> delete(
       String url, Map<String, dynamic> payload) async {
     return await http.delete(Uri.parse(url),
-        body: payload, headers: _getRequesterHeader());
+        body: jsonEncode(payload), headers: _getRequesterHeader());
   }
 }

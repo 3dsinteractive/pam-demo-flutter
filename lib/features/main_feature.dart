@@ -6,6 +6,7 @@ import 'package:singh_architecture/cores/context.dart';
 import 'package:singh_architecture/pages/base_page.dart';
 import 'package:singh_architecture/pages/cart_page.dart';
 import 'package:singh_architecture/pages/product_page.dart';
+import 'package:singh_architecture/pams/pam_flutter.dart';
 import 'package:singh_architecture/repositories/page_repository.dart';
 import 'package:singh_architecture/styles/colors.dart';
 import 'package:singh_architecture/styles/fonts.dart';
@@ -32,6 +33,7 @@ class MainFeatureState extends State<MainFeature> {
   void initState() {
     super.initState();
 
+    Pam.appReady();
     this.pageRepository = PageRepository();
     this.pageRepository.initial();
 

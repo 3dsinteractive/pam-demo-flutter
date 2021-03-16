@@ -44,7 +44,7 @@ class LaunchScreenState extends State<LaunchScreen> {
       await this.config.initial();
       await this.myContext.initial();
       await this.myContext.localeRepository().loadLocale();
-      await PamSDK.initial(enableLog: true);
+      await Pam.initial(enableLog: true);
 
       Navigator.of(context).push(
         MaterialPageRoute(
