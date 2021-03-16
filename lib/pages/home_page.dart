@@ -45,20 +45,9 @@ class HomePageState extends State<HomePage> {
     super.initState();
 
     this.pageRepository = PageRepository();
-    this.pageRepository.toLoadingStatus();
+    this.pageRepository.initial();
 
     this.initialRepositories();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-
-    this.pageRepository.dispose();
-    this.bannerRepository.dispose();
-    this.categoryRepository.dispose();
-    this.newArrivalProductRepository.dispose();
-    this.bestSellerProductRepository.dispose();
   }
 
   void initialRepositories() {

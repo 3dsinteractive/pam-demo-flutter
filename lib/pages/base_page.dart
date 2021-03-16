@@ -41,6 +41,7 @@ class BasePageState extends State<BasePage> {
     return Container(
       padding: widget.padding,
       child: ListView(
+        cacheExtent: MediaQuery.of(context).size.width * 4,
         controller: this.scrollController,
         padding: EdgeInsets.zero,
         scrollDirection: Axis.horizontal,

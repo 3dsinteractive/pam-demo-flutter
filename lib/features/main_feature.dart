@@ -7,6 +7,7 @@ import 'package:singh_architecture/models/cart_model.dart';
 import 'package:singh_architecture/pages/base_page.dart';
 import 'package:singh_architecture/pages/cart_page.dart';
 import 'package:singh_architecture/pages/home_page.dart';
+import 'package:singh_architecture/pages/notification_page.dart';
 import 'package:singh_architecture/repositories/page_repository.dart';
 import 'package:singh_architecture/styles/colors.dart';
 import 'package:singh_architecture/styles/fonts.dart';
@@ -43,13 +44,6 @@ class MainFeatureState extends State<MainFeature> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-
-    this.pageRepository.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Container(
       child: Column(
@@ -64,7 +58,7 @@ class MainFeatureState extends State<MainFeature> {
                     config: widget.config,
                   ),
                   CartPage(
-                    onBack: (){
+                    onBack: () {
                       this.pageRepository.prevPage();
                     },
                     checkoutPadding: EdgeInsets.only(
@@ -73,6 +67,10 @@ class MainFeatureState extends State<MainFeature> {
                       left: 24,
                       right: 24,
                     ),
+                    context: widget.context,
+                    config: widget.config,
+                  ),
+                  NotificationsPage(
                     context: widget.context,
                     config: widget.config,
                   ),
@@ -156,12 +154,12 @@ class MainFeatureState extends State<MainFeature> {
                                           .stream,
                                       builder: (context, snapshot) {
                                         if (widget.context
-                                                    .repositories()
-                                                    .cartRepository()
-                                                    .data
-                                                    ?.Products
-                                                    .length ==
-                                                0) {
+                                                .repositories()
+                                                .cartRepository()
+                                                .data
+                                                ?.Products
+                                                .length ==
+                                            0) {
                                           return Container();
                                         }
 
@@ -210,7 +208,9 @@ class MainFeatureState extends State<MainFeature> {
                 ),
                 Expanded(
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      this.pageRepository.jumpTo(2);
+                    },
                     child: Container(
                       color: Colors.transparent,
                       child: Column(

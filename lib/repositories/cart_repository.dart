@@ -12,6 +12,22 @@ class CartRepository extends BaseDataRepository<CartModel> {
   final IConfig config;
   final IRepositoryOptions options;
 
+  bool get isAllSelected {
+    bool s = true;
+
+    if (this.data == null) {
+      return false;
+    } else {
+      for (int i = 0; i < this.data!.Products.length; i++) {
+        if (!this.data!.Products[i].isSelected) {
+          s = false;
+        }
+      }
+    }
+
+    return s;
+  }
+
   CartRepository({
     required this.config,
     required this.options,
@@ -21,6 +37,24 @@ class CartRepository extends BaseDataRepository<CartModel> {
       Products: [],
       Total: 0,
     );
+    this.dataSC.add(this.data);
+  }
+
+  Future<void> mockFetch() async {
+    CartModel cart = this.data!;
+    cart.Total = 0;
+
+    await TimeHelper.sleep();
+
+    for (int i = 0; i < cart.Products.length; i++) {
+      cart.Products[i].Total =
+          cart.Products[i].Quantity * cart.Products[i].Price;
+      if (cart.Products[i].isSelected) {
+        cart.Total += cart.Products[i].Total;
+      }
+    }
+
+    this.data = cart;
     this.dataSC.add(this.data);
   }
 
@@ -51,21 +85,13 @@ class CartRepository extends BaseDataRepository<CartModel> {
       if (cpIndex == null) {
         cartProduct = product;
         cartProduct.Quantity = quantity;
-        cartProduct.Total = product.Price * quantity;
         this.data!.Products.add(cartProduct);
       } else {
         this.data!.Products[cpIndex].Quantity += quantity;
-        this.data!.Products[cpIndex].Total = this.data!.Products[cpIndex].Quantity * this.data!.Products[cpIndex].Price;
       }
-
-      double totalCartPrice = 0;
-
-      for (int i = 0; i < this.data!.Products.length; i++) {
-        totalCartPrice += this.data!.Products[i].Total;
-      }
-
-      this.data!.Total = totalCartPrice;
       this.dataSC.add(this.data!);
+
+      await mockFetch();
 
       this.toLoadedStatus();
     } catch (e) {
@@ -92,7 +118,6 @@ class CartRepository extends BaseDataRepository<CartModel> {
         if (this.data!.Products[i].Id == product.Id) {
           if (this.data!.Products[i].Quantity <= 1) {
             this.data!.Products.removeAt(i);
-            this.data!.Total = 0;
             this.dataSC.add(this.data!);
             break;
           }
@@ -104,16 +129,108 @@ class CartRepository extends BaseDataRepository<CartModel> {
 
       if (cpIndex != null) {
         this.data!.Products[cpIndex].Quantity -= 1;
-        this.data!.Products[cpIndex].Total = this.data!.Products[cpIndex].Price * this.data!.Products[cpIndex].Quantity;
-        double totalCartPrice = 0;
-
-        for (int i = 0; i < this.data!.Products.length; i++) {
-          totalCartPrice += this.data!.Products[i].Total;
-        }
-
-        this.data!.Total = totalCartPrice;
         this.dataSC.add(this.data!);
       }
+
+      await mockFetch();
+
+      this.toLoadedStatus();
+    } catch (e) {
+      this.toErrorStatus(e);
+    }
+  }
+
+  Future<void> selectProduct(String id) async {
+    this.toLoadingStatus();
+
+    try {
+      await TimeHelper.sleep();
+
+      CartProductModel? cartProduct;
+      int? cpIndex;
+      for (int i = 0; i < this.data!.Products.length; i++) {
+        if (id == this.data!.Products[i].Id) {
+          cartProduct = this.data!.Products[i];
+          cpIndex = i;
+          break;
+        }
+      }
+
+      if (cpIndex != null) {
+        cartProduct!.isSelected = true;
+        this.data!.Products[cpIndex] = cartProduct;
+        this.dataSC.add(this.data!);
+      }
+
+      await mockFetch();
+
+      this.toLoadedStatus();
+    } catch (e) {
+      this.toErrorStatus(e);
+    }
+  }
+
+  Future<void> unSelectProduct(String id) async {
+    this.toLoadingStatus();
+
+    try {
+      await TimeHelper.sleep();
+
+      CartProductModel? cartProduct;
+      int? cpIndex;
+      for (int i = 0; i < this.data!.Products.length; i++) {
+        if (id == this.data!.Products[i].Id) {
+          cartProduct = this.data!.Products[i];
+          cpIndex = i;
+          break;
+        }
+      }
+
+      if (cpIndex != null) {
+        cartProduct!.isSelected = false;
+        this.data!.Products[cpIndex] = cartProduct;
+        this.dataSC.add(this.data!);
+      }
+
+      await mockFetch();
+
+      this.toLoadedStatus();
+    } catch (e) {
+      this.toErrorStatus(e);
+    }
+  }
+
+  Future<void> selectAllProduct() async {
+    this.toLoadingStatus();
+
+    try {
+      await TimeHelper.sleep();
+
+      for (int i = 0; i < this.data!.Products.length; i++) {
+        this.data!.Products[i].isSelected = true;
+      }
+      this.dataSC.add(this.data!);
+
+      await mockFetch();
+
+      this.toLoadedStatus();
+    } catch (e) {
+      this.toErrorStatus(e);
+    }
+  }
+
+  Future<void> unSelectAllProduct() async {
+    this.toLoadingStatus();
+
+    try {
+      await TimeHelper.sleep();
+
+      for (int i = 0; i < this.data!.Products.length; i++) {
+        this.data!.Products[i].isSelected = false;
+      }
+      this.dataSC.add(this.data!);
+
+      await mockFetch();
 
       this.toLoadedStatus();
     } catch (e) {
@@ -127,12 +244,10 @@ class CartRepository extends BaseDataRepository<CartModel> {
     try {
       await TimeHelper.sleep();
 
-      this.data = CartModel(
-        Id: "c01",
-        Products: [],
-        Total: 0,
-      );
+      this.data!.Products.removeWhere((cp) => cp.isSelected);
       this.dataSC.add(this.data!);
+
+      await mockFetch();
 
       this.toLoadedStatus();
     } catch (e) {

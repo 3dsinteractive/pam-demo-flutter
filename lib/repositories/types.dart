@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:singh_architecture/repositories/banner_repository.dart';
 import 'package:singh_architecture/repositories/cart_repository.dart';
 import 'package:singh_architecture/repositories/category_repository.dart';
+import 'package:singh_architecture/repositories/notification_repository.dart';
 import 'package:singh_architecture/repositories/product_repository.dart';
 
 abstract class IRepositories {
@@ -12,6 +13,8 @@ abstract class IRepositories {
   CategoryRepository categoryRepository();
 
   CartRepository cartRepository();
+
+  NotificationRepository notificationRepository();
 }
 
 abstract class IRepositoryOptions {

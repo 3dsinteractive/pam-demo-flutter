@@ -9,12 +9,14 @@ import 'package:singh_architecture/widgets/common/cached_image.dart';
 class ProductItem extends StatefulWidget {
   final ProductModel product;
   final Function(String id) onClick;
+  final Function(String id)? onFavorite;
   final double? height;
   final double? width;
 
   ProductItem({
     required this.product,
     required this.onClick,
+    this.onFavorite,
     this.height,
     this.width,
   });
@@ -54,7 +56,7 @@ class ProductItemState extends State<ProductItem> {
                 bottom: 8,
               ),
               height: 45,
-              width: 125,
+              width: widget.width,
               child: Text(
                 widget.product.Title,
                 style: TextStyle(
@@ -65,14 +67,55 @@ class ProductItemState extends State<ProductItem> {
               ),
             ),
             Container(
-              width: 125,
-              child: Text(
-                widget.product.Price.toString(),
-                style: TextStyle(
-                  color: colorSecondary,
-                  fontSize: p,
-                ),
-                overflow: TextOverflow.ellipsis,
+              width: widget.width,
+              child: Row(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      if (widget.onFavorite == null) {
+                        widget.onClick(widget.product.Id);
+                      } else {
+                        widget.onFavorite?.call(widget.product.Id);
+                      }
+                    },
+                    child: Container(
+                      child: Icon(
+                        Icons.favorite_outline,
+                        color: Colors.redAccent,
+                        size: p,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      child: Container(
+                        padding: EdgeInsets.only(
+                          top: 2,
+                          bottom: 2,
+                          left: 6,
+                          right: 6,
+                        ),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: colorSecondary,
+                          ),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Text(
+                          "฿ ${widget.product.Price.toString()}",
+                          style: TextStyle(
+                            height: 1,
+                            color: colorSecondary,
+                            fontSize: s,
+                            fontWeight: fontWeightBold,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

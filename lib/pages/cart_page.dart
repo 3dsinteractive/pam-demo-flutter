@@ -6,6 +6,7 @@ import 'package:singh_architecture/cores/context.dart';
 import 'package:singh_architecture/models/cart_model.dart';
 import 'package:singh_architecture/styles/colors.dart';
 import 'package:singh_architecture/styles/fonts.dart';
+import 'package:singh_architecture/widgets/carts/cart_item.dart';
 import 'package:singh_architecture/widgets/common/cached_image.dart';
 import 'package:singh_architecture/widgets/common/checkbox_circle.dart';
 import 'package:singh_architecture/widgets/common/curve_button.dart';
@@ -91,220 +92,42 @@ class CartPageState extends State<CartPage> {
                                 );
                               }
 
-                              return Container(
-                                margin: EdgeInsets.only(
-                                  bottom: 8,
-                                ),
-                                padding: EdgeInsets.all(16),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      margin: EdgeInsets.only(
-                                        right: 16,
-                                      ),
-                                      child: CheckboxCircle(),
-                                    ),
-                                    Container(
-                                      color: Colors.white,
-                                      height: 100,
-                                      width: 100,
-                                      child: CachedImage(
-                                        image: widget.context
-                                                .repositories()
-                                                .cartRepository()
-                                                .data
-                                                ?.Products[index]
-                                                .ThumbnailURL ??
-                                            "",
-                                        fit: BoxFit.scaleDown,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Container(
-                                        padding: EdgeInsets.only(
-                                          left: 18,
-                                          top: 8,
-                                          bottom: 8,
-                                        ),
-                                        height: 100,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Expanded(
-                                              child: Container(
-                                                alignment: Alignment.topLeft,
-                                                child: Text(
-                                                  widget.context
-                                                          .repositories()
-                                                          .cartRepository()
-                                                          .data
-                                                          ?.Products[index]
-                                                          .Title ??
-                                                      "",
-                                                  maxLines: 2,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: TextStyle(
-                                                    fontSize: h6,
-                                                    fontWeight: fontWeightBold,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              child: Row(
-                                                children: [
-                                                  Container(
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        GestureDetector(
-                                                          onTap: () {
-                                                            widget.context
-                                                                .repositories()
-                                                                .cartRepository()
-                                                                .mockRemoveToCart(widget
-                                                                        .context
-                                                                        .repositories()
-                                                                        .cartRepository()
-                                                                        .data
-                                                                        ?.Products[
-                                                                            index]
-                                                                        .Id ??
-                                                                    "");
-                                                          },
-                                                          child: Container(
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    2),
-                                                            decoration:
-                                                                BoxDecoration(
-                                                                    shape: BoxShape
-                                                                        .circle,
-                                                                    border:
-                                                                        Border
-                                                                            .all(
-                                                                      color:
-                                                                          colorGrayLight,
-                                                                    )),
-                                                            child: Icon(
-                                                              Icons.remove,
-                                                              color:
-                                                                  colorGrayLight,
-                                                              size: p,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                            left: 14,
-                                                            right: 14,
-                                                          ),
-                                                          child: Text(
-                                                            (widget.context
-                                                                        .repositories()
-                                                                        .cartRepository()
-                                                                        .data
-                                                                        ?.Products[
-                                                                            index]
-                                                                        .Quantity ??
-                                                                    1)
-                                                                .toString(),
-                                                            style: TextStyle(
-                                                              fontSize: p,
-                                                              fontWeight:
-                                                                  fontWeightBold,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        GestureDetector(
-                                                          onTap: () {
-                                                            widget.context
-                                                                .repositories()
-                                                                .cartRepository()
-                                                                .mockAddToCart(widget
-                                                                        .context
-                                                                        .repositories()
-                                                                        .cartRepository()
-                                                                        .data
-                                                                        ?.Products[
-                                                                            index]
-                                                                        .Id ??
-                                                                    "");
-                                                          },
-                                                          child: Container(
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    2),
-                                                            decoration:
-                                                                BoxDecoration(
-                                                                    shape: BoxShape
-                                                                        .circle,
-                                                                    border:
-                                                                        Border
-                                                                            .all(
-                                                                      color:
-                                                                          colorPrimary,
-                                                                    )),
-                                                            child: Icon(
-                                                              Icons.add,
-                                                              size: p,
-                                                              color:
-                                                                  colorPrimary,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Expanded(
-                                                    child: Container(
-                                                      alignment:
-                                                          Alignment.centerRight,
-                                                      child: Text(
-                                                        ((widget.context
-                                                                        .repositories()
-                                                                        .cartRepository()
-                                                                        .data
-                                                                        ?.Products[
-                                                                            index]
-                                                                        .Quantity ??
-                                                                    1) *
-                                                                (widget.context
-                                                                        .repositories()
-                                                                        .cartRepository()
-                                                                        .data
-                                                                        ?.Products[
-                                                                            index]
-                                                                        .Price ??
-                                                                    0))
-                                                            .toString(),
-                                                        style: TextStyle(
-                                                          fontSize: p,
-                                                          fontWeight:
-                                                              fontWeightBold,
-                                                          color: colorSecondary,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                              return CartItem(
+                                product: widget.context
+                                    .repositories()
+                                    .cartRepository()
+                                    .data!
+                                    .Products[index],
+                                onSelected: (id) {
+                                  if (widget.context
+                                      .repositories()
+                                      .cartRepository()
+                                      .data!
+                                      .Products[index]
+                                      .isSelected) {
+                                    widget.context
+                                        .repositories()
+                                        .cartRepository()
+                                        .unSelectProduct(id);
+                                  } else {
+                                    widget.context
+                                        .repositories()
+                                        .cartRepository()
+                                        .selectProduct(id);
+                                  }
+                                },
+                                onIncrease: (id) {
+                                  widget.context
+                                      .repositories()
+                                      .cartRepository()
+                                      .mockAddToCart(id);
+                                },
+                                onDecrease: (id) {
+                                  widget.context
+                                      .repositories()
+                                      .cartRepository()
+                                      .mockRemoveToCart(id);
+                                },
                               );
                             },
                           ),
@@ -327,6 +150,17 @@ class CartPageState extends State<CartPage> {
                             margin: EdgeInsets.only(
                               right: 14,
                             ),
+                            value: widget.context
+                                .repositories()
+                                .cartRepository()
+                                .isAllSelected,
+                            onChecked: (value) {
+                              if (value) {
+                                widget.context.repositories().cartRepository().unSelectAllProduct();
+                              } else {
+                                widget.context.repositories().cartRepository().selectAllProduct();
+                              }
+                            },
                           ),
                           Container(
                             child: Text("ทั้งหมด"),
@@ -421,7 +255,10 @@ class CartPageState extends State<CartPage> {
                               child: CurveButton(
                                 backgroundColor: colorSecondary,
                                 onClick: () {
-                                  widget.context.repositories().cartRepository().mockCheckout();
+                                  widget.context
+                                      .repositories()
+                                      .cartRepository()
+                                      .mockCheckout();
                                 },
                                 title: "ชำระเงิน",
                               ),

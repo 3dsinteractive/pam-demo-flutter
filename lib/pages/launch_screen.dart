@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:pam_flutter/pam_flutter.dart';
 import 'package:singh_architecture/configs/config.dart';
 import 'package:singh_architecture/cores/context.dart';
 import 'package:singh_architecture/features/main_feature.dart';
@@ -46,7 +45,6 @@ class LaunchScreenState extends State<LaunchScreen> {
       await this.config.initial();
       await this.myContext.initial();
       await this.myContext.localeRepository().loadLocale();
-      Pam.appReady();
 
       Navigator.of(context).push(
         MaterialPageRoute(

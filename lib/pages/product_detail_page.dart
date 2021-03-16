@@ -117,15 +117,30 @@ class ProductDetailPageState extends State<ProductDetailPage> {
                                   children: [
                                     Expanded(
                                       child: Container(
-                                        child: Text(
-                                          this.productRepository.data?.Price ==
-                                                  null
-                                              ? ""
-                                              : "฿ ${this.productRepository.data?.Price}",
-                                          style: TextStyle(
-                                            fontSize: h5,
-                                            fontWeight: fontWeightBold,
-                                            color: colorSecondary,
+                                        alignment: Alignment.centerLeft,
+                                        child: Container(
+                                          padding: EdgeInsets.only(
+                                            top: 2,
+                                            bottom: 2,
+                                            left: 6,
+                                            right: 6,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: colorSecondary,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(16),
+                                          ),
+                                          child: Text(
+                                            "฿ ${this.productRepository.data?.Price.toString()}",
+                                            style: TextStyle(
+                                              height: 1,
+                                              color: colorSecondary,
+                                              fontSize: h6,
+                                              fontWeight: fontWeightBold,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
                                           ),
                                         ),
                                       ),
@@ -147,8 +162,8 @@ class ProductDetailPageState extends State<ProductDetailPage> {
                           padding: EdgeInsets.only(
                             top: 8,
                             bottom: 8,
-                            left: 16,
-                            right: 16,
+                            left: 8,
+                            right: 8,
                           ),
                           child: Html(
                               data: this.productRepository.data?.Description ??

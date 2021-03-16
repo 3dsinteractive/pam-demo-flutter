@@ -12,6 +12,7 @@ class CartProductModel extends ProductModel {
   final List<String> Galleries;
   late int Quantity;
   late double Total;
+  late bool isSelected;
 
   CartProductModel({
     required this.Id,
@@ -23,6 +24,7 @@ class CartProductModel extends ProductModel {
     required this.Galleries,
     required this.Quantity,
     required this.Total,
+    required this.isSelected,
   }) : super(
           Id: Id,
           ThumbnailURL: ThumbnailURL,
@@ -35,18 +37,19 @@ class CartProductModel extends ProductModel {
 
   factory CartProductModel.fromJson(Map<String, dynamic> rawJson) {
     return CartProductModel(
-      Id: rawJson["product_id"] ?? "",
-      ThumbnailURL: rawJson["thumbnail_url"] ?? "",
-      Title: rawJson["title"] ?? "",
-      Price: double.parse(rawJson["price_number"] ?? "0"),
-      Rating: 4,
-      Description: rawJson["description"] ?? "",
-      Galleries: ((rawJson["galleries"] ?? []) as List<dynamic>)
-          .map((url) => url["image_url"] as String)
-          .toList(),
-      Quantity: int.parse(rawJson["quantity"] ?? "1"),
-      Total: (double.parse((rawJson["quantity"] ?? "1")) * (double.parse(rawJson["price_number"] ?? "0"))),
-    );
+        Id: rawJson["product_id"] ?? "",
+        ThumbnailURL: rawJson["thumbnail_url"] ?? "",
+        Title: rawJson["title"] ?? "",
+        Price: double.parse(rawJson["price_number"] ?? "0"),
+        Rating: 4,
+        Description: rawJson["description"] ?? "",
+        Galleries: ((rawJson["galleries"] ?? []) as List<dynamic>)
+            .map((url) => url["image_url"] as String)
+            .toList(),
+        Quantity: int.parse(rawJson["quantity"] ?? "1"),
+        Total: (double.parse((rawJson["quantity"] ?? "1")) *
+            (double.parse(rawJson["price_number"] ?? "0"))),
+        isSelected: (rawJson["is_selected"] == "true") || false);
   }
 
   static List<CartProductModel> toList(List<Map<String, dynamic>>? rawItems) {

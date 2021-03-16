@@ -6,12 +6,14 @@ import 'package:singh_architecture/configs/config.dart';
 import 'package:singh_architecture/mocks/banners/banners.dart';
 import 'package:singh_architecture/mocks/carts/carts.dart';
 import 'package:singh_architecture/mocks/categories/categories.dart';
+import 'package:singh_architecture/mocks/notifications/notifications.dart';
 import 'package:singh_architecture/mocks/products/product_detail.dart';
 import 'package:singh_architecture/mocks/products/products.dart';
 import 'package:singh_architecture/models/cart_model.dart';
 import 'package:singh_architecture/repositories/banner_repository.dart';
 import 'package:singh_architecture/repositories/cart_repository.dart';
 import 'package:singh_architecture/repositories/category_repository.dart';
+import 'package:singh_architecture/repositories/notification_repository.dart';
 import 'package:singh_architecture/repositories/product_repository.dart';
 import 'package:singh_architecture/repositories/types.dart';
 import 'package:singh_architecture/utils/time_helper.dart';
@@ -260,6 +262,7 @@ class NewRepository implements IRepositories {
   BannerRepository? _bannerRepository;
   CategoryRepository? _categoryRepository;
   CartRepository? _cartRepository;
+  NotificationRepository? _notificationRepository;
 
   NewRepository({
     required this.config,
@@ -320,6 +323,20 @@ class NewRepository implements IRepositories {
       );
     }
     return this._cartRepository!;
+  }
+
+  @override
+  NotificationRepository notificationRepository() {
+    if (this._notificationRepository == null) {
+      this._notificationRepository = NotificationRepository(
+        config: this.config,
+        options: NewRepositoryOptions(
+          baseUrl: "${config.baseAPI()}/notifications",
+          mockItems: mockNotifications,
+        ),
+      );
+    }
+    return this._notificationRepository!;
   }
 }
 
