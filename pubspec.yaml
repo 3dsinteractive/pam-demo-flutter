@@ -36,6 +36,7 @@ dependencies:
   uuid: ^3.0.1
   device_info: ^2.0.0
   package_info: ^2.0.0
+  pam_flutter: ^0.0.5
 
 dev_dependencies:
   flutter_test:
