@@ -9,7 +9,7 @@ import 'package:singh_architecture/mocks/products/products.dart';
 import 'package:singh_architecture/pages/product_detail_page.dart';
 import 'package:singh_architecture/repositories/base_repository.dart';
 import 'package:singh_architecture/repositories/product_repository_infinite.dart';
-import 'package:singh_architecture/widgets/common/top_bar_search.dart';
+import 'package:singh_architecture/widgets/commons/top_bar_search.dart';
 import 'package:singh_architecture/widgets/products/product_item.dart';
 import 'package:singh_architecture/widgets/products/product_item_loading.dart';
 import 'package:visibility_detector/visibility_detector.dart';

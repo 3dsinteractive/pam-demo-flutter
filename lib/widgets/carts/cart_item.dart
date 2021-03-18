@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:singh_architecture/models/cart_model.dart';
 import 'package:singh_architecture/styles/colors.dart';
 import 'package:singh_architecture/styles/fonts.dart';
-import 'package:singh_architecture/widgets/common/cached_image.dart';
-import 'package:singh_architecture/widgets/common/checkbox_circle.dart';
+import 'package:singh_architecture/widgets/commons/cached_image.dart';
+import 'package:singh_architecture/widgets/commons/checkbox_circle.dart';
 
 class CartItem extends StatefulWidget {
   final CartProductModel product;

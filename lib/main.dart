@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:pam_flutter/pam_flutter.dart';
 import 'package:singh_architecture/pages/launch_screen.dart';
+import 'package:singh_architecture/pams/pages/consent_page.dart';
 import 'package:singh_architecture/repositories/page_repository.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(
-    MyApp(),
-  );
+  Pam.initial(enableLog: true).then((_) {
+    runApp(
+      MyApp(),
+    );
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -15,9 +19,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LaunchScreen(
-        launchScreenRepository: PageRepository(),
-      ),
+      home: ConsentPage(),
+      // home: LaunchScreen(
+      //   launchScreenRepository: PageRepository(),
+      // ),
     );
   }
 }

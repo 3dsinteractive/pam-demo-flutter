@@ -4,8 +4,8 @@ import 'package:singh_architecture/configs/config.dart';
 import 'package:singh_architecture/cores/context.dart';
 import 'package:singh_architecture/styles/colors.dart';
 import 'package:singh_architecture/styles/fonts.dart';
-import 'package:singh_architecture/widgets/common/loading_stack.dart';
-import 'package:singh_architecture/widgets/common/top_bar.dart';
+import 'package:singh_architecture/widgets/commons/loading_stack.dart';
+import 'package:singh_architecture/widgets/commons/top_bar.dart';
 
 class NotificationsPage extends StatefulWidget {
   final IContext context;

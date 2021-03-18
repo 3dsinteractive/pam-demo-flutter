@@ -1,5 +1,5 @@
 {
   "pam-server": "https://stg.pams.ai",
-  "public-db-alias": "3digits-public",
-  "login-db-alias": "3digits-login"
+  "public-db-alias": "demo-ecommerce-public-for-demo-do-not-delete",
+  "login-db-alias": "demo-ecommerce-logic-for-demo-do-not-delete"
 }

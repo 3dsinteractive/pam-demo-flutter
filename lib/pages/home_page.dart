@@ -13,7 +13,7 @@ import 'package:singh_architecture/repositories/page_repository.dart';
 import 'package:singh_architecture/repositories/product_repository.dart';
 import 'package:singh_architecture/widgets/banners/banner_head_line.dart';
 import 'package:singh_architecture/widgets/categories/category_head_line.dart';
-import 'package:singh_architecture/widgets/common/top_bar_search.dart';
+import 'package:singh_architecture/widgets/commons/top_bar_search.dart';
 import 'package:singh_architecture/widgets/products/product_head_line.dart';
 
 class HomePage extends StatefulWidget {

@@ -15,7 +15,7 @@ class CartRepository extends BaseDataRepository<CartModel> {
   bool get isAllSelected {
     bool s = true;
 
-    if (this.data == null) {
+    if (this.data == null || this.data?.Products.length == 0) {
       return false;
     } else {
       for (int i = 0; i < this.data!.Products.length; i++) {

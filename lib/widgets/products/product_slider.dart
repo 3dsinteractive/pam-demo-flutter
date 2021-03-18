@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:singh_architecture/styles/colors.dart';
-import 'package:singh_architecture/widgets/common/cached_image.dart';
+import 'package:singh_architecture/widgets/commons/cached_image.dart';
 
 class ProductSlider extends StatefulWidget {
   final List<String> imageURLs;

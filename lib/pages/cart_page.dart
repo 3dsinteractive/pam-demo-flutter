@@ -7,11 +7,10 @@ import 'package:singh_architecture/models/cart_model.dart';
 import 'package:singh_architecture/styles/colors.dart';
 import 'package:singh_architecture/styles/fonts.dart';
 import 'package:singh_architecture/widgets/carts/cart_item.dart';
-import 'package:singh_architecture/widgets/common/cached_image.dart';
-import 'package:singh_architecture/widgets/common/checkbox_circle.dart';
-import 'package:singh_architecture/widgets/common/curve_button.dart';
-import 'package:singh_architecture/widgets/common/loading_stack.dart';
-import 'package:singh_architecture/widgets/common/top_bar.dart';
+import 'package:singh_architecture/widgets/commons/checkbox_circle.dart';
+import 'package:singh_architecture/widgets/commons/curve_button.dart';
+import 'package:singh_architecture/widgets/commons/loading_stack.dart';
+import 'package:singh_architecture/widgets/commons/top_bar.dart';
 
 class CartPage extends StatefulWidget {
   final IContext context;
@@ -142,7 +141,7 @@ class CartPageState extends State<CartPage> {
                   children: [
                     Container(
                       margin: EdgeInsets.only(
-                        right: 48,
+                        right: 32,
                       ),
                       child: Row(
                         children: [
@@ -155,10 +154,24 @@ class CartPageState extends State<CartPage> {
                                 .cartRepository()
                                 .isAllSelected,
                             onChecked: (value) {
-                              if (value) {
-                                widget.context.repositories().cartRepository().unSelectAllProduct();
-                              } else {
-                                widget.context.repositories().cartRepository().selectAllProduct();
+                              if (widget.context
+                                      .repositories()
+                                      .cartRepository()
+                                      .data
+                                      ?.Products
+                                      .length !=
+                                  0) {
+                                if (value) {
+                                  widget.context
+                                      .repositories()
+                                      .cartRepository()
+                                      .unSelectAllProduct();
+                                } else {
+                                  widget.context
+                                      .repositories()
+                                      .cartRepository()
+                                      .selectAllProduct();
+                                }
                               }
                             },
                           ),
@@ -192,30 +205,15 @@ class CartPageState extends State<CartPage> {
                                               ),
                                             ),
                                           ),
-                                          StreamBuilder<bool>(
-                                              stream: widget.context
-                                                  .repositories()
-                                                  .cartRepository()
-                                                  .isLoadingSC
-                                                  .stream,
-                                              builder: (context, snapshot) {
-                                                return Container(
-                                                  child: Text(
-                                                    widget.context
-                                                            .repositories()
-                                                            .cartRepository()
-                                                            .data
-                                                            ?.Total
-                                                            .toString() ??
-                                                        "",
-                                                    style: TextStyle(
-                                                      color: colorSecondary,
-                                                      fontWeight:
-                                                          fontWeightBold,
-                                                    ),
-                                                  ),
-                                                );
-                                              }),
+                                          Container(
+                                            child: Text(
+                                              "฿ ${widget.context.repositories().cartRepository().data?.Total.toString() ?? "0"}",
+                                              style: TextStyle(
+                                                color: colorSecondary,
+                                                fontWeight: fontWeightBold,
+                                              ),
+                                            ),
+                                          ),
                                         ],
                                       ),
                                     ),
