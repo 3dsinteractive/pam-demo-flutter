@@ -7,21 +7,18 @@ import 'package:singh_architecture/mocks/banners/banners.dart';
 import 'package:singh_architecture/mocks/carts/carts.dart';
 import 'package:singh_architecture/mocks/categories/categories.dart';
 import 'package:singh_architecture/mocks/notifications/notifications.dart';
-import 'package:singh_architecture/mocks/pdpa/contacting_consent.dart';
 import 'package:singh_architecture/mocks/products/product_detail.dart';
 import 'package:singh_architecture/mocks/products/products.dart';
-import 'package:singh_architecture/models/cart_model.dart';
 import 'package:singh_architecture/repositories/banner_repository.dart';
 import 'package:singh_architecture/repositories/cart_repository.dart';
 import 'package:singh_architecture/repositories/category_repository.dart';
 import 'package:singh_architecture/repositories/notification_repository.dart';
-import 'package:singh_architecture/repositories/pdpa_repository.dart';
 import 'package:singh_architecture/repositories/product_repository.dart';
 import 'package:singh_architecture/repositories/types.dart';
 import 'package:singh_architecture/utils/time_helper.dart';
 
 class BaseDataRepository<T> implements IBaseDataRepository {
-  final IConfig config;
+  final IConfig? config;
   final IRepositoryOptions options;
 
   bool _isLoading = false;
@@ -265,7 +262,6 @@ class NewRepository implements IRepositories {
   CategoryRepository? _categoryRepository;
   CartRepository? _cartRepository;
   NotificationRepository? _notificationRepository;
-  PDPARepository? _pdpaRepository;
 
   NewRepository({
     required this.config,
@@ -340,20 +336,6 @@ class NewRepository implements IRepositories {
       );
     }
     return this._notificationRepository!;
-  }
-
-  @override
-  PDPARepository pdpaRepository() {
-    if (this._pdpaRepository == null) {
-      this._pdpaRepository = PDPARepository(
-        config: this.config,
-        options: NewRepositoryOptions(
-          baseUrl: "${config.baseAPI()}/pdpa/consent-message",
-          mockItem: mockContactingConsentDetail,
-        ),
-      );
-    }
-    return this._pdpaRepository!;
   }
 }
 
