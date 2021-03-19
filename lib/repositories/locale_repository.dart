@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:singh_architecture/configs/config.dart';
 import 'package:singh_architecture/cores/constants.dart';
 import 'package:singh_architecture/repositories/base_repository.dart';
@@ -6,14 +7,16 @@ import 'package:singh_architecture/repositories/types.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 class LocaleRepository extends BaseDataRepository {
+  final BuildContext buildCtx;
   final IConfig config;
   final IRepositoryOptions options;
   late Map<String, dynamic> _words;
 
   LocaleRepository({
+    required this.buildCtx,
     required this.config,
     required this.options,
-  }) : super(config, options);
+  }) : super(buildCtx, config, options);
 
   Future<void> loadLocale({LANGUAGE? lang}) async {
     late String langStr;
@@ -35,6 +38,7 @@ class LocaleRepository extends BaseDataRepository {
 
       this.toLoadedStatus();
     } catch (e) {
+      super.alertError(e);
       this.toErrorStatus(e);
       throw (e);
     }

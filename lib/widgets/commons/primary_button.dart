@@ -9,6 +9,7 @@ class PrimaryButton extends StatefulWidget {
   final IconData? icon;
   final Color? backgroundColor;
   final Color? textColor;
+  final Color? borderColor;
   final EdgeInsets? margin;
 
   PrimaryButton({
@@ -17,6 +18,7 @@ class PrimaryButton extends StatefulWidget {
     this.icon,
     this.backgroundColor,
     this.textColor,
+    this.borderColor,
     this.margin,
   });
 
@@ -42,6 +44,7 @@ class PrimaryButtonState extends State<PrimaryButton> {
         alignment: Alignment.center,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: widget.borderColor ?? colorPrimary,),
           color: widget.backgroundColor ?? colorPrimary,
         ),
         child: Row(

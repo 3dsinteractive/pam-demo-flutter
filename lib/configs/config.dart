@@ -19,7 +19,7 @@ class Config implements IConfig {
 
   Future<void> initial() async {
     try {
-      String rawJson = await rootBundle.loadString("lib/env.json");
+      String rawJson = await rootBundle.loadString("env.json");
       this.env = json.decode(rawJson);
     } catch (e) {
       throw (e);

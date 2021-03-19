@@ -80,6 +80,8 @@ abstract class IBaseDataRepository<T> {
   void initial();
 
   void dispose();
+
+  void alertError(dynamic e);
 }
 
 abstract class IBaseUIRepository<T> {

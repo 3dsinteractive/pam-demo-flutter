@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
 import 'package:singh_architecture/configs/config.dart';
 import 'package:singh_architecture/models/product_model.dart';
@@ -9,13 +10,15 @@ import 'package:singh_architecture/utils/requester.dart';
 import 'package:singh_architecture/utils/time_helper.dart';
 
 class ProductRepository extends BaseDataRepository<ProductModel> {
+  final BuildContext buildCtx;
   final IConfig config;
   final IRepositoryOptions options;
 
   ProductRepository({
+    required this.buildCtx,
     required this.config,
     required this.options,
-  }) : super(config, options);
+  }) : super(buildCtx, config, options);
 
   @override
   Future<void> fetch(
@@ -43,6 +46,7 @@ class ProductRepository extends BaseDataRepository<ProductModel> {
 
       this.toLoadedStatus();
     } catch (e) {
+      super.alertError(e);
       this.toErrorStatus(e);
     }
   }
@@ -74,6 +78,7 @@ class ProductRepository extends BaseDataRepository<ProductModel> {
 
       this.toLoadedStatus();
     } catch (e) {
+      super.alertError(e);
       this.toErrorStatus(e);
     }
   }

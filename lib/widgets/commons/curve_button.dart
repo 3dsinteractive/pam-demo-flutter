@@ -39,7 +39,6 @@ class CurveButtonState extends State<CurveButton> {
           style: TextStyle(
             height: 1,
             fontSize: p,
-            fontWeight: fontWeightBold,
             color: widget.textColor ?? Colors.white,
           ),
         ),

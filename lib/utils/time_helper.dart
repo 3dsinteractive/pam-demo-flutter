@@ -1,7 +1,7 @@
 class TimeHelper {
   TimeHelper._();
 
-  static Future<void> sleep({int milliseconds = 500}) {
-    return Future.delayed(Duration(milliseconds: milliseconds), () {});
+  static Future<void> sleep() {
+    return Future.delayed(Duration(milliseconds: 500), () {});
   }
 }

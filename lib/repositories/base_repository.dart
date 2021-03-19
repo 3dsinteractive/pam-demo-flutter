@@ -1,6 +1,9 @@
 // ignore_for_file: close_sinks
 
 import 'dart:async';
+import 'package:another_flushbar/flushbar.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:singh_architecture/configs/config.dart';
 import 'package:singh_architecture/mocks/banners/banners.dart';
@@ -9,6 +12,7 @@ import 'package:singh_architecture/mocks/categories/categories.dart';
 import 'package:singh_architecture/mocks/notifications/notifications.dart';
 import 'package:singh_architecture/mocks/products/product_detail.dart';
 import 'package:singh_architecture/mocks/products/products.dart';
+import 'package:singh_architecture/models/cart_model.dart';
 import 'package:singh_architecture/repositories/banner_repository.dart';
 import 'package:singh_architecture/repositories/cart_repository.dart';
 import 'package:singh_architecture/repositories/category_repository.dart';
@@ -18,7 +22,8 @@ import 'package:singh_architecture/repositories/types.dart';
 import 'package:singh_architecture/utils/time_helper.dart';
 
 class BaseDataRepository<T> implements IBaseDataRepository {
-  final IConfig? config;
+  final BuildContext buildCtx;
+  final IConfig config;
   final IRepositoryOptions options;
 
   bool _isLoading = false;
@@ -36,6 +41,7 @@ class BaseDataRepository<T> implements IBaseDataRepository {
   late StreamController<T?> _dataSC;
 
   BaseDataRepository(
+    this.buildCtx,
     this.config,
     this.options,
   ) {
@@ -167,6 +173,19 @@ class BaseDataRepository<T> implements IBaseDataRepository {
     this._isErrorSC.close();
     this._errorMessageSC.close();
   }
+
+  @override
+  void alertError(dynamic e){
+    String title = e?["code"] ?? "Error";
+    String message = e?["message"] ?? e;
+
+    Flushbar(
+      title: title,
+      message: message,
+      duration: Duration(seconds: 3),
+      flushbarStyle: FlushbarStyle.GROUNDED,
+    )..show(this.buildCtx);
+  }
 }
 
 class BaseUIRepository implements IBaseUIRepository {
@@ -256,6 +275,7 @@ class BaseUIRepository implements IBaseUIRepository {
 }
 
 class NewRepository implements IRepositories {
+  final BuildContext buildCtx;
   final IConfig config;
   ProductRepository? _productRepository;
   BannerRepository? _bannerRepository;
@@ -264,6 +284,7 @@ class NewRepository implements IRepositories {
   NotificationRepository? _notificationRepository;
 
   NewRepository({
+    required this.buildCtx,
     required this.config,
   });
 
@@ -271,6 +292,7 @@ class NewRepository implements IRepositories {
   ProductRepository productRepository() {
     if (this._productRepository == null) {
       this._productRepository = ProductRepository(
+        buildCtx: this.buildCtx,
         config: this.config,
         options: NewRepositoryOptions(
           baseUrl: "${config.baseAPI()}/products",
@@ -286,6 +308,7 @@ class NewRepository implements IRepositories {
   BannerRepository bannerRepository() {
     if (this._bannerRepository == null) {
       this._bannerRepository = BannerRepository(
+        buildCtx: this.buildCtx,
         config: this.config,
         options: NewRepositoryOptions(
           baseUrl: "${config.baseAPI()}/banners",
@@ -300,6 +323,7 @@ class NewRepository implements IRepositories {
   CategoryRepository categoryRepository() {
     if (this._categoryRepository == null) {
       this._categoryRepository = CategoryRepository(
+        buildCtx: this.buildCtx,
         config: this.config,
         options: NewRepositoryOptions(
           baseUrl: "${config.baseAPI()}/categories",
@@ -314,6 +338,7 @@ class NewRepository implements IRepositories {
   CartRepository cartRepository() {
     if (this._cartRepository == null) {
       this._cartRepository = CartRepository(
+        buildCtx: this.buildCtx,
         config: this.config,
         options: NewRepositoryOptions(
           baseUrl: "${config.baseAPI()}/cart",
@@ -328,6 +353,7 @@ class NewRepository implements IRepositories {
   NotificationRepository notificationRepository() {
     if (this._notificationRepository == null) {
       this._notificationRepository = NotificationRepository(
+        buildCtx: this.buildCtx,
         config: this.config,
         options: NewRepositoryOptions(
           baseUrl: "${config.baseAPI()}/notifications",

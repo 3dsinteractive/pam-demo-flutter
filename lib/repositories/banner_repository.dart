@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
 import 'package:singh_architecture/configs/config.dart';
 import 'package:singh_architecture/models/banner_model.dart';
@@ -9,13 +9,15 @@ import 'package:singh_architecture/utils/requester.dart';
 import 'package:singh_architecture/utils/time_helper.dart';
 
 class BannerRepository extends BaseDataRepository<BannerModel> {
+  final BuildContext buildCtx;
   final IConfig config;
   final IRepositoryOptions options;
 
   BannerRepository({
+    required this.buildCtx,
     required this.config,
     required this.options,
-  }) : super(config, options);
+  }) : super(buildCtx, config, options);
 
   @override
   Future<void> fetch(
@@ -43,6 +45,7 @@ class BannerRepository extends BaseDataRepository<BannerModel> {
 
       this.toLoadedStatus();
     } catch (e) {
+      super.alertError(e);
       this.toErrorStatus(e);
     }
   }

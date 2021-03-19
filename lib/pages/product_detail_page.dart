@@ -43,6 +43,7 @@ class ProductDetailPageState extends State<ProductDetailPage> {
     super.initState();
 
     this.productRepository = ProductRepository(
+      buildCtx: this.context,
       config: widget.config,
       options: NewRepositoryOptions(
         baseUrl: "${widget.config.baseAPI()}/products",

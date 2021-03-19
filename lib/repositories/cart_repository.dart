@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:singh_architecture/configs/config.dart';
 import 'package:singh_architecture/mocks/products/best_seller_products.dart';
 import 'package:singh_architecture/mocks/products/new_arrival_products.dart';
@@ -9,8 +10,22 @@ import 'package:singh_architecture/repositories/types.dart';
 import 'package:singh_architecture/utils/time_helper.dart';
 
 class CartRepository extends BaseDataRepository<CartModel> {
+  final BuildContext buildCtx;
   final IConfig config;
   final IRepositoryOptions options;
+
+  CartRepository({
+    required this.buildCtx,
+    required this.config,
+    required this.options,
+  }) : super(buildCtx, config, options) {
+    this.data = CartModel(
+      Id: "c01",
+      Products: [],
+      Total: 0,
+    );
+    this.dataSC.add(this.data);
+  }
 
   bool get isAllSelected {
     bool s = true;
@@ -26,18 +41,6 @@ class CartRepository extends BaseDataRepository<CartModel> {
     }
 
     return s;
-  }
-
-  CartRepository({
-    required this.config,
-    required this.options,
-  }) : super(config, options) {
-    this.data = CartModel(
-      Id: "c01",
-      Products: [],
-      Total: 0,
-    );
-    this.dataSC.add(this.data);
   }
 
   Future<void> mockFetch() async {
@@ -95,6 +98,7 @@ class CartRepository extends BaseDataRepository<CartModel> {
 
       this.toLoadedStatus();
     } catch (e) {
+      super.alertError(e);
       this.toErrorStatus(e);
     }
   }
@@ -136,6 +140,7 @@ class CartRepository extends BaseDataRepository<CartModel> {
 
       this.toLoadedStatus();
     } catch (e) {
+      super.alertError(e);
       this.toErrorStatus(e);
     }
   }
@@ -166,6 +171,7 @@ class CartRepository extends BaseDataRepository<CartModel> {
 
       this.toLoadedStatus();
     } catch (e) {
+      super.alertError(e);
       this.toErrorStatus(e);
     }
   }
@@ -196,6 +202,7 @@ class CartRepository extends BaseDataRepository<CartModel> {
 
       this.toLoadedStatus();
     } catch (e) {
+      super.alertError(e);
       this.toErrorStatus(e);
     }
   }
@@ -215,6 +222,7 @@ class CartRepository extends BaseDataRepository<CartModel> {
 
       this.toLoadedStatus();
     } catch (e) {
+      super.alertError(e);
       this.toErrorStatus(e);
     }
   }
@@ -234,6 +242,7 @@ class CartRepository extends BaseDataRepository<CartModel> {
 
       this.toLoadedStatus();
     } catch (e) {
+      super.alertError(e);
       this.toErrorStatus(e);
     }
   }
@@ -251,6 +260,7 @@ class CartRepository extends BaseDataRepository<CartModel> {
 
       this.toLoadedStatus();
     } catch (e) {
+      super.alertError(e);
       this.toErrorStatus(e);
     }
   }
