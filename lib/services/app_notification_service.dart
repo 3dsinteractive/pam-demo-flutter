@@ -1,20 +1,26 @@
 import 'dart:async';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:pam_flutter/pam_flutter.dart';
-import 'package:singh_architecture/pams/pam_notification.dart';
+import 'package:pam_flutter/pam_notification.dart';
 
 class AppNotificationService {
   AppNotificationService._();
 
   static Future<void> initial() async {
+    await Firebase.initializeApp();
+
     FirebaseMessaging.onMessage
-        .listen(AppNotificationHandler.onForegroundMessageHandler);
+        .listen(AppNotificationHandler._onForegroundMessageHandler);
+    FirebaseMessaging.onMessageOpenedApp
+        .listen(AppNotificationHandler._onOpenedMessageHandler);
     FirebaseMessaging.onBackgroundMessage(
-        AppNotificationHandler.onBackgroundMessageHandler);
+        AppNotificationHandler._onBackgroundMessageHandler);
   }
 
   static Future<String?> askNotificationPermission() async {
-    await FirebaseMessaging.instance.requestPermission(
+    NotificationSettings settings =
+        await FirebaseMessaging.instance.requestPermission(
       alert: true,
       announcement: true,
       badge: true,
@@ -23,9 +29,13 @@ class AppNotificationService {
       provisional: true,
       sound: true,
     );
-    String? token = await FirebaseMessaging.instance.getToken();
 
-    Pam.setDeviceToken(token ?? "");
+    String? token = await FirebaseMessaging.instance.getToken();
+    if (settings.authorizationStatus == AuthorizationStatus.authorized ||
+        settings.authorizationStatus == AuthorizationStatus.provisional) {
+      Pam.trackSavePush(token: token ?? "");
+    }
+
     return token;
   }
 }
@@ -33,10 +43,10 @@ class AppNotificationService {
 class AppNotificationHandler {
   AppNotificationHandler._();
 
-  static Future<void> initial() async {}
-
   static List<void Function(Map<String, dynamic>)>
       _onBackgroundMessageHandlers = List.empty(growable: true);
+  static List<void Function(Map<String, dynamic>)> _onOpenedMessageHandlers =
+      List.empty(growable: true);
   static List<void Function(Map<String, dynamic>)>
       _onForegroundMessageHandlers = List.empty(growable: true);
 
@@ -48,8 +58,8 @@ class AppNotificationHandler {
     _onForegroundMessageHandlers.add(cb);
   }
 
-  static Future<void> onBackgroundMessageHandler(RemoteMessage rm) async {
-    if (!PamNotification.isPamMessageReceived(rm)) {
+  static Future<void> _onBackgroundMessageHandler(RemoteMessage rm) async {
+    if (!await PamNotification.isPamMessageReceived(rm.data)) {
       // application message handler
       _onBackgroundMessageHandlers.forEach((cb) {
         cb.call(rm.data);
@@ -57,8 +67,17 @@ class AppNotificationHandler {
     }
   }
 
-  static Future<void> onForegroundMessageHandler(RemoteMessage rm) async {
-    if (!PamNotification.isPamMessageReceived(rm)) {
+  static Future<void> _onOpenedMessageHandler(RemoteMessage rm) async {
+    if (!await PamNotification.isPamMessageOpenedReceived(rm.data)) {
+      // application message handler
+      _onOpenedMessageHandlers.forEach((cb) {
+        cb.call(rm.data);
+      });
+    }
+  }
+
+  static Future<void> _onForegroundMessageHandler(RemoteMessage rm) async {
+    if (!await PamNotification.isPamMessageReceived(rm.data)) {
       // application message handler
       _onForegroundMessageHandlers.forEach((cb) {
         cb.call(rm.data);

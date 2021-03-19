@@ -34,11 +34,11 @@ dependencies:
   flutter_html: ^2.0.0-nullsafety.0
   rxdart: ^0.26.0
   visibility_detector: ^0.2.0-nullsafety.1
-  pam_flutter: ^1.1.18
   firebase_core: ^1.0.1
   firebase_analytics: ^7.1.1
   firebase_messaging: ^9.0.0
   flutter_local_notifications: ^5.0.0-nullsafety.1
+  pam_flutter: ^1.2.41
 
 dev_dependencies:
   flutter_test:

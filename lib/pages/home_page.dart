@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pam_flutter/pam_flutter.dart';
+import 'package:pam_flutter/types.dart';
 import 'package:singh_architecture/configs/config.dart';
 import 'package:singh_architecture/cores/context.dart';
 import 'package:singh_architecture/mocks/banners/banners.dart';
@@ -47,6 +49,7 @@ class HomePageState extends State<HomePage> {
     this.pageRepository = PageRepository();
     this.pageRepository.initial();
 
+    Pam.trackPageView(url: "3dsflutter//home", title: "Home page");
     this.initialRepositories();
   }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:pam_flutter/pam_flutter.dart';
 import 'package:singh_architecture/configs/config.dart';
 import 'package:singh_architecture/cores/context.dart';
 import 'package:singh_architecture/middlewares/scaffold_middle_ware.dart';
@@ -54,7 +55,11 @@ class ProductDetailPageState extends State<ProductDetailPage> {
       ),
     );
 
-    this.productRepository.get(widget.id, isMock: true);
+    this.productRepository.get(widget.id, isMock: true).then((_) {
+      Pam.trackPageView(
+          url: "3dsflutter//products?id=${widget.id}",
+          title: this.productRepository.data?.Title ?? "Product Detail");
+    });
     widget.context.repositories().cartRepository().fetch();
   }
 
@@ -183,7 +188,14 @@ class ProductDetailPageState extends State<ProductDetailPage> {
                             widget.context
                                 .repositories()
                                 .cartRepository()
-                                .mockAddToCart(this.productRepository.data!.Id);
+                                .mockAddToCart(this.productRepository.data!.Id)
+                                .then((_) {
+                              Pam.trackAddToCart(
+                                id: this.productRepository.data!.Id,
+                                title: this.productRepository.data!.Title,
+                                price: this.productRepository.data!.Price,
+                              );
+                            });
                           },
                           child: Container(
                             padding: EdgeInsets.only(

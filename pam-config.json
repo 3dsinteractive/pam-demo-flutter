@@ -1,6 +1,7 @@
 {
+  "app-prefix": "3dsflutter",
   "pam-server": "https://stg.pams.ai",
-  "public-db-alias": "demo-ecommerce-public-for-demo-do-not-delete",
-  "login-db-alias": "demo-ecommerce-logic-for-demo-do-not-delete",
+  "public-db-alias": "flutter-public",
+  "login-db-alias": "flutter-login",
   "base-api": "https://stg-mkt.pams.ai"
 }

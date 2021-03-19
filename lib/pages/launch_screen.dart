@@ -1,11 +1,13 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pam_flutter/pam_flutter.dart';
-import 'package:pam_flutter/utils/requester.dart';
+import 'package:pam_flutter/types.dart';
 import 'package:singh_architecture/configs/config.dart';
 import 'package:singh_architecture/cores/context.dart';
 import 'package:singh_architecture/features/main_feature.dart';
 import 'package:singh_architecture/middlewares/scaffold_middle_ware.dart';
+import 'package:singh_architecture/pages/product_detail_page.dart';
 import 'package:singh_architecture/repositories/page_repository.dart';
 import 'package:singh_architecture/repositories/product_repository.dart';
 import 'package:singh_architecture/services/app_notification_service.dart';
@@ -46,18 +48,9 @@ class LaunchScreenState extends State<LaunchScreen> {
       await this.config.initial();
       await this.myContext.initial();
       await this.myContext.localeRepository().loadLocale();
-      Pam.appReady(context: context);
-      await Pam.consentRequestView("1pVUwimkgNqeriIDg4KCVICOGg2");
 
-      await Firebase.initializeApp();
       await AppNotificationService.initial();
       await AppNotificationService.askNotificationPermission();
-
-      Pam.listen(PamStandardCallback.on_message, (Map<String, dynamic> args) {
-
-      });
-
-      Pam.appReady();
 
       Navigator.of(context).push(
         MaterialPageRoute(
@@ -71,6 +64,35 @@ class LaunchScreenState extends State<LaunchScreen> {
           ),
         ),
       );
+
+      Pam.appReady(
+        context: context,
+        initialMessage:
+        (await FirebaseMessaging.instance.getInitialMessage())?.data,
+        productProductDetail: (id) => ProductDetailPage(
+            context: this.myContext, config: this.config, id: id),
+      );
+      Pam.listen(PamStandardCallback.on_message, (ms) {
+        // handler your logic here on pam message when app is openning
+      });
+      Pam.listen(PamStandardCallback.on_message_opened, (ms) {
+        // handler your logic here on pam message when app is opened after tap on notification
+        String productId = ms["id"];
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => ScaffoldMiddleWare(
+              context: this.myContext,
+              config: this.config,
+              child: ProductDetailPage(
+                context: myContext,
+                config: config,
+                id: productId,
+              ),
+            ),
+          ),
+        );
+      });
+      await Pam.consentRequestView("1pVUwimkgNqeriIDg4KCVICOGg2");
 
       widget.launchScreenRepository.toLoadedStatus();
     } catch (e) {

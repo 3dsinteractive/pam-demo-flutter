@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pam_flutter/pam_flutter.dart';
 import 'package:singh_architecture/configs/config.dart';
 import 'package:singh_architecture/cores/constants.dart';
 import 'package:singh_architecture/cores/context.dart';
@@ -38,9 +39,13 @@ class CartPageState extends State<CartPage> {
   Widget build(BuildContext context) {
     return LoadingStack(
       isLoadingSCs: [
-        widget.context.repositories().cartRepository().isLoadingSC
+        widget.context
+            .repositories()
+            .cartRepository()
+            .isLoadingSC
       ],
-      children: () => [
+      children: () =>
+      [
         Container(
           padding: widget.padding,
           child: Column(
@@ -63,26 +68,26 @@ class CartPageState extends State<CartPage> {
                           child: ListView.builder(
                             padding: EdgeInsets.zero,
                             itemCount: widget.context
-                                        .repositories()
-                                        .cartRepository()
-                                        .data
-                                        ?.Products
-                                        .length ==
-                                    0
+                                .repositories()
+                                .cartRepository()
+                                .data
+                                ?.Products
+                                .length ==
+                                0
                                 ? 1
                                 : widget.context
-                                    .repositories()
-                                    .cartRepository()
-                                    .data
-                                    ?.Products
-                                    .length,
+                                .repositories()
+                                .cartRepository()
+                                .data
+                                ?.Products
+                                .length,
                             itemBuilder: (context, index) {
                               if (widget.context
-                                      .repositories()
-                                      .cartRepository()
-                                      .data
-                                      ?.Products
-                                      .length ==
+                                  .repositories()
+                                  .cartRepository()
+                                  .data
+                                  ?.Products
+                                  .length ==
                                   0) {
                                 return Container(
                                   height: 300,
@@ -119,13 +124,17 @@ class CartPageState extends State<CartPage> {
                                   widget.context
                                       .repositories()
                                       .cartRepository()
-                                      .mockAddToCart(id);
+                                      .mockAddToCart(id).then((_){
+                                        Pam.trackAddToCart(id: id);
+                                  });
                                 },
                                 onDecrease: (id) {
                                   widget.context
                                       .repositories()
                                       .cartRepository()
-                                      .mockRemoveToCart(id);
+                                      .mockRemoveToCart(id).then((_){
+                                    Pam.trackRemoveFromCart(id: id);
+                                  });
                                 },
                               );
                             },
@@ -155,11 +164,11 @@ class CartPageState extends State<CartPage> {
                                 .isAllSelected,
                             onChecked: (value) {
                               if (widget.context
-                                      .repositories()
-                                      .cartRepository()
-                                      .data
-                                      ?.Products
-                                      .length !=
+                                  .repositories()
+                                  .cartRepository()
+                                  .data
+                                  ?.Products
+                                  .length !=
                                   0) {
                                 if (value) {
                                   widget.context
@@ -192,7 +201,7 @@ class CartPageState extends State<CartPage> {
                                     Container(
                                       child: Row(
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.end,
+                                        CrossAxisAlignment.end,
                                         children: [
                                           Container(
                                             margin: EdgeInsets.only(
@@ -207,7 +216,12 @@ class CartPageState extends State<CartPage> {
                                           ),
                                           Container(
                                             child: Text(
-                                              "฿ ${widget.context.repositories().cartRepository().data?.Total.toString() ?? "0"}",
+                                              "฿ ${widget.context
+                                                  .repositories()
+                                                  .cartRepository()
+                                                  .data
+                                                  ?.Total
+                                                  .toString() ?? "0"}",
                                               style: TextStyle(
                                                 color: colorSecondary,
                                                 fontWeight: fontWeightBold,
@@ -220,7 +234,7 @@ class CartPageState extends State<CartPage> {
                                     Container(
                                       child: Row(
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.end,
+                                        CrossAxisAlignment.end,
                                         children: [
                                           Container(
                                             margin: EdgeInsets.only(
@@ -253,6 +267,13 @@ class CartPageState extends State<CartPage> {
                               child: CurveButton(
                                 backgroundColor: colorSecondary,
                                 onClick: () {
+                                  Pam.trackPurchaseSuccess(
+                                    ids: widget.context.repositories().cartRepository().data!.Products.map((e) => e.Id).toList(),
+                                    titles: widget.context.repositories().cartRepository().data!.Products.map((e) => e.Title).toList(),
+                                    categories: widget.context.repositories().cartRepository().data!.Products.map((e) => e.Title).toList(),
+                                    totalPrice: widget.context.repositories().cartRepository().data!.Total,
+                                  );
+
                                   widget.context
                                       .repositories()
                                       .cartRepository()
