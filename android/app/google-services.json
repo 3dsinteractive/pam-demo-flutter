@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "83110169157",
+    "project_id": "pam-demo-flutter",
+    "storage_bucket": "pam-demo-flutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:83110169157:android:9720d5edf62ac35370f12c",
+        "android_client_info": {
+          "package_name": "com.logicisking.singh_architecture"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "83110169157-c56vs5u2gb6rafm4j6q07e3jlorlggbj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9RP_tEaahpyLlRjKWMXWN7-2_LmdW6To"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "83110169157-c56vs5u2gb6rafm4j6q07e3jlorlggbj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "83110169157-cps37qo2i1no1btjucal0v2a2s97k8gi.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.logicisking.singhArchitecture"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

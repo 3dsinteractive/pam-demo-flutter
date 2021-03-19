@@ -7,6 +7,7 @@ import 'package:singh_architecture/middlewares/scaffold_middle_ware.dart';
 import 'package:singh_architecture/pages/product_detail_page.dart';
 import 'package:singh_architecture/pages/products_page.dart';
 import 'package:singh_architecture/repositories/product_repository.dart';
+import 'package:singh_architecture/services/app_notification_service.dart';
 import 'package:singh_architecture/styles/colors.dart';
 import 'package:singh_architecture/styles/fonts.dart';
 import 'package:singh_architecture/widgets/products/product_item.dart';

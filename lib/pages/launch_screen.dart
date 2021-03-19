@@ -8,6 +8,7 @@ import 'package:singh_architecture/features/main_feature.dart';
 import 'package:singh_architecture/middlewares/scaffold_middle_ware.dart';
 import 'package:singh_architecture/repositories/page_repository.dart';
 import 'package:singh_architecture/repositories/product_repository.dart';
+import 'package:singh_architecture/services/app_notification_service.dart';
 
 class LaunchScreen extends StatefulWidget {
   final BasePageRepository launchScreenRepository;
@@ -47,6 +48,16 @@ class LaunchScreenState extends State<LaunchScreen> {
       await this.myContext.localeRepository().loadLocale();
       Pam.appReady(context: context);
       await Pam.consentRequestView("1pVUwimkgNqeriIDg4KCVICOGg2");
+
+      await Firebase.initializeApp();
+      await AppNotificationService.initial();
+      await AppNotificationService.askNotificationPermission();
+
+      Pam.listen(PamStandardCallback.on_message, (Map<String, dynamic> args) {
+
+      });
+
+      Pam.appReady();
 
       Navigator.of(context).push(
         MaterialPageRoute(
