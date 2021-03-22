@@ -11,11 +11,11 @@ class CategoryModel {
     required this.ImageURL,
   });
 
-  factory CategoryModel.fromJson(Map<String, dynamic> rawJson) {
+  factory CategoryModel.fromJson(Map<String, dynamic>? rawJson) {
     return CategoryModel(
-      Id: rawJson["id"],
-      Title: rawJson["title"],
-      ImageURL: rawJson["image_url"],
+      Id: rawJson?["id"] ?? "",
+      Title: rawJson?["title"] ?? "",
+      ImageURL: rawJson?["image_url"] ?? "",
     );
   }
 

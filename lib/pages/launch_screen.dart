@@ -51,7 +51,6 @@ class LaunchScreenState extends State<LaunchScreen> {
       await this.myContext.localeRepository().loadLocale();
 
       await AppNotificationService.initial();
-      await AppNotificationService.askNotificationPermission();
 
       Navigator.of(context).push(
         MaterialPageRoute(
@@ -66,6 +65,7 @@ class LaunchScreenState extends State<LaunchScreen> {
         ),
       );
 
+      // TODO : consentCanReceiveContext
       Pam.appReady(
         context: context,
         initialMessage:
@@ -73,6 +73,12 @@ class LaunchScreenState extends State<LaunchScreen> {
         productProductDetail: (id) => ProductDetailPage(
             context: this.myContext, config: this.config, id: id),
       );
+      await Pam.consentRequestView(Pam.trackingConsentId());
+
+      Pam.listen(PamStandardCallback.on_token, (ms) {
+        // handler your logic here on pam token
+        print("token receive = $ms");
+      });
       Pam.listen(PamStandardCallback.on_message, (ms) {
         // handler your logic here on pam message when app is openning
       });
@@ -93,7 +99,8 @@ class LaunchScreenState extends State<LaunchScreen> {
           ),
         );
       });
-      await Pam.consentRequestView("1pVUwimkgNqeriIDg4KCVICOGg2");
+
+      await Pam.askNotificationPermission();
 
       widget.launchScreenRepository.toLoadedStatus();
     } catch (e) {

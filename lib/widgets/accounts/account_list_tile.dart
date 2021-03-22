@@ -27,53 +27,62 @@ class AccountListTile extends StatefulWidget {
 class AccountListTileState extends State<AccountListTile> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: widget.margin,
-      padding: EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Row(
-        children: [
-          widget.icon == null ? Container() : Container(
-            margin: EdgeInsets.only(
-              right: 12,
-            ),
-            child: Icon(widget.icon),
-          ),
-          Expanded(
-            child: Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                widget.title,
-                style: TextStyle(
-                  height: 1,
-                  fontSize: s2,
-                  fontWeight: fontWeightBold,
+    return GestureDetector(
+      onTap: () {
+        widget.onClick.call();
+      },
+      child: Container(
+        margin: widget.margin,
+        padding: EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Row(
+          children: [
+            widget.icon == null
+                ? Container()
+                : Container(
+                    margin: EdgeInsets.only(
+                      right: 12,
+                    ),
+                    child: Icon(widget.icon),
+                  ),
+            Expanded(
+              child: Container(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  widget.title,
+                  style: TextStyle(
+                    height: 1,
+                    fontSize: s2,
+                    fontWeight: fontWeightBold,
+                  ),
                 ),
               ),
             ),
-          ),
-          Container(
-            alignment: Alignment.center,
-            margin: EdgeInsets.only(right: 8,),
-            child: Text(
-              widget.hintText ?? "",
-              style: TextStyle(
-                color: colorGray,
+            Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.only(
+                right: 8,
+              ),
+              child: Text(
+                widget.hintText ?? "",
+                style: TextStyle(
+                  color: colorGray,
+                ),
               ),
             ),
-          ),
-          Container(
-            alignment: Alignment.center,
-            child: Icon(
-              Icons.arrow_forward_ios,
-              color: colorGray,
-              size: s,
+            Container(
+              alignment: Alignment.center,
+              child: Icon(
+                Icons.arrow_forward_ios,
+                color: colorGray,
+                size: s,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

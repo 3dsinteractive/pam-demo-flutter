@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:singh_architecture/styles/colors.dart';
-import 'package:singh_architecture/styles/fonts.dart';
 
 class TopBarCustomize extends StatefulWidget {
   final double height;

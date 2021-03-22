@@ -1,10 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:singh_architecture/configs/config.dart';
 import 'package:singh_architecture/cores/context.dart';
 import 'package:singh_architecture/repositories/category_repository.dart';
-import 'package:singh_architecture/styles/fonts.dart';
 import 'package:singh_architecture/utils/object_helper.dart';
 import 'package:singh_architecture/widgets/categories/category_item.dart';
 import 'package:singh_architecture/widgets/categories/category_item_loading.dart';
@@ -72,12 +70,12 @@ class CategoryHeadLineState extends State<CategoryHeadLine> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: List.generate(
-              ((widget.categoryRepository.items?.length ?? 0) < 5
-                  ? widget.categoryRepository.items!.length
+              ((widget.categoryRepository.items.length) < 5
+                  ? widget.categoryRepository.items.length
                   : 5),
               (index) {
                 return CategoryItem(
-                  category: widget.categoryRepository.items![index],
+                  category: widget.categoryRepository.items[index],
                 );
               },
             ),

@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:singh_architecture/configs/config.dart';
 import 'package:singh_architecture/cores/context.dart';
 import 'package:singh_architecture/middlewares/scaffold_middle_ware.dart';
@@ -164,7 +163,7 @@ class ProductHeadLineState extends State<ProductHeadLine> {
                 height: 208,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: widget.productRepository.items?.length ?? 0,
+                  itemCount: widget.productRepository.items.length,
                   itemBuilder: (context, index) {
                     return ProductItem(
                       onClick: (id) {
@@ -181,7 +180,7 @@ class ProductHeadLineState extends State<ProductHeadLine> {
                       },
                       height: 125,
                       width: 125,
-                      product: widget.productRepository.items![index],
+                      product: widget.productRepository.items[index],
                     );
                   },
                 ),

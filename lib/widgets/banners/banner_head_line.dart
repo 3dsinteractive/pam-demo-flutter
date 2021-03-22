@@ -1,7 +1,7 @@
 import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:singh_architecture/configs/config.dart';
 import 'package:singh_architecture/cores/context.dart';
 import 'package:singh_architecture/repositories/banner_repository.dart';
@@ -75,10 +75,10 @@ class BannerHeadLineState extends State<BannerHeadLine> {
                   onPageChanged: (currentPage) {
                     this.currentPageSC.add(currentPage);
                   },
-                  itemCount: widget.bannerRepository.items?.length ?? 0,
+                  itemCount: widget.bannerRepository.items.length,
                   itemBuilder: (context, index) {
                     return BannerItem(
-                      banner: widget.bannerRepository.items?[index],
+                      banner: widget.bannerRepository.items[index],
                     );
                   },
                 ),
@@ -94,7 +94,7 @@ class BannerHeadLineState extends State<BannerHeadLine> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: List.generate(
-                          widget.bannerRepository.items?.length ?? 0, (index) {
+                          widget.bannerRepository.items.length, (index) {
                         return AnimatedContainer(
                           duration: Duration(milliseconds: 250),
                           margin: EdgeInsets.only(

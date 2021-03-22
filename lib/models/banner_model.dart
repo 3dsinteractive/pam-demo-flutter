@@ -9,10 +9,10 @@ class BannerModel {
     required this.ImageURL,
   });
 
-  factory BannerModel.fromJson(Map<String, dynamic> rawJson) {
+  factory BannerModel.fromJson(Map<String, dynamic>? rawJson) {
     return BannerModel(
-      Id: rawJson["banner_id"],
-      ImageURL: rawJson["cover_image_mobile_url"],
+      Id: rawJson?["banner_id"] ?? "",
+      ImageURL: rawJson?["cover_image_mobile_url"] ?? "",
     );
   }
 

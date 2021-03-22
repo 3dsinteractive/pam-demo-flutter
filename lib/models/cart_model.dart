@@ -77,11 +77,11 @@ class CartModel {
     required this.Total,
   });
 
-  factory CartModel.fromJson(Map<String, dynamic> rawJson) {
+  factory CartModel.fromJson(Map<String, dynamic>? rawJson) {
     return CartModel(
-      Id: rawJson["id"] ?? "",
-      Products: CartProductModel.toList(rawJson["products"]),
-      Total: double.parse(rawJson["total"] ?? "0"),
+      Id: rawJson?["id"] ?? "",
+      Products: CartProductModel.toList(rawJson?["products"]),
+      Total: double.parse(rawJson?["total"] ?? "0"),
     );
   }
 

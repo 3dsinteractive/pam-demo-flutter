@@ -52,7 +52,7 @@ class ProductsPageState extends State<ProductsPage> {
       ),
     );
 
-    this.productRepository.fetchAfterId("", isMock: true);
+    this.productRepository.fetchAfterId(isMock: true);
   }
 
   @override
@@ -77,7 +77,7 @@ class ProductsPageState extends State<ProductsPage> {
                           child: Wrap(
                             children: [
                               ...List.generate(
-                                  (this.productRepository.items?.length ?? 0),
+                                  (this.productRepository.items.length),
                                   (index) {
                                 return Container(
                                   width:
@@ -89,7 +89,7 @@ class ProductsPageState extends State<ProductsPage> {
                                     height: 150,
                                     width: 150,
                                     product:
-                                        this.productRepository.items![index],
+                                        this.productRepository.items[index],
                                     onClick: (String id) {
                                       Navigator.of(context)
                                           .push(MaterialPageRoute(builder: (context) {
@@ -120,7 +120,7 @@ class ProductsPageState extends State<ProductsPage> {
                                           if (this
                                               .productRepository
                                               .isLoaded) {
-                                            this.productRepository.fetchAfterId("");
+                                            this.productRepository.fetchAfterId(isMock: true);
                                           }
                                         }
                                       },

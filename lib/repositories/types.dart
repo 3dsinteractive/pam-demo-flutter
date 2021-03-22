@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:singh_architecture/repositories/banner_repository.dart';
 import 'package:singh_architecture/repositories/cart_repository.dart';
 import 'package:singh_architecture/repositories/category_repository.dart';
@@ -20,6 +21,8 @@ abstract class IRepositories {
 abstract class IRepositoryOptions {
   String getBaseUrl();
 
+  String? getFindUrl();
+
   String? getAddUrl();
 
   String? getUpdateUrl();
@@ -40,6 +43,10 @@ abstract class IBaseDataRepository<T> {
 
   String get errorMessage;
 
+  List<T> get items;
+
+  T? get data;
+
   StreamController<bool> get isLoadingSC;
 
   StreamController<bool> get isLoadedSC;
@@ -58,13 +65,16 @@ abstract class IBaseDataRepository<T> {
 
   void toErrorStatus(dynamic e);
 
+  List<T> transforms(dynamic tss);
+
+  T? transform(dynamic ts);
+
   Future<void> fetch({
     Map<String, dynamic>? params,
     bool isMock: false,
   });
 
-  Future<void> fetchAfterId(
-    String afterId, {
+  Future<void> fetchAfterId({
     Map<String, dynamic>? params,
     bool isMock: false,
   });

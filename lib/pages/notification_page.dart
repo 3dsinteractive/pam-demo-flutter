@@ -53,8 +53,7 @@ class NotificationsPageState extends State<NotificationsPage> {
                           .repositories()
                           .notificationRepository()
                           .items
-                          ?.length ??
-                      0, (index) {
+                          .length, (index) {
                 return Container(
                   height: 108,
                   margin: EdgeInsets.only(
@@ -106,7 +105,7 @@ class NotificationsPageState extends State<NotificationsPage> {
                                         widget.context
                                             .repositories()
                                             .notificationRepository()
-                                            .items![index]
+                                            .items[index]
                                             .Title,
                                         style: TextStyle(
                                           height: 1,
@@ -123,7 +122,7 @@ class NotificationsPageState extends State<NotificationsPage> {
                                         widget.context
                                             .repositories()
                                             .notificationRepository()
-                                            .items![index]
+                                            .items[index]
                                             .Message,
                                         style: TextStyle(
                                           color: colorGray,
@@ -150,7 +149,7 @@ class NotificationsPageState extends State<NotificationsPage> {
                           widget.context
                               .repositories()
                               .notificationRepository()
-                              .items![index]
+                              .items[index]
                               .CreatedDate,
                           style: TextStyle(
                             color: colorGrayDark,

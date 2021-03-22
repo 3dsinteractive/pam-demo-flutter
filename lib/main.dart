@@ -1,10 +1,8 @@
 // @dart=2.9
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:firebase_analytics/firebase_analytics.dart';
-
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:firebase_analytics/observer.dart';
-
 import 'package:flutter/material.dart';
 import 'package:pam_flutter/pam_flutter.dart';
 import 'package:singh_architecture/pages/launch_screen.dart';

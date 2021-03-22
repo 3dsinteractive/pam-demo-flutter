@@ -1,7 +1,7 @@
 import 'dart:async';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:pam_flutter/pam_flutter.dart';
 import 'package:pam_flutter/pam_notification.dart';
 
 class AppNotificationService {
@@ -19,8 +19,7 @@ class AppNotificationService {
   }
 
   static Future<String?> askNotificationPermission() async {
-    NotificationSettings settings =
-        await FirebaseMessaging.instance.requestPermission(
+    await FirebaseMessaging.instance.requestPermission(
       alert: true,
       announcement: true,
       badge: true,
@@ -30,13 +29,7 @@ class AppNotificationService {
       sound: true,
     );
 
-    String? token = await FirebaseMessaging.instance.getToken();
-    if (settings.authorizationStatus == AuthorizationStatus.authorized ||
-        settings.authorizationStatus == AuthorizationStatus.provisional) {
-      Pam.trackSavePush(token: token ?? "");
-    }
-
-    return token;
+    return await FirebaseMessaging.instance.getToken();
   }
 }
 

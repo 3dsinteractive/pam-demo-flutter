@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:singh_architecture/configs/config.dart';
 import 'package:singh_architecture/cores/context.dart';
 import 'package:singh_architecture/pages/base_page.dart';
-import 'package:singh_architecture/pages/product_detail_page.dart';
 import 'package:singh_architecture/pages/product_page.dart';
 import 'package:singh_architecture/repositories/page_repository.dart';
 import 'package:singh_architecture/styles/fonts.dart';

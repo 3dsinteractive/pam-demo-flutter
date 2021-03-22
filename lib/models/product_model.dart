@@ -19,17 +19,21 @@ class ProductModel {
     required this.Galleries,
   });
 
-  factory ProductModel.fromJson(Map<String, dynamic> rawJson) {
+  factory ProductModel.fromJson(Map<String, dynamic>? rawJson) {
     return ProductModel(
-      Id: rawJson["product_id"],
-      ThumbnailURL: rawJson["thumbnail_url"],
-      Title: rawJson["title"] ?? "",
-      Price: double.parse(rawJson["price_number"] ?? "0"),
-      Rating: 4,
-      // Rating: double.parse(rawJson["rating"]),
-      Description: rawJson["description"] ?? "",
-      Galleries: ((rawJson["galleries"] ?? []) as List<dynamic>).map((url) => url["image_url"] as String).toList()
-    );
+        Id: rawJson?["product_id"] ?? "",
+        ThumbnailURL: rawJson?["thumbnail_url"] ?? "",
+        Title: rawJson?["title"] ?? "",
+        Price: double.parse(
+            (rawJson?["price_number"] == null || rawJson?["price_number"] == "")
+                ? "0"
+                : rawJson?["price_number"]),
+        Rating: 4,
+        // Rating: double.parse(rawJson["rating"]),
+        Description: rawJson?["description"] ?? "",
+        Galleries: ((rawJson?["galleries"] ?? []) as List<dynamic>)
+            .map((url) => url["image_url"] as String)
+            .toList());
   }
 
   static List<ProductModel> toList(List<Map<String, dynamic>>? rawItems) {

@@ -65,6 +65,7 @@ class ProductPageState extends State<ProductPage> {
   void initialRepositories() {
     try {
       this.bannerRepository = BannerRepository(
+        buildCtx: this.context,
         config: widget.config,
         options: NewRepositoryOptions(
           baseUrl: "${widget.config.baseAPI()}/banners",
@@ -72,6 +73,7 @@ class ProductPageState extends State<ProductPage> {
         ),
       );
       this.categoryRepository = CategoryRepository(
+        buildCtx: this.context,
         config: widget.config,
         options: NewRepositoryOptions(
           baseUrl: "${widget.config.baseAPI()}/categories",
@@ -79,6 +81,7 @@ class ProductPageState extends State<ProductPage> {
         ),
       );
       this.newArrivalProductRepository = ProductRepository(
+        buildCtx: this.context,
         config: widget.config,
         options: NewRepositoryOptions(
           baseUrl: "${widget.config.baseAPI()}/products",
@@ -86,6 +89,7 @@ class ProductPageState extends State<ProductPage> {
         ),
       );
       this.bestSellerProductRepository = ProductRepository(
+        buildCtx: this.context,
         config: widget.config,
         options: NewRepositoryOptions(
           baseUrl: "${widget.config.baseAPI()}/products",

@@ -13,12 +13,12 @@ class NotificationModel {
     required this.isRead,
   });
 
-  factory NotificationModel.fromJson(Map<String, dynamic> rawJson) {
+  factory NotificationModel.fromJson(Map<String, dynamic>? rawJson) {
     return NotificationModel(
-      Title: rawJson["title"] ?? "",
-      Message: rawJson["message"] ?? "",
-      CreatedDate: rawJson["created_date"] ?? "",
-      isRead: rawJson["is_read"] ?? false,
+      Title: rawJson?["title"] ?? "",
+      Message: rawJson?["message"] ?? "",
+      CreatedDate: rawJson?["created_date"] ?? "",
+      isRead: rawJson?["is_read"] ?? false,
     );
   }
 
