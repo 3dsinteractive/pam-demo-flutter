@@ -29,6 +29,7 @@ class BannerHeadLine extends StatefulWidget {
 }
 
 class BannerHeadLineState extends State<BannerHeadLine> {
+  // ignore: close_sinks
   late StreamController<int> currentPageSC;
 
   @override
@@ -85,35 +86,35 @@ class BannerHeadLineState extends State<BannerHeadLine> {
               ),
             ),
             StreamBuilder<int>(
-                stream: this.currentPageSC.stream,
-                builder: (context, snapshot) {
-                  return Container(
-                    margin: EdgeInsets.only(
-                      bottom: 16,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(
-                          widget.bannerRepository.items.length, (index) {
-                        return AnimatedContainer(
-                          duration: Duration(milliseconds: 250),
-                          margin: EdgeInsets.only(
-                            left: 8,
-                            right: 8,
-                          ),
-                          height: 10,
-                          width: 10,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: index == snapshot.data
-                                ? colorPrimary
-                                : colorGray,
-                          ),
-                        );
-                      }),
-                    ),
-                  );
-                })
+              stream: this.currentPageSC.stream,
+              builder: (context, snapshot) {
+                return Container(
+                  margin: EdgeInsets.only(
+                    bottom: 16,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(
+                        widget.bannerRepository.items.length, (index) {
+                      return AnimatedContainer(
+                        duration: Duration(milliseconds: 250),
+                        margin: EdgeInsets.only(
+                          left: 8,
+                          right: 8,
+                        ),
+                        height: 10,
+                        width: 10,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color:
+                              index == snapshot.data ? colorPrimary : Colors.white,
+                        ),
+                      );
+                    }),
+                  ),
+                );
+              },
+            )
           ],
         );
       },

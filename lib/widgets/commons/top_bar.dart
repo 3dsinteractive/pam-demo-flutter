@@ -23,9 +23,11 @@ class TopBar extends StatefulWidget {
 class TopBarState extends State<TopBar> {
   @override
   Widget build(BuildContext context) {
+    bool isTablet = MediaQuery.of(context).size.width >= 768;
+
     return Container(
       alignment: Alignment.center,
-      height: 85 + MediaQuery.of(context).padding.top,
+      height: (isTablet ? 125 : 85) + MediaQuery.of(context).padding.top,
       padding: EdgeInsets.only(
         top: MediaQuery.of(context).padding.top,
       ),
@@ -53,7 +55,9 @@ class TopBarState extends State<TopBar> {
                     alignment: Alignment.center,
                     child: Text(
                       widget.title!,
-                      textAlign: TextAlign.center,
+                      textAlign: TextAlign.start,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: h6,

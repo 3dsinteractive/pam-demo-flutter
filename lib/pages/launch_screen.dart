@@ -51,29 +51,30 @@ class LaunchScreenState extends State<LaunchScreen> {
       await this.myContext.localeRepository().loadLocale();
 
       await AppNotificationService.initial();
+      // await Pam.consentRequestView(this.context, Pam.trackingConsentId());
 
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => ScaffoldMiddleWare(
-            context: this.myContext,
-            config: this.config,
-            child: MainFeature(
-              context: myContext,
-              config: config,
-            ),
-          ),
-        ),
-      );
-
-      // TODO : consentCanReceiveContext
       Pam.appReady(
         context: context,
         initialMessage:
         (await FirebaseMessaging.instance.getInitialMessage())?.data,
-        productProductDetail: (id) => ProductDetailPage(
-            context: this.myContext, config: this.config, id: id),
+        productProductDetail: (id) =>
+            ProductDetailPage(
+                context: this.myContext, config: this.config, id: id),
       );
-      await Pam.consentRequestView(Pam.trackingConsentId());
+
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) =>
+              ScaffoldMiddleWare(
+                context: this.myContext,
+                config: this.config,
+                child: MainFeature(
+                  context: myContext,
+                  config: config,
+                ),
+              ),
+        ),
+      );
 
       Pam.listen(PamStandardCallback.on_token, (ms) {
         // handler your logic here on pam token
@@ -87,15 +88,16 @@ class LaunchScreenState extends State<LaunchScreen> {
         String productId = ms["id"];
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => ScaffoldMiddleWare(
-              context: this.myContext,
-              config: this.config,
-              child: ProductDetailPage(
-                context: myContext,
-                config: config,
-                id: productId,
-              ),
-            ),
+            builder: (context) =>
+                ScaffoldMiddleWare(
+                  context: this.myContext,
+                  config: this.config,
+                  child: ProductDetailPage(
+                    context: myContext,
+                    config: config,
+                    id: productId,
+                  ),
+                ),
           ),
         );
       });
@@ -106,13 +108,6 @@ class LaunchScreenState extends State<LaunchScreen> {
     } catch (e) {
       widget.launchScreenRepository.toErrorStatus(e);
     }
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-
-    widget.launchScreenRepository.dispose();
   }
 
   @override

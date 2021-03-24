@@ -174,18 +174,6 @@ class CartItemState extends State<CartItem> {
                                 ),
                               ),
                             ),
-                          // child: Container(
-                          //   alignment: Alignment.centerRight,
-                          //   child: Text(
-                          //     (widget.product.Quantity * widget.product.Price)
-                          //         .toString(),
-                          //     style: TextStyle(
-                          //       fontSize: p,
-                          //       fontWeight: fontWeightBold,
-                          //       color: colorSecondary,
-                          //     ),
-                          //   ),
-                          // ),
                         ),
                       ],
                     ),

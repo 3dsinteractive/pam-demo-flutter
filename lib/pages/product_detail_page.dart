@@ -16,6 +16,8 @@ import 'package:singh_architecture/styles/colors.dart';
 import 'package:singh_architecture/styles/fonts.dart';
 import 'package:singh_architecture/widgets/commons/loading_stack.dart';
 import 'package:singh_architecture/widgets/commons/top_bar.dart';
+import 'package:singh_architecture/widgets/products/product_add_to_cart.dart';
+import 'package:singh_architecture/widgets/products/product_buy_now.dart';
 import 'package:singh_architecture/widgets/products/product_slider.dart';
 
 class ProductDetailPage extends StatefulWidget {
@@ -37,6 +39,8 @@ class ProductDetailPage extends StatefulWidget {
 
 class ProductDetailPageState extends State<ProductDetailPage> {
   late final ProductRepository productRepository;
+  late bool addCartExpand;
+  late bool buyNowExpand;
 
   @override
   void initState() {
@@ -45,6 +49,7 @@ class ProductDetailPageState extends State<ProductDetailPage> {
     this.productRepository = ProductRepository(
       buildCtx: this.context,
       config: widget.config,
+      sharedPreferences: widget.context.sharedPreferences(),
       options: NewRepositoryOptions(
         baseUrl: "${widget.config.baseAPI()}/products",
         mockItems: [
@@ -59,8 +64,12 @@ class ProductDetailPageState extends State<ProductDetailPage> {
     this.productRepository.get(widget.id, isMock: true).then((_) {
       Pam.trackPageView(
           url: "3dsflutter//products?id=${widget.id}",
-          title: this.productRepository.data?.Title ?? "Product Detail");
+          title: this.productRepository.data?.Title ??
+              widget.context.localeRepository().getString("product_detail"));
     });
+    this.addCartExpand = false;
+    this.buyNowExpand = false;
+
     widget.context.repositories().cartRepository().fetch();
   }
 
@@ -75,9 +84,10 @@ class ProductDetailPageState extends State<ProductDetailPage> {
   Widget build(BuildContext context) {
     return Container(
       child: LoadingStack(
+        localeRepository: widget.context.localeRepository(),
         isLoadingSCs: [
           this.productRepository.isLoadingSC,
-          widget.context.repositories().cartRepository().isLoadingSC
+          widget.context.repositories().cartRepository().isLoadingSC,
         ],
         children: () => [
           Container(
@@ -150,11 +160,33 @@ class ProductDetailPageState extends State<ProductDetailPage> {
                                       ),
                                     ),
                                     Container(
-                                      child: Icon(
-                                        Icons.favorite_outline,
-                                        color: Colors.redAccent,
+                                      child: GestureDetector(
+                                        onTap: () async {
+                                          this.productRepository.toLoadingStatus();
+                                          if(widget.context.repositories().authenticationRepository().isProductFavourite(widget.id)){
+                                            await widget.context
+                                                .repositories()
+                                                .authenticationRepository()
+                                                .mockUnFavourite(widget.id);
+                                          }else{
+                                            await widget.context
+                                                .repositories()
+                                                .authenticationRepository()
+                                                .mockFavourite(widget.id);
+                                          }
+                                          this.productRepository.toLoadedStatus();
+                                        },
+                                        child: Icon(
+                                          widget.context
+                                                  .repositories()
+                                                  .authenticationRepository()
+                                                  .isProductFavourite(widget.id)
+                                              ? Icons.favorite
+                                              : Icons.favorite_outline,
+                                          color: Colors.redAccent,
+                                        ),
                                       ),
-                                    )
+                                    ),
                                   ],
                                 ),
                               ),
@@ -179,31 +211,34 @@ class ProductDetailPageState extends State<ProductDetailPage> {
                 ),
                 Container(
                   padding: EdgeInsets.only(
+                    top: 16,
                     bottom: MediaQuery.of(context).padding.bottom,
+                    left: 16,
+                    right: 16,
                   ),
                   child: Row(
                     children: [
                       Expanded(
                         child: GestureDetector(
                           onTap: () {
+                            this.addCartExpand = true;
                             widget.context
                                 .repositories()
                                 .cartRepository()
-                                .mockAddToCart(this.productRepository.data!.Id)
-                                .then((_) {
-                              Pam.trackAddToCart(
-                                id: this.productRepository.data!.Id,
-                                title: this.productRepository.data!.Title,
-                                price: this.productRepository.data!.Price,
-                              );
-                            });
+                                .forceValueNotify();
                           },
                           child: Container(
+                            margin: EdgeInsets.only(
+                              right: 4,
+                            ),
                             padding: EdgeInsets.only(
                               top: 16,
                               bottom: 16,
                             ),
-                            color: colorPrimary,
+                            decoration: BoxDecoration(
+                              color: colorPrimary,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
                             alignment: Alignment.center,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -219,7 +254,9 @@ class ProductDetailPageState extends State<ProductDetailPage> {
                                 ),
                                 Container(
                                   child: Text(
-                                    "เพิ่มลงรถเข็น",
+                                    widget.context
+                                        .localeRepository()
+                                        .getString("add_to_cart"),
                                     style: TextStyle(
                                       fontSize: h6,
                                       color: Colors.white,
@@ -232,27 +269,43 @@ class ProductDetailPageState extends State<ProductDetailPage> {
                         ),
                       ),
                       Expanded(
-                        child: Container(
-                          padding: EdgeInsets.only(
-                            top: 16,
-                            bottom: 16,
-                          ),
-                          color: colorSecondary,
-                          alignment: Alignment.center,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(),
-                              Container(
-                                child: Text(
-                                  "ซื้อสินค้า",
-                                  style: TextStyle(
-                                    fontSize: h6,
-                                    color: Colors.white,
+                        child: GestureDetector(
+                          onTap: () {
+                            this.buyNowExpand = true;
+                            widget.context
+                                .repositories()
+                                .cartRepository()
+                                .forceValueNotify();
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(
+                              left: 4,
+                            ),
+                            padding: EdgeInsets.only(
+                              top: 16,
+                              bottom: 16,
+                            ),
+                            decoration: BoxDecoration(
+                              color: colorSecondary,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            alignment: Alignment.center,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  child: Text(
+                                    widget.context
+                                        .localeRepository()
+                                        .getString("buy_now"),
+                                    style: TextStyle(
+                                      fontSize: h6,
+                                      color: Colors.white,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -262,7 +315,72 @@ class ProductDetailPageState extends State<ProductDetailPage> {
               ],
             ),
           ),
+          AnimatedPositioned(
+            duration: Duration(milliseconds: 400),
+            bottom:
+                this.addCartExpand ? 0 : (-MediaQuery.of(context).size.height),
+            left: 0,
+            child: ProductAddToCart(
+              product: this.productRepository.data,
+              cartRepository: widget.context.repositories().cartRepository(),
+              onAddToCart: (id, quantity) {
+                widget.context
+                    .repositories()
+                    .cartRepository()
+                    .mockAddToCart(id, quantity: quantity)
+                    .then((_) {
+                  this.addCartExpand = false;
+                  Pam.trackAddToCart(
+                    id: this.productRepository.data!.Id,
+                    title: this.productRepository.data!.Title,
+                    price: this.productRepository.data!.Price,
+                    quantity: quantity,
+                  );
+                });
+              },
+              dismiss: () {
+                this.addCartExpand = false;
+                widget.context
+                    .repositories()
+                    .cartRepository()
+                    .forceValueNotify();
+              },
+            ),
+          ),
+          AnimatedPositioned(
+            duration: Duration(milliseconds: 400),
+            bottom:
+                this.buyNowExpand ? 0 : (-MediaQuery.of(context).size.height),
+            left: 0,
+            child: ProductBuyNow(
+              product: this.productRepository.data,
+              cartRepository: widget.context.repositories().cartRepository(),
+              onBuyNow: (id, quantity) {
+                widget.context
+                    .repositories()
+                    .cartRepository()
+                    .mockBuyNow(id, quantity: quantity)
+                    .then((_) {
+                  this.buyNowExpand = false;
+                  Pam.trackPurchaseSuccess(
+                    ids: [id],
+                    titles: [this.productRepository.data!.Title],
+                    categories: ["c01"],
+                    totalPrice: this.productRepository.data!.Price * quantity,
+                  );
+                });
+              },
+              dismiss: () {
+                this.buyNowExpand = false;
+                widget.context
+                    .repositories()
+                    .cartRepository()
+                    .forceValueNotify();
+              },
+            ),
+          ),
           TopBar(
+            title: this.productRepository.data?.Title ?? widget.context.localeRepository().getString("product_detail"),
             prefixWidget: GestureDetector(
               onTap: () {
                 Navigator.of(context).pop();

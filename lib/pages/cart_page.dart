@@ -38,6 +38,7 @@ class CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     return LoadingStack(
+      localeRepository: widget.context.localeRepository(),
       isLoadingSCs: [
         widget.context
             .repositories()
@@ -66,7 +67,6 @@ class CartPageState extends State<CartPage> {
                             top: 110,
                           ),
                           child: ListView.builder(
-                            padding: EdgeInsets.zero,
                             itemCount: widget.context
                                 .repositories()
                                 .cartRepository()
@@ -185,7 +185,7 @@ class CartPageState extends State<CartPage> {
                             },
                           ),
                           Container(
-                            child: Text("ทั้งหมด"),
+                            child: Text(widget.context.localeRepository().getString("all")),
                           ),
                         ],
                       ),
@@ -208,7 +208,7 @@ class CartPageState extends State<CartPage> {
                                               right: 4,
                                             ),
                                             child: Text(
-                                              "ยอดรวม :",
+                                              widget.context.localeRepository().getString("total_price"),
                                               style: TextStyle(
                                                 fontWeight: fontWeightBold,
                                               ),
@@ -241,7 +241,7 @@ class CartPageState extends State<CartPage> {
                                               right: 4,
                                             ),
                                             child: Text(
-                                              "ค่าจัดส่ง :",
+                                              widget.context.localeRepository().getString("delivery_price"),
                                               style: TextStyle(
                                                 fontWeight: fontWeightBold,
                                               ),
@@ -266,6 +266,7 @@ class CartPageState extends State<CartPage> {
                             Container(
                               child: CurveButton(
                                 backgroundColor: colorSecondary,
+                                borderColor: colorSecondary,
                                 onClick: () {
                                   Pam.trackPurchaseSuccess(
                                     ids: widget.context.repositories().cartRepository().data!.Products.map((e) => e.Id).toList(),
@@ -279,7 +280,7 @@ class CartPageState extends State<CartPage> {
                                       .cartRepository()
                                       .mockCheckout();
                                 },
-                                title: "ชำระเงิน",
+                                title: widget.context.localeRepository().getString("payment"),
                               ),
                             ),
                           ],

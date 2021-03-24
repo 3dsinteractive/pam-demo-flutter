@@ -2,14 +2,17 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:singh_architecture/repositories/locale_repository.dart';
 import 'package:singh_architecture/styles/colors.dart';
 import 'package:singh_architecture/styles/fonts.dart';
 
 class ProductItemLoading extends StatefulWidget {
+  final LocaleRepository localeRepository;
   final double? height;
   final double? width;
 
   ProductItemLoading({
+    required this.localeRepository,
     this.height,
     this.width,
   });
@@ -86,7 +89,7 @@ class ProductItemLoadingState extends State<ProductItemLoading> {
                   height: 45,
                   width: 125,
                   child: Text(
-                    "กำลังโหลด",
+                    widget.localeRepository.getString("loading"),
                     style: TextStyle(
                       color: Colors.transparent,
                       fontSize: h6,
@@ -115,7 +118,7 @@ class ProductItemLoadingState extends State<ProductItemLoading> {
                 ),
                 width: 125,
                 child: Text(
-                  "กำลังโหลด",
+                  widget.localeRepository.getString("loading"),
                   style: TextStyle(
                     color: Colors.transparent,
                     fontSize: p,

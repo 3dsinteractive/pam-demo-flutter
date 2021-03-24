@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:singh_architecture/styles/colors.dart';
 import 'package:singh_architecture/styles/fonts.dart';
 
+// ignore: must_be_immutable
 class PrimaryButton extends StatefulWidget {
   final void Function() onClick;
   final String title;
@@ -10,7 +11,9 @@ class PrimaryButton extends StatefulWidget {
   final Color? backgroundColor;
   final Color? textColor;
   final Color? borderColor;
-  final EdgeInsets? margin;
+  EdgeInsets? margin;
+  EdgeInsets? padding;
+  double? width;
 
   PrimaryButton({
     required this.onClick,
@@ -20,7 +23,19 @@ class PrimaryButton extends StatefulWidget {
     this.textColor,
     this.borderColor,
     this.margin,
-  });
+    this.padding,
+    this.width,
+  }) {
+    if (this.width == null) {
+      this.width = 150;
+    }
+    if (this.padding == null) {
+      this.padding = EdgeInsets.only(
+        top: 16,
+        bottom: 16,
+      );
+    }
+  }
 
   @override
   State<StatefulWidget> createState() {
@@ -34,8 +49,7 @@ class PrimaryButtonState extends State<PrimaryButton> {
     return GestureDetector(
       onTap: widget.onClick,
       child: Container(
-        width: 150,
-        height: 40,
+        width: widget.width,
         padding: EdgeInsets.only(
           left: 16,
           right: 16,
@@ -44,7 +58,9 @@ class PrimaryButtonState extends State<PrimaryButton> {
         alignment: Alignment.center,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: widget.borderColor ?? colorPrimary,),
+          border: Border.all(
+            color: widget.borderColor ?? colorPrimary,
+          ),
           color: widget.backgroundColor ?? colorPrimary,
         ),
         child: Row(
@@ -64,11 +80,12 @@ class PrimaryButtonState extends State<PrimaryButton> {
                     ),
                   ),
             Container(
+              padding: widget.padding,
               alignment: Alignment.center,
               child: Text(
                 widget.title,
                 style: TextStyle(
-                  fontSize: s,
+                  fontSize: p,
                   fontWeight: fontWeightBold,
                   color: widget.textColor ?? Colors.white,
                 ),

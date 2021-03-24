@@ -1,9 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:singh_architecture/repositories/locale_repository.dart';
 import 'package:singh_architecture/styles/colors.dart';
 import 'package:singh_architecture/styles/fonts.dart';
 
 class CategoryItemLoading extends StatefulWidget {
+  final LocaleRepository localeRepository;
+
+  CategoryItemLoading({
+    required this.localeRepository,
+  });
+
   @override
   State<StatefulWidget> createState() {
     return CategoryItemLoadingState();
@@ -34,7 +41,7 @@ class CategoryItemLoadingState extends State<CategoryItemLoading> {
           ),
           Container(
             child: Text(
-              "กำลังโหลด",
+              widget.localeRepository.getString("loading"),
               style: TextStyle(
                 fontSize: s3,
               ),

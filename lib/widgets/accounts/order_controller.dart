@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:singh_architecture/repositories/locale_repository.dart';
 import 'package:singh_architecture/styles/colors.dart';
 import 'package:singh_architecture/styles/fonts.dart';
 
 class OrderController extends StatefulWidget {
+  final LocaleRepository localeRepository;
   final EdgeInsets? margin;
 
   OrderController({
+    required this.localeRepository,
     this.margin,
   });
 
@@ -34,7 +37,7 @@ class OrderControllerState extends State<OrderController> {
                 Expanded(
                   child: Container(
                     child: Text(
-                      "รายการสั่งซื้อของฉัน",
+                      widget.localeRepository.getString("my_orders"),
                       style: TextStyle(
                         fontSize: h6,
                         fontWeight: fontWeightBold,
@@ -44,7 +47,7 @@ class OrderControllerState extends State<OrderController> {
                 ),
                 Container(
                   child: Text(
-                    "ดูเพิ่มเติม >",
+                    widget.localeRepository.getString("view_more"),
                     style: TextStyle(
                       fontSize: s2,
                       color: colorGray,
@@ -87,7 +90,7 @@ class OrderControllerState extends State<OrderController> {
                         ),
                         Container(
                           child: Text(
-                            "ที่ต้องชำระ",
+                            widget.localeRepository.getString("to_pay"),
                             style: TextStyle(
                               fontSize: s2,
                               fontWeight: fontWeightBold,
@@ -113,7 +116,7 @@ class OrderControllerState extends State<OrderController> {
                         ),
                         Container(
                           child: Text(
-                            "ที่ต้องจัดส่ง",
+                            widget.localeRepository.getString("to_delivery"),
                             style: TextStyle(
                               fontSize: s2,
                               fontWeight: fontWeightBold,
@@ -139,33 +142,7 @@ class OrderControllerState extends State<OrderController> {
                         ),
                         Container(
                           child: Text(
-                            "ที่ต้องรีวิว",
-                            style: TextStyle(
-                              fontSize: s2,
-                              fontWeight: fontWeightBold,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    child: Column(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(
-                            bottom: 6,
-                          ),
-                          child: Icon(
-                            Icons.rate_review_outlined,
-                            size: h1,
-                          ),
-                        ),
-                        Container(
-                          child: Text(
-                            "ที่ต้องรีวิว",
+                            widget.localeRepository.getString("to_review"),
                             style: TextStyle(
                               fontSize: s2,
                               fontWeight: fontWeightBold,

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:singh_architecture/configs/config.dart';
+import 'package:singh_architecture/cores/shared_preferences.dart';
 import 'package:singh_architecture/models/product_model.dart';
 import 'package:singh_architecture/repositories/base_repository.dart';
 import 'package:singh_architecture/repositories/types.dart';
@@ -9,12 +10,14 @@ class ProductRepositoryInfinite extends BaseDataRepository<ProductModel> {
   final BuildContext buildCtx;
   final IConfig config;
   final IRepositoryOptions options;
+  final ISharedPreferences sharedPreferences;
 
   ProductRepositoryInfinite({
     required this.buildCtx,
     required this.config,
     required this.options,
-  }) : super(buildCtx, config, options);
+    required this.sharedPreferences,
+  }) : super(buildCtx, config, options, sharedPreferences);
 
   @override
   List<ProductModel> transforms(tss) {

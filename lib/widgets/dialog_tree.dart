@@ -2,46 +2,34 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class DialogTree {
-  DialogTreeRoute? route;
+  DialogTree._();
 
-  Future show(BuildContext context) async {
-    this.route = DialogTreeRoute(
+  static DialogTreeRoute? route;
+
+  static Future show(BuildContext context,
+      Widget Function(void Function() dismiss) fWidget) async {
+    route = null;
+    route = DialogTreeRoute(
       settings: RouteSettings(name: "/dialog_tree"),
-      onClick: () {
-        this.route?.navigator?.removeRoute(this.route!);
-      },
+      widget: fWidget(() => route?.navigator?.removeRoute(route!)),
     );
 
     return await Navigator.of(context, rootNavigator: false).push(route!);
+  }
+
+  static void dispose() {
+    return route?.dispose();
   }
 }
 
 class DialogTreeRoute extends OverlayRoute {
   final Builder _builder;
-  final void Function() onClick;
 
   DialogTreeRoute({
     required RouteSettings settings,
-    required this.onClick,
+    required Widget widget,
   })   : _builder = Builder(builder: (BuildContext innerContext) {
-          return GestureDetector(
-              child: Align(
-                heightFactor: 1.0,
-                child: Material(
-                  child: SafeArea(
-                    child: GestureDetector(
-                      onTap: onClick,
-                      child: Container(
-                        height: 100,
-                        width: 100,
-                        color: Colors.red,
-                        child: Text("Singh alert"),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              onTap: () {});
+          return widget;
         }),
         super(settings: settings);
 

@@ -34,6 +34,7 @@ class NotificationsPageState extends State<NotificationsPage> {
   Widget build(BuildContext context) {
     return Container(
       child: LoadingStack(
+        localeRepository: widget.context.localeRepository(),
         isLoadingSCs: [
           widget.context.repositories().notificationRepository().isLoadingSC
         ],
@@ -167,7 +168,7 @@ class NotificationsPageState extends State<NotificationsPage> {
             ),
           ),
           TopBar(
-            title: "Notification",
+            title: widget.context.localeRepository().getString("notification"),
           ),
         ],
       ),

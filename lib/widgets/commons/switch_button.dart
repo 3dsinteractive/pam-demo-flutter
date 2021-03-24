@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:singh_architecture/repositories/locale_repository.dart';
 import 'package:singh_architecture/styles/fonts.dart';
 
 class SwitchButton extends StatefulWidget {
+  final LocaleRepository localeRepository;
   final bool value;
   final void Function(bool value) onChanged;
   final String title;
@@ -11,6 +13,7 @@ class SwitchButton extends StatefulWidget {
   final EdgeInsets? margin;
 
   SwitchButton({
+    required this.localeRepository,
     required this.value,
     required this.onChanged,
     required this.title,
@@ -36,7 +39,8 @@ class SwitchButtonState extends State<SwitchButton> {
         child: Row(
           children: [
             AnimatedContainer(
-              alignment: widget.value ? Alignment.centerRight : Alignment.centerLeft,
+              alignment:
+                  widget.value ? Alignment.centerRight : Alignment.centerLeft,
               duration: Duration(milliseconds: 250),
               margin: EdgeInsets.only(right: 8),
               width: 38,
@@ -46,7 +50,9 @@ class SwitchButtonState extends State<SwitchButton> {
                 right: 4,
               ),
               decoration: BoxDecoration(
-                  color: widget.value ? widget.backgroundColor : Colors.grey.shade400,
+                  color: widget.value
+                      ? widget.backgroundColor
+                      : Colors.grey.shade400,
                   borderRadius: BorderRadius.circular(16)),
               child: Container(
                 height: 16,
@@ -60,7 +66,9 @@ class SwitchButtonState extends State<SwitchButton> {
             Container(
               width: 46,
               child: Text(
-                widget.value ? "Accept" : "Decline",
+                widget.value
+                    ? widget.localeRepository.getString("accept")
+                    : widget.localeRepository.getString("decline"),
                 style: TextStyle(
                   fontSize: s,
                 ),

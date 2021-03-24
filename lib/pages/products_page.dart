@@ -42,6 +42,7 @@ class ProductsPageState extends State<ProductsPage> {
     this.productRepository = ProductRepositoryInfinite(
       buildCtx: this.context,
       config: widget.config,
+      sharedPreferences: widget.context.sharedPreferences(),
       options: NewRepositoryOptions(
         baseUrl: "${widget.config.baseAPI()}/products",
         mockItems: [
@@ -86,6 +87,7 @@ class ProductsPageState extends State<ProductsPage> {
                                   padding: EdgeInsets.all(4),
                                   height: 250,
                                   child: ProductItem(
+                                    isFavourite: widget.context.repositories().authenticationRepository().isProductFavourite(this.productRepository.items[index].Id),
                                     height: 150,
                                     width: 150,
                                     product:
@@ -125,6 +127,7 @@ class ProductsPageState extends State<ProductsPage> {
                                         }
                                       },
                                       child: ProductItemLoading(
+                                        localeRepository: widget.context.localeRepository(),
                                         height: 150,
                                         width: 150,
                                       ),
@@ -139,6 +142,7 @@ class ProductsPageState extends State<ProductsPage> {
                                   padding: EdgeInsets.all(4),
                                   height: 250,
                                   child: ProductItemLoading(
+                                    localeRepository: widget.context.localeRepository(),
                                     height: 150,
                                     width: 150,
                                   ),

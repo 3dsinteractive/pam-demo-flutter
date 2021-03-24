@@ -1,7 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pam_flutter/pam_flutter.dart';
 import 'package:singh_architecture/configs/config.dart';
 import 'package:singh_architecture/cores/context.dart';
+import 'package:singh_architecture/middlewares/scaffold_middle_ware.dart';
+import 'package:singh_architecture/pages/launch_screen.dart';
+import 'package:singh_architecture/repositories/page_repository.dart';
 import 'package:singh_architecture/styles/colors.dart';
 import 'package:singh_architecture/styles/fonts.dart';
 import 'package:singh_architecture/widgets/accounts/account_list_tile.dart';
@@ -26,15 +30,13 @@ class SettingPage extends StatefulWidget {
 
 class SettingPageState extends State<SettingPage> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Container(
       child: LoadingStack(
-        isLoadingSCs: [],
+        localeRepository: widget.context.localeRepository(),
+        isLoadingSCs: [
+          widget.context.repositories().authenticationRepository().isLoadingSC,
+        ],
         children: () => [
           Container(
             padding: EdgeInsets.only(
@@ -78,7 +80,7 @@ class SettingPageState extends State<SettingPage> {
                       ),
                       Container(
                         child: Text(
-                          "แก้ไข",
+                          widget.context.localeRepository().getString("edit"),
                           style: TextStyle(
                             fontSize: s,
                             fontWeight: fontWeightBold,
@@ -89,7 +91,8 @@ class SettingPageState extends State<SettingPage> {
                   ),
                 ),
                 AccountListTile(
-                  title: "ชื่อผู้ใช้",
+                  title:
+                      widget.context.localeRepository().getString("user_name"),
                   hintText: "vincenzo",
                   onClick: () {},
                   margin: EdgeInsets.only(
@@ -97,7 +100,7 @@ class SettingPageState extends State<SettingPage> {
                   ),
                 ),
                 AccountListTile(
-                  title: "เพศ",
+                  title: widget.context.localeRepository().getString("gender"),
                   hintText: "ชาย",
                   onClick: () {},
                   margin: EdgeInsets.only(
@@ -105,7 +108,8 @@ class SettingPageState extends State<SettingPage> {
                   ),
                 ),
                 AccountListTile(
-                  title: "เบอร์โทร",
+                  title:
+                      widget.context.localeRepository().getString("telephone"),
                   hintText: "0999993333",
                   onClick: () {},
                   margin: EdgeInsets.only(
@@ -113,7 +117,9 @@ class SettingPageState extends State<SettingPage> {
                   ),
                 ),
                 AccountListTile(
-                  title: "วันเกิด",
+                  title: widget.context
+                      .localeRepository()
+                      .getString("birth_of_date"),
                   hintText: "01-01-2540",
                   onClick: () {},
                   margin: EdgeInsets.only(
@@ -121,7 +127,7 @@ class SettingPageState extends State<SettingPage> {
                   ),
                 ),
                 AccountListTile(
-                  title: "อีเมล์",
+                  title: widget.context.localeRepository().getString("email"),
                   hintText: "vincenzo@gmail.com",
                   onClick: () {},
                   margin: EdgeInsets.only(
@@ -129,7 +135,9 @@ class SettingPageState extends State<SettingPage> {
                   ),
                 ),
                 AccountListTile(
-                  title: "เปลี่ยนรหัสผ่าน",
+                  title: widget.context
+                      .localeRepository()
+                      .getString("change_password"),
                   onClick: () {},
                   margin: EdgeInsets.only(
                     top: 24,
@@ -137,11 +145,29 @@ class SettingPageState extends State<SettingPage> {
                   ),
                 ),
                 PrimaryButton(
-                  title: "ออกจากระบบ",
+                  title: widget.context.localeRepository().getString("logout"),
                   backgroundColor: Colors.white,
                   borderColor: colorPrimary,
                   textColor: colorPrimary,
-                  onClick: () {},
+                  onClick: () async {
+                    await widget.context
+                        .repositories()
+                        .authenticationRepository()
+                        .mockLogout();
+                    await Pam.userLogout();
+
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                          builder: (context) => ScaffoldMiddleWare(
+                            context: widget.context,
+                            config: widget.config,
+                            child: LaunchScreen(
+                              launchScreenRepository: PageRepository(),
+                            ),
+                          ),
+                        ),
+                        (route) => false);
+                  },
                 ),
               ],
             ),
@@ -158,7 +184,7 @@ class SettingPageState extends State<SettingPage> {
                 ),
               ),
             ),
-            title: "Setting",
+            title: widget.context.localeRepository().getString("setting"),
           ),
         ],
       ),

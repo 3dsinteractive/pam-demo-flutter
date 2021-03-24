@@ -37,17 +37,12 @@ class CategoryHeadLineState extends State<CategoryHeadLine> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-
-    widget.categoryRepository.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return StreamBuilder<bool>(
       stream: widget.categoryRepository.isLoadingSC.stream,
       builder: (context, snapshot) {
+        bool isTablet = MediaQuery.of(context).size.width >= 768;
+
         if (ObjectHelper.isSnapshotStateLoading(snapshot)) {
           return Container(
             alignment: Alignment.center,
@@ -55,8 +50,10 @@ class CategoryHeadLineState extends State<CategoryHeadLine> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: List.generate(5, (index) {
-                  return CategoryItemLoading();
+              children: List.generate((isTablet ? 8 : 5), (index) {
+                  return CategoryItemLoading(
+                    localeRepository: widget.context.localeRepository(),
+                  );
                 },
               ),
             ),
@@ -70,9 +67,9 @@ class CategoryHeadLineState extends State<CategoryHeadLine> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: List.generate(
-              ((widget.categoryRepository.items.length) < 5
+              ((widget.categoryRepository.items.length) < (isTablet ? 8 : 5)
                   ? widget.categoryRepository.items.length
-                  : 5),
+                  : (isTablet ? 8 : 5)),
               (index) {
                 return CategoryItem(
                   category: widget.categoryRepository.items[index],

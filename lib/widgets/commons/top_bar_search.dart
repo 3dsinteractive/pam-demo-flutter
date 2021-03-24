@@ -23,9 +23,11 @@ class TopBarSearch extends StatefulWidget {
 class TopBarSearchState extends State<TopBarSearch> {
   @override
   Widget build(BuildContext context) {
+    bool isTablet = MediaQuery.of(context).size.width >= 768;
+
     return Container(
         alignment: Alignment.center,
-        height: 85 + MediaQuery.of(context).padding.top,
+        height: (isTablet ? 125 : 85) + MediaQuery.of(context).padding.top,
         padding: EdgeInsets.only(
           top: MediaQuery.of(context).padding.top,
         ),

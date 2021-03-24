@@ -10,25 +10,27 @@ import 'package:http/http.dart';
 import 'package:pam_flutter/utils/requester.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:singh_architecture/configs/config.dart';
+import 'package:singh_architecture/cores/shared_preferences.dart';
 import 'package:singh_architecture/mocks/banners/banners.dart';
 import 'package:singh_architecture/mocks/carts/carts.dart';
 import 'package:singh_architecture/mocks/categories/categories.dart';
 import 'package:singh_architecture/mocks/notifications/notifications.dart';
 import 'package:singh_architecture/mocks/products/product_detail.dart';
 import 'package:singh_architecture/mocks/products/products.dart';
+import 'package:singh_architecture/repositories/authentication_repository.dart';
 import 'package:singh_architecture/repositories/banner_repository.dart';
 import 'package:singh_architecture/repositories/cart_repository.dart';
 import 'package:singh_architecture/repositories/category_repository.dart';
 import 'package:singh_architecture/repositories/notification_repository.dart';
 import 'package:singh_architecture/repositories/product_repository.dart';
 import 'package:singh_architecture/repositories/types.dart';
-import 'package:singh_architecture/utils/object_helper.dart';
 import 'package:singh_architecture/utils/time_helper.dart';
 
 class BaseDataRepository<T> implements IBaseDataRepository {
   final BuildContext buildCtx;
   final IConfig config;
   final IRepositoryOptions options;
+  final ISharedPreferences sharedPreferences;
 
   bool _isLoading = false;
   bool _isLoaded = false;
@@ -48,6 +50,7 @@ class BaseDataRepository<T> implements IBaseDataRepository {
     this.buildCtx,
     this.config,
     this.options,
+    this.sharedPreferences,
   ) {
     this.initial();
   }
@@ -375,6 +378,9 @@ class BaseUIRepository implements IBaseUIRepository {
 class NewRepository implements IRepositories {
   final BuildContext buildCtx;
   final IConfig config;
+  final ISharedPreferences sharedPreferences;
+
+  AuthenticationRepository? _authenticationRepository;
   ProductRepository? _productRepository;
   BannerRepository? _bannerRepository;
   CategoryRepository? _categoryRepository;
@@ -384,7 +390,23 @@ class NewRepository implements IRepositories {
   NewRepository({
     required this.buildCtx,
     required this.config,
+    required this.sharedPreferences,
   });
+
+  @override
+  AuthenticationRepository authenticationRepository(){
+    if(this._authenticationRepository == null){
+      this._authenticationRepository = AuthenticationRepository(
+        buildCtx: this.buildCtx,
+        config: this.config,
+        sharedPreferences: this.sharedPreferences,
+        options: NewRepositoryOptions(
+          baseUrl: "${config.baseAPI()}",
+        ),
+      );
+    }
+    return this._authenticationRepository!;
+  }
 
   @override
   ProductRepository productRepository() {
@@ -392,6 +414,7 @@ class NewRepository implements IRepositories {
       this._productRepository = ProductRepository(
         buildCtx: this.buildCtx,
         config: this.config,
+        sharedPreferences: this.sharedPreferences,
         options: NewRepositoryOptions(
           baseUrl: "${config.baseAPI()}/products",
           mockItems: mockProducts,
@@ -408,6 +431,7 @@ class NewRepository implements IRepositories {
       this._bannerRepository = BannerRepository(
         buildCtx: this.buildCtx,
         config: this.config,
+        sharedPreferences: this.sharedPreferences,
         options: NewRepositoryOptions(
           baseUrl: "${config.baseAPI()}/banners",
           mockItems: mockBanners,
@@ -423,6 +447,7 @@ class NewRepository implements IRepositories {
       this._categoryRepository = CategoryRepository(
         buildCtx: this.buildCtx,
         config: this.config,
+        sharedPreferences: this.sharedPreferences,
         options: NewRepositoryOptions(
           baseUrl: "${config.baseAPI()}/categories",
           mockItems: mockCategories,
@@ -438,6 +463,7 @@ class NewRepository implements IRepositories {
       this._cartRepository = CartRepository(
         buildCtx: this.buildCtx,
         config: this.config,
+        sharedPreferences: this.sharedPreferences,
         options: NewRepositoryOptions(
           baseUrl: "${config.baseAPI()}/cart",
           mockItem: mockCart,
@@ -453,6 +479,7 @@ class NewRepository implements IRepositories {
       this._notificationRepository = NotificationRepository(
         buildCtx: this.buildCtx,
         config: this.config,
+        sharedPreferences: this.sharedPreferences,
         options: NewRepositoryOptions(
           baseUrl: "${config.baseAPI()}/notifications",
           mockItems: mockNotifications,

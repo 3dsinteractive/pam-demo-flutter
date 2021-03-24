@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:singh_architecture/configs/config.dart';
+import 'package:singh_architecture/cores/shared_preferences.dart';
 import 'package:singh_architecture/mocks/products/best_seller_products.dart';
 import 'package:singh_architecture/mocks/products/new_arrival_products.dart';
 import 'package:singh_architecture/mocks/products/products.dart';
@@ -14,13 +15,16 @@ class CartRepository extends BaseDataRepository<CartModel> {
   final BuildContext buildCtx;
   final IConfig config;
   final IRepositoryOptions options;
+  final ISharedPreferences sharedPreferences;
+
   late CartModel? cart;
 
   CartRepository({
     required this.buildCtx,
     required this.config,
     required this.options,
-  }) : super(buildCtx, config, options) {
+    required this.sharedPreferences,
+  }) : super(buildCtx, config, options, sharedPreferences) {
     this.cart = CartModel(
       Id: "c01",
       Products: [],
@@ -149,6 +153,19 @@ class CartRepository extends BaseDataRepository<CartModel> {
       }
 
       await mockFetch();
+
+      this.toLoadedStatus();
+    } catch (e) {
+      super.alertError(e);
+      this.toErrorStatus(e);
+    }
+  }
+
+  Future<void> mockBuyNow(String productID, {int quantity: 1}) async {
+    this.toLoadingStatus();
+
+    try {
+      await TimeHelper.sleep();
 
       this.toLoadedStatus();
     } catch (e) {

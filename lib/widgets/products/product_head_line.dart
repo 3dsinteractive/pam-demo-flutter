@@ -43,6 +43,8 @@ class ProductHeadLineState extends State<ProductHeadLine> {
 
   @override
   Widget build(BuildContext context) {
+    bool isTablet = MediaQuery.of(context).size.width >= 768;
+
     return StreamBuilder<bool>(
       stream: widget.productRepository.isLoadingSC.stream,
       builder: (context, snapshot) {
@@ -75,7 +77,7 @@ class ProductHeadLineState extends State<ProductHeadLine> {
                       ),
                       Container(
                         child: Text(
-                          "ดูเพิ่มเติม >",
+                          widget.context.localeRepository().getString("view_more"),
                           style: TextStyle(
                             fontSize: s2,
                             color: colorGray,
@@ -92,6 +94,7 @@ class ProductHeadLineState extends State<ProductHeadLine> {
                     itemCount: 3,
                     itemBuilder: (context, index) {
                       return ProductItemLoading(
+                        localeRepository: widget.context.localeRepository(),
                         height: 125,
                         width: 125,
                       );
@@ -148,7 +151,7 @@ class ProductHeadLineState extends State<ProductHeadLine> {
                       },
                       child: Container(
                         child: Text(
-                          "ดูเพิ่มเติม >",
+                          widget.context.localeRepository().getString("view_more"),
                           style: TextStyle(
                             fontSize: s2,
                             color: colorGray,
@@ -160,12 +163,13 @@ class ProductHeadLineState extends State<ProductHeadLine> {
                 ),
               ),
               Container(
-                height: 208,
+                height: isTablet ? 300 : 208,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: widget.productRepository.items.length,
                   itemBuilder: (context, index) {
                     return ProductItem(
+                      isFavourite: widget.context.repositories().authenticationRepository().isProductFavourite(widget.productRepository.items[index].Id),
                       onClick: (id) {
                         Navigator.of(context)
                             .push(MaterialPageRoute(builder: (context) {
@@ -178,8 +182,8 @@ class ProductHeadLineState extends State<ProductHeadLine> {
                                   id: id));
                         }));
                       },
-                      height: 125,
-                      width: 125,
+                      height: isTablet ? 217 :125,
+                      width: isTablet ? 217 :125,
                       product: widget.productRepository.items[index],
                     );
                   },

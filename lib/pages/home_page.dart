@@ -48,7 +48,7 @@ class HomePageState extends State<HomePage> {
     this.pageRepository = PageRepository();
     this.pageRepository.initial();
 
-    Pam.trackPageView(url: "3dsflutter//home", title: "Home page");
+    Pam.trackPageView(url: "3dsflutter//home", title: widget.context.localeRepository().getString("home"));
     this.initialRepositories();
   }
 
@@ -57,6 +57,7 @@ class HomePageState extends State<HomePage> {
       this.bannerRepository = BannerRepository(
         buildCtx: this.context,
         config: widget.config,
+        sharedPreferences: widget.context.sharedPreferences(),
         options: NewRepositoryOptions(
           baseUrl: "${widget.config.baseAPI()}/banners",
           mockItems: mockBanners,
@@ -65,6 +66,7 @@ class HomePageState extends State<HomePage> {
       this.categoryRepository = CategoryRepository(
         buildCtx: this.context,
         config: widget.config,
+        sharedPreferences: widget.context.sharedPreferences(),
         options: NewRepositoryOptions(
           baseUrl: "${widget.config.baseAPI()}/categories",
           mockItems: mockCategories,
@@ -73,6 +75,7 @@ class HomePageState extends State<HomePage> {
       this.newArrivalProductRepository = ProductRepository(
         buildCtx: this.context,
         config: widget.config,
+        sharedPreferences: widget.context.sharedPreferences(),
         options: NewRepositoryOptions(
           baseUrl: "${widget.config.baseAPI()}/products",
           mockItems: mockNewArrivalProducts,
@@ -81,6 +84,7 @@ class HomePageState extends State<HomePage> {
       this.bestSellerProductRepository = ProductRepository(
         buildCtx: this.context,
         config: widget.config,
+        sharedPreferences: widget.context.sharedPreferences(),
         options: NewRepositoryOptions(
           baseUrl: "${widget.config.baseAPI()}/products",
           mockItems: mockBestSellerProducts,
@@ -95,6 +99,8 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    bool isTablet = MediaQuery.of(context).size.width >= 768;
+
     return Stack(
       children: [
         Container(
@@ -104,7 +110,7 @@ class HomePageState extends State<HomePage> {
             children: [
               BannerHeadLine(
                 margin: EdgeInsets.only(
-                  top: 85 + MediaQuery.of(context).padding.top,
+                  top: (isTablet ? 125 : 85) + MediaQuery.of(context).padding.top,
                   bottom: 8,
                 ),
                 context: widget.context,
@@ -127,7 +133,7 @@ class HomePageState extends State<HomePage> {
                 ),
                 context: widget.context,
                 config: widget.config,
-                title: "สินค้ามาใหม่",
+                title: widget.context.localeRepository().getString("product_new_arrival"),
                 productRepository: this.newArrivalProductRepository,
               ),
               ProductHeadLine(
@@ -137,7 +143,7 @@ class HomePageState extends State<HomePage> {
                 ),
                 context: widget.context,
                 config: widget.config,
-                title: "สินค้าขายดี",
+                title: widget.context.localeRepository().getString("product_best_seller"),
                 productRepository: this.bestSellerProductRepository,
               ),
             ],

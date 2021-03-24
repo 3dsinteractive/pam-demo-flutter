@@ -30,6 +30,7 @@ class AccountPageState extends State<AccountPage> {
   Widget build(BuildContext context) {
     return Container(
       child: LoadingStack(
+        localeRepository: widget.context.localeRepository(),
         isLoadingSCs: [],
         children: () => [
           Container(
@@ -44,6 +45,7 @@ class AccountPageState extends State<AccountPage> {
               ),
               children: [
                 OrderController(
+                  localeRepository: widget.context.localeRepository(),
                   margin: EdgeInsets.only(
                     bottom: 48,
                   ),
@@ -53,28 +55,28 @@ class AccountPageState extends State<AccountPage> {
                       bottom: 6,
                     ),
                     icon: Icons.favorite_outline,
-                    title: "รายการโปรด",
+                    title: widget.context.localeRepository().getString("my_favourites"),
                     onClick: () {}),
                 AccountListTile(
                     margin: EdgeInsets.only(
                       bottom: 6,
                     ),
                     icon: Icons.location_on_outlined,
-                    title: "จัดการที่อยู่จัดส่ง",
+                    title: widget.context.localeRepository().getString("my_addresses"),
                     onClick: () {}),
                 AccountListTile(
                     margin: EdgeInsets.only(
                       bottom: 6,
                     ),
                     icon: Icons.question_answer_outlined,
-                    title: "คำถามที่พบบ่อย",
+                    title: widget.context.localeRepository().getString("often_questions"),
                     onClick: () {}),
                 AccountListTile(
                     margin: EdgeInsets.only(
                       bottom: 6,
                     ),
                     icon: Icons.rate_review_outlined,
-                    title: "รีวิวของฉัน",
+                    title: widget.context.localeRepository().getString("my_reviews"),
                     onClick: () {}),
               ],
             ),

@@ -7,6 +7,7 @@ import 'package:singh_architecture/widgets/commons/cached_image.dart';
 
 class ProductItem extends StatefulWidget {
   final ProductModel product;
+  final bool isFavourite;
   final Function(String id) onClick;
   final Function(String id)? onFavorite;
   final double? height;
@@ -14,6 +15,7 @@ class ProductItem extends StatefulWidget {
 
   ProductItem({
     required this.product,
+    required this.isFavourite,
     required this.onClick,
     this.onFavorite,
     this.height,
@@ -79,7 +81,7 @@ class ProductItemState extends State<ProductItem> {
                     },
                     child: Container(
                       child: Icon(
-                        Icons.favorite_outline,
+                        widget.isFavourite ? Icons.favorite : Icons.favorite_outline,
                         color: Colors.redAccent,
                         size: p,
                       ),

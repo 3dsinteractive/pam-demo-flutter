@@ -67,6 +67,7 @@ class ProductPageState extends State<ProductPage> {
       this.bannerRepository = BannerRepository(
         buildCtx: this.context,
         config: widget.config,
+        sharedPreferences: widget.context.sharedPreferences(),
         options: NewRepositoryOptions(
           baseUrl: "${widget.config.baseAPI()}/banners",
           mockItems: mockBanners,
@@ -75,6 +76,7 @@ class ProductPageState extends State<ProductPage> {
       this.categoryRepository = CategoryRepository(
         buildCtx: this.context,
         config: widget.config,
+        sharedPreferences: widget.context.sharedPreferences(),
         options: NewRepositoryOptions(
           baseUrl: "${widget.config.baseAPI()}/categories",
           mockItems: mockCategories,
@@ -83,6 +85,7 @@ class ProductPageState extends State<ProductPage> {
       this.newArrivalProductRepository = ProductRepository(
         buildCtx: this.context,
         config: widget.config,
+        sharedPreferences: widget.context.sharedPreferences(),
         options: NewRepositoryOptions(
           baseUrl: "${widget.config.baseAPI()}/products",
           mockItems: mockNewArrivalProducts,
@@ -91,6 +94,7 @@ class ProductPageState extends State<ProductPage> {
       this.bestSellerProductRepository = ProductRepository(
         buildCtx: this.context,
         config: widget.config,
+        sharedPreferences: widget.context.sharedPreferences(),
         options: NewRepositoryOptions(
           baseUrl: "${widget.config.baseAPI()}/products",
           mockItems: mockBestSellerProducts,
@@ -147,7 +151,7 @@ class ProductPageState extends State<ProductPage> {
                     ),
                     context: widget.context,
                     config: widget.config,
-                    title: "สินค้ามาใหม่",
+                    title: widget.context.localeRepository().getString("product_new_arrival"),
                     productRepository: this.newArrivalProductRepository,
                   ),
                   ProductHeadLine(
@@ -157,7 +161,7 @@ class ProductPageState extends State<ProductPage> {
                     ),
                     context: widget.context,
                     config: widget.config,
-                    title: "สินค้าขายดี",
+                    title: widget.context.localeRepository().getString("product_best_seller"),
                     productRepository: this.bestSellerProductRepository,
                   ),
                 ],

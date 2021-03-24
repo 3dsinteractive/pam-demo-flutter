@@ -3,14 +3,17 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:singh_architecture/repositories/locale_repository.dart';
 import 'package:singh_architecture/styles/colors.dart';
 import 'package:singh_architecture/utils/array_helper.dart';
 
 class LoadingStack extends StatefulWidget {
+  final LocaleRepository localeRepository;
   final List<Widget> Function() children;
   final List<StreamController<bool>> isLoadingSCs;
 
   LoadingStack({
+    required this.localeRepository,
     required this.children,
     required this.isLoadingSCs,
   });
@@ -58,7 +61,7 @@ class LoadingStackState extends State<LoadingStack> {
                               ),
                             ),
                             Container(
-                              child: Text("Loading"),
+                              child: Text(widget.localeRepository.getString("loading")),
                             ),
                           ],
                         ),
