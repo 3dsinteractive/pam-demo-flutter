@@ -58,6 +58,8 @@ class ProductBuyNowState extends State<ProductBuyNow> {
 
   @override
   Widget build(BuildContext context) {
+    bool isTablet = MediaQuery.of(context).size.width >= 768;
+
     if (widget.product == null) {
       return Container();
     }
@@ -75,7 +77,7 @@ class ProductBuyNowState extends State<ProductBuyNow> {
           ),
           boxShadow: [
             BoxShadow(
-                color: colorGrayLight, blurRadius: 6, offset: Offset(0, -0.1))
+                color: Colors.black.withOpacity(0.25), blurRadius: 6, offset: Offset(0, -0.1))
           ]),
       child: Column(
         children: [
@@ -195,9 +197,9 @@ class ProductBuyNowState extends State<ProductBuyNow> {
                             widget.cartRepository.forceValueNotify();
                           },
                           child: Container(
-                            width:
-                                ((MediaQuery.of(context).size.width - 48) / 3) -
-                                    8,
+                            width: ((MediaQuery.of(context).size.width - 48) /
+                                    (isTablet ? 6 : 3)) -
+                                8,
                             padding: EdgeInsets.only(
                               top: 6,
                               bottom: 6,
@@ -267,9 +269,9 @@ class ProductBuyNowState extends State<ProductBuyNow> {
                             widget.cartRepository.forceValueNotify();
                           },
                           child: Container(
-                            width:
-                                ((MediaQuery.of(context).size.width - 48) / 3) -
-                                    8,
+                            width: ((MediaQuery.of(context).size.width - 48) /
+                                    (isTablet ? 6 : 3)) -
+                                8,
                             padding: EdgeInsets.only(
                               top: 6,
                               bottom: 6,

@@ -109,6 +109,8 @@ class ProductPageState extends State<ProductPage> {
 
   @override
   Widget build(BuildContext context) {
+    bool isTablet = MediaQuery.of(context).size.width >= 768;
+
     return StreamBuilder<bool>(
       stream: this.pageRepository.isLoadingSC.stream,
       builder: (context, snapshot) {
@@ -128,7 +130,7 @@ class ProductPageState extends State<ProductPage> {
                 children: [
                   BannerHeadLine(
                     margin: EdgeInsets.only(
-                      top: 85 + MediaQuery.of(context).padding.top,
+                      top: (isTablet ? 125 : 85) + MediaQuery.of(context).padding.top,
                       bottom: 8,
                     ),
                     context: widget.context,

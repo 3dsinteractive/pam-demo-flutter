@@ -82,6 +82,8 @@ class ProductDetailPageState extends State<ProductDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    bool isTablet = MediaQuery.of(context).size.width >= 768;
+
     return Container(
       child: LoadingStack(
         localeRepository: widget.context.localeRepository(),
@@ -100,7 +102,7 @@ class ProductDetailPageState extends State<ProductDetailPage> {
                       children: [
                         Container(
                           margin: EdgeInsets.only(
-                            top: 85 + MediaQuery.of(context).padding.top,
+                            top: (isTablet ? 125 : 85) + MediaQuery.of(context).padding.top,
                           ),
                           child: ProductSlider(
                             imageURLs:

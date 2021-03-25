@@ -32,6 +32,8 @@ class NotificationsPageState extends State<NotificationsPage> {
 
   @override
   Widget build(BuildContext context) {
+    bool isTablet = MediaQuery.of(context).size.width >= 768;
+
     return Container(
       child: LoadingStack(
         localeRepository: widget.context.localeRepository(),
@@ -41,7 +43,7 @@ class NotificationsPageState extends State<NotificationsPage> {
         children: () => [
           Container(
             padding: EdgeInsets.only(
-              top: 85 + MediaQuery.of(context).padding.top + 8,
+              top: (isTablet ? 125 : 85) + MediaQuery.of(context).padding.top + 8,
               left: 8,
               right: 8,
             ),

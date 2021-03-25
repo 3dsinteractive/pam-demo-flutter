@@ -20,7 +20,8 @@ class CategoryItemLoading extends StatefulWidget {
 class CategoryItemLoadingState extends State<CategoryItemLoading> {
   @override
   Widget build(BuildContext context) {
-    final double categoryWidth = ((MediaQuery.of(context).size.width) - 32) / 5;
+    bool isTablet = MediaQuery.of(context).size.width >= 768;
+    final double categoryWidth = ((MediaQuery.of(context).size.width) - 32) / (isTablet ? 8 : 5);
 
     return Container(
       width: categoryWidth - 8,

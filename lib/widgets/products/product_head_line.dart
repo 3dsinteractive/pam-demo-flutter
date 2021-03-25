@@ -88,15 +88,15 @@ class ProductHeadLineState extends State<ProductHeadLine> {
                   ),
                 ),
                 Container(
-                  height: 208,
+                  height: isTablet ? 300 : 208,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: 3,
                     itemBuilder: (context, index) {
                       return ProductItemLoading(
                         localeRepository: widget.context.localeRepository(),
-                        height: 125,
-                        width: 125,
+                        height: isTablet ? 217 :125,
+                        width: isTablet ? 217 :125,
                       );
                     },
                   ),

@@ -41,7 +41,7 @@ class ProductSliderState extends State<ProductSlider> {
       alignment: Alignment.bottomCenter,
       children: [
         Container(
-          height: MediaQuery.of(context).size.width > 300 ? 300 : MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height / 2.5,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
           ),

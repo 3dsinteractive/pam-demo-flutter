@@ -51,7 +51,7 @@ class LaunchScreenState extends State<LaunchScreen> {
       await this.myContext.localeRepository().loadLocale();
 
       await AppNotificationService.initial();
-      // await Pam.consentRequestView(this.context, Pam.trackingConsentId());
+      await Pam.refreshConsentView(this.context, Pam.trackingConsentId());
 
       Pam.appReady(
         context: context,

@@ -58,12 +58,16 @@ class ProductsPageState extends State<ProductsPage> {
 
   @override
   Widget build(BuildContext context) {
+    bool isTablet = MediaQuery.of(context).size.width >= 768;
+
     return Container(
       child: Stack(
         children: [
           Container(
               padding: EdgeInsets.only(
-                top: 85 + MediaQuery.of(context).padding.top + 8,
+                top: (isTablet ? 125 : 85) +
+                    MediaQuery.of(context).padding.top +
+                    8,
               ),
               child: ListView(
                 children: [
@@ -82,19 +86,25 @@ class ProductsPageState extends State<ProductsPage> {
                                   (index) {
                                 return Container(
                                   width:
-                                      (MediaQuery.of(context).size.width / 2) -
+                                      (MediaQuery.of(context).size.width / (isTablet ? 4 : 2)) -
                                           8,
-                                  padding: EdgeInsets.all(4),
                                   height: 250,
+                                  padding: EdgeInsets.all(4),
                                   child: ProductItem(
-                                    isFavourite: widget.context.repositories().authenticationRepository().isProductFavourite(this.productRepository.items[index].Id),
+                                    isFavourite: widget.context
+                                        .repositories()
+                                        .authenticationRepository()
+                                        .isProductFavourite(this
+                                            .productRepository
+                                            .items[index]
+                                            .Id),
                                     height: 150,
                                     width: 150,
                                     product:
                                         this.productRepository.items[index],
                                     onClick: (String id) {
-                                      Navigator.of(context)
-                                          .push(MaterialPageRoute(builder: (context) {
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(builder: (context) {
                                         return ScaffoldMiddleWare(
                                             context: widget.context,
                                             config: widget.config,
@@ -107,11 +117,10 @@ class ProductsPageState extends State<ProductsPage> {
                                   ),
                                 );
                               }),
-                              ...List.generate(4, (index) {
-                                if (index == 0) {
+                              ...List.generate((isTablet ? 8 : 4), (index) {
+                                if (index == ((isTablet ? 8 : 4)-1)) {
                                   return Container(
-                                    width: (MediaQuery.of(context).size.width /
-                                            2) -
+                                    width: (MediaQuery.of(context).size.width / (isTablet ? 4 : 2)) -
                                         8,
                                     padding: EdgeInsets.all(4),
                                     height: 250,
@@ -119,15 +128,16 @@ class ProductsPageState extends State<ProductsPage> {
                                       key: gKey,
                                       onVisibilityChanged: (info) {
                                         if ((info.visibleFraction * 100) > 75) {
-                                          if (this
-                                              .productRepository
-                                              .isLoaded) {
-                                            this.productRepository.fetchAfterId(isMock: true);
+                                          if (this.productRepository.isLoaded) {
+                                            this
+                                                .productRepository
+                                                .fetchAfterId(isMock: true);
                                           }
                                         }
                                       },
                                       child: ProductItemLoading(
-                                        localeRepository: widget.context.localeRepository(),
+                                        localeRepository:
+                                            widget.context.localeRepository(),
                                         height: 150,
                                         width: 150,
                                       ),
@@ -137,12 +147,13 @@ class ProductsPageState extends State<ProductsPage> {
 
                                 return Container(
                                   width:
-                                      (MediaQuery.of(context).size.width / 2) -
+                                      (MediaQuery.of(context).size.width / (isTablet ? 4 : 2)) -
                                           8,
                                   padding: EdgeInsets.all(4),
                                   height: 250,
                                   child: ProductItemLoading(
-                                    localeRepository: widget.context.localeRepository(),
+                                    localeRepository:
+                                        widget.context.localeRepository(),
                                     height: 150,
                                     width: 150,
                                   ),
