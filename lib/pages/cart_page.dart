@@ -11,6 +11,7 @@ import 'package:singh_architecture/widgets/carts/cart_item.dart';
 import 'package:singh_architecture/widgets/commons/checkbox_circle.dart';
 import 'package:singh_architecture/widgets/commons/curve_button.dart';
 import 'package:singh_architecture/widgets/commons/loading_stack.dart';
+import 'package:singh_architecture/widgets/commons/primary_button.dart';
 import 'package:singh_architecture/widgets/commons/top_bar.dart';
 
 class CartPage extends StatefulWidget {
@@ -264,7 +265,12 @@ class CartPageState extends State<CartPage> {
                               ),
                             ),
                             Container(
-                              child: CurveButton(
+                              child: PrimaryButton(
+                                width: 125,
+                                padding: EdgeInsets.only(
+                                  top: 8,
+                                  bottom: 8,
+                                ),
                                 backgroundColor: colorSecondary,
                                 borderColor: colorSecondary,
                                 onClick: () {

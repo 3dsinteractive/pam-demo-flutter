@@ -344,7 +344,7 @@ packages:
       name: pam_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.3.55"
+    version: "1.4.67"
   path:
     dependency: transitive
     description:
