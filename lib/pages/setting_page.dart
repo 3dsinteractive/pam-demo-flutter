@@ -38,7 +38,7 @@ class SettingPageState extends State<SettingPage> {
           widget.context.repositories().authenticationRepository().isLoadingSC,
         ],
         children: () => [
-          Container(
+          Padding(
             padding: EdgeInsets.only(
               top: 85 + MediaQuery.of(context).padding.top,
             ),

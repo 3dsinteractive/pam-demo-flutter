@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:pam_flutter/pam_flutter.dart';
 import 'package:singh_architecture/configs/config.dart';
 import 'package:singh_architecture/cores/shared_preferences.dart';
+import 'package:singh_architecture/middlewares/scaffold_middle_ware.dart';
 import 'package:singh_architecture/repositories/base_repository.dart';
 import 'package:singh_architecture/repositories/locale_repository.dart';
 import 'package:singh_architecture/repositories/types.dart';
@@ -116,6 +117,7 @@ class AuthenticationRepository extends BaseDataRepository {
   Future<void> showDialogLogin({
     required LocaleRepository localeRepository,
     void Function()? callbackSuccess,
+    void Function()? onRegisterClick,
   }) async {
     DialogTree.show(
       this.buildCtx,
@@ -291,14 +293,19 @@ class AuthenticationRepository extends BaseDataRepository {
                                       ),
                                     ),
                                   ),
-                                  Container(
-                                    child: Text(
-                                      localeRepository
-                                          .getString("register_here"),
-                                      style: TextStyle(
-                                        color: colorPrimary,
-                                        fontSize: p,
-                                        decoration: TextDecoration.underline,
+                                  GestureDetector(
+                                    onTap: () {
+                                      onRegisterClick?.call();
+                                    },
+                                    child: Container(
+                                      child: Text(
+                                        localeRepository
+                                            .getString("register_here"),
+                                        style: TextStyle(
+                                          color: colorPrimary,
+                                          fontSize: p,
+                                          decoration: TextDecoration.underline,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -378,7 +385,7 @@ class AuthenticationRepository extends BaseDataRepository {
                                                   "login_with_google"),
                                               style: TextStyle(
                                                 color: colorGrayDark,
-                                                fontSize: s,
+                                                fontSize: s2,
                                               ),
                                             ),
                                           ),
@@ -412,7 +419,7 @@ class AuthenticationRepository extends BaseDataRepository {
                                                   "login_with_facebook"),
                                               style: TextStyle(
                                                 color: colorGrayDark,
-                                                fontSize: s,
+                                                fontSize: s2,
                                               ),
                                             ),
                                           ),

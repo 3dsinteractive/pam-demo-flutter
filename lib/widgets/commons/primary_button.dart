@@ -14,6 +14,7 @@ class PrimaryButton extends StatefulWidget {
   EdgeInsets? margin;
   EdgeInsets? padding;
   double? width;
+  bool? isDisabled;
 
   PrimaryButton({
     required this.onClick,
@@ -25,15 +26,19 @@ class PrimaryButton extends StatefulWidget {
     this.margin,
     this.padding,
     this.width,
+    this.isDisabled,
   }) {
     if (this.width == null) {
       this.width = 150;
     }
     if (this.padding == null) {
       this.padding = EdgeInsets.only(
-        top: 16,
-        bottom: 16,
+        top: 12,
+        bottom: 12,
       );
+    }
+    if (this.isDisabled == null) {
+      this.isDisabled = false;
     }
   }
 
@@ -47,7 +52,11 @@ class PrimaryButtonState extends State<PrimaryButton> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: widget.onClick,
+      onTap: () {
+        if(!widget.isDisabled!){
+          widget.onClick.call();
+        }
+      },
       child: Container(
         width: widget.width,
         padding: EdgeInsets.only(
@@ -59,9 +68,10 @@ class PrimaryButtonState extends State<PrimaryButton> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
-            color: widget.borderColor ?? colorPrimary,
+            color: (widget.borderColor ?? colorPrimary)
+                .withOpacity(widget.isDisabled! ? 0.25 : 1),
           ),
-          color: widget.backgroundColor ?? colorPrimary,
+          color: (widget.backgroundColor ?? colorPrimary).withOpacity(widget.isDisabled! ? 0.25 : 1),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

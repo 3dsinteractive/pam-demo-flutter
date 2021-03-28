@@ -9,7 +9,6 @@ import 'package:singh_architecture/styles/colors.dart';
 import 'package:singh_architecture/styles/fonts.dart';
 import 'package:singh_architecture/widgets/carts/cart_item.dart';
 import 'package:singh_architecture/widgets/commons/checkbox_circle.dart';
-import 'package:singh_architecture/widgets/commons/curve_button.dart';
 import 'package:singh_architecture/widgets/commons/loading_stack.dart';
 import 'package:singh_architecture/widgets/commons/primary_button.dart';
 import 'package:singh_architecture/widgets/commons/top_bar.dart';
