@@ -76,34 +76,51 @@ class LaunchScreenState extends State<LaunchScreen> {
       Pam.listen(PamStandardCallback.on_launch, (ms) {
         print("on_launch = $ms");
         // handler your logic here on pam message when app is openning
+
+        String productId = ms["id"];
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) =>
+                ScaffoldMiddleWare(
+                  context: this.myContext,
+                  config: this.config,
+                  child: ProductDetailPage(
+                    context: myContext,
+                    config: config,
+                    id: productId,
+                  ),
+                ),
+          ),
+        );
       });
       Pam.listen(PamStandardCallback.on_resume, (ms) {
         print("on_resume = $ms");
         // handler your logic here on pam message when app is openning
+
+        String productId = ms["id"];
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) =>
+                ScaffoldMiddleWare(
+                  context: this.myContext,
+                  config: this.config,
+                  child: ProductDetailPage(
+                    context: myContext,
+                    config: config,
+                    id: productId,
+                  ),
+                ),
+          ),
+        );
       });
       Pam.listen(PamStandardCallback.on_message, (ms) {
         print("on_message = $ms");
         // handler your logic here on pam message when app is opened after tap on notification
-        // String productId = ms["id"];
-        // Navigator.of(context).push(
-        //   MaterialPageRoute(
-        //     builder: (context) =>
-        //         ScaffoldMiddleWare(
-        //           context: this.myContext,
-        //           config: this.config,
-        //           child: ProductDetailPage(
-        //             context: myContext,
-        //             config: config,
-        //             id: productId,
-        //           ),
-        //         ),
-        //   ),
-        // );
       });
 
 
       await Pam.refreshConsentView(this.context, Pam.trackingConsentId() ?? "");
-      await Pam.askNotificationPermission();
+      await AppNotificationService.askNotificationPermission();
 
       widget.launchScreenRepository.toLoadedStatus();
     } catch (e) {

@@ -232,6 +232,7 @@ class ProductDetailPageState extends State<ProductDetailPage> {
                           child: Container(
                             margin: EdgeInsets.only(
                               right: 4,
+                              bottom: 16,
                             ),
                             padding: EdgeInsets.only(
                               top: 16,
@@ -282,6 +283,7 @@ class ProductDetailPageState extends State<ProductDetailPage> {
                           child: Container(
                             margin: EdgeInsets.only(
                               left: 4,
+                              bottom: 16,
                             ),
                             padding: EdgeInsets.only(
                               top: 16,
