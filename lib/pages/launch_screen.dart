@@ -51,15 +51,8 @@ class LaunchScreenState extends State<LaunchScreen> {
       await this.myContext.localeRepository().loadLocale();
 
       await AppNotificationService.initial();
-      await Pam.refreshConsentView(this.context, Pam.trackingConsentId());
-
       Pam.appReady(
         context: context,
-        initialMessage:
-        (await FirebaseMessaging.instance.getInitialMessage())?.data,
-        productProductDetail: (id) =>
-            ProductDetailPage(
-                context: this.myContext, config: this.config, id: id),
       );
 
       Navigator.of(context).push(
@@ -80,28 +73,36 @@ class LaunchScreenState extends State<LaunchScreen> {
         // handler your logic here on pam token
         print("token receive = $ms");
       });
-      Pam.listen(PamStandardCallback.on_message, (ms) {
+      Pam.listen(PamStandardCallback.on_launch, (ms) {
+        print("on_launch = $ms");
         // handler your logic here on pam message when app is openning
       });
-      Pam.listen(PamStandardCallback.on_message_opened, (ms) {
+      Pam.listen(PamStandardCallback.on_resume, (ms) {
+        print("on_resume = $ms");
+        // handler your logic here on pam message when app is openning
+      });
+      Pam.listen(PamStandardCallback.on_message, (ms) {
+        print("on_message = $ms");
         // handler your logic here on pam message when app is opened after tap on notification
-        String productId = ms["id"];
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) =>
-                ScaffoldMiddleWare(
-                  context: this.myContext,
-                  config: this.config,
-                  child: ProductDetailPage(
-                    context: myContext,
-                    config: config,
-                    id: productId,
-                  ),
-                ),
-          ),
-        );
+        // String productId = ms["id"];
+        // Navigator.of(context).push(
+        //   MaterialPageRoute(
+        //     builder: (context) =>
+        //         ScaffoldMiddleWare(
+        //           context: this.myContext,
+        //           config: this.config,
+        //           child: ProductDetailPage(
+        //             context: myContext,
+        //             config: config,
+        //             id: productId,
+        //           ),
+        //         ),
+        //   ),
+        // );
       });
 
+
+      await Pam.refreshConsentView(this.context, Pam.trackingConsentId() ?? "");
       await Pam.askNotificationPermission();
 
       widget.launchScreenRepository.toLoadedStatus();

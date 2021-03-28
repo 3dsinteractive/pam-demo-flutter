@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:singh_architecture/configs/config.dart';
 import 'package:singh_architecture/cores/constants.dart';
 import 'package:singh_architecture/cores/context.dart';
+import 'package:singh_architecture/middlewares/scaffold_middle_ware.dart';
 import 'package:singh_architecture/pages/account_page.dart';
 import 'package:singh_architecture/pages/base_page.dart';
 import 'package:singh_architecture/pages/cart_page.dart';
 import 'package:singh_architecture/pages/home_page.dart';
 import 'package:singh_architecture/pages/notification_page.dart';
+import 'package:singh_architecture/pages/register_page.dart';
 import 'package:singh_architecture/repositories/page_repository.dart';
 import 'package:singh_architecture/styles/colors.dart';
 import 'package:singh_architecture/styles/fonts.dart';
@@ -42,6 +44,18 @@ class MainFeatureState extends State<MainFeature> {
     this.pageRepository.jumpTo(widget.initialPage ?? 0);
 
     widget.context.repositories().cartRepository().fetch();
+  }
+
+  Future<void> toRegisterPage() async {
+    await Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return ScaffoldMiddleWare(
+          context: widget.context,
+          config: widget.config,
+          child: RegisterPage(
+            context: widget.context,
+            config: widget.config,
+          ));
+    }));
   }
 
   @override
@@ -266,6 +280,9 @@ class MainFeatureState extends State<MainFeature> {
                                               widget.context.localeRepository(),
                                           callbackSuccess: () {
                                             this.pageRepository.jumpTo(2);
+                                          },
+                                          onRegisterClick: () async {
+                                            await this.toRegisterPage();
                                           });
                                 } else {
                                   this.pageRepository.jumpTo(2);
@@ -322,6 +339,9 @@ class MainFeatureState extends State<MainFeature> {
                                               widget.context.localeRepository(),
                                           callbackSuccess: () {
                                             this.pageRepository.jumpTo(3);
+                                          },
+                                          onRegisterClick: () async {
+                                            await this.toRegisterPage();
                                           });
                                 } else {
                                   this.pageRepository.jumpTo(3);
