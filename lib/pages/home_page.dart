@@ -3,15 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:pam_flutter/pam_flutter.dart';
 import 'package:singh_architecture/configs/config.dart';
 import 'package:singh_architecture/cores/context.dart';
+import 'package:singh_architecture/middlewares/scaffold_middle_ware.dart';
 import 'package:singh_architecture/mocks/banners/banners.dart';
 import 'package:singh_architecture/mocks/categories/categories.dart';
 import 'package:singh_architecture/mocks/products/best_seller_products.dart';
 import 'package:singh_architecture/mocks/products/new_arrival_products.dart';
+import 'package:singh_architecture/pages/cookies_page.dart';
 import 'package:singh_architecture/repositories/banner_repository.dart';
 import 'package:singh_architecture/repositories/base_repository.dart';
 import 'package:singh_architecture/repositories/category_repository.dart';
 import 'package:singh_architecture/repositories/page_repository.dart';
 import 'package:singh_architecture/repositories/product_repository.dart';
+import 'package:singh_architecture/styles/colors.dart';
 import 'package:singh_architecture/widgets/banners/banner_head_line.dart';
 import 'package:singh_architecture/widgets/categories/category_head_line.dart';
 import 'package:singh_architecture/widgets/commons/top_bar_search.dart';
@@ -48,7 +51,9 @@ class HomePageState extends State<HomePage> {
     this.pageRepository = PageRepository();
     this.pageRepository.initial();
 
-    Pam.trackPageView(url: "3dsflutter//home", title: widget.context.localeRepository().getString("home"));
+    Pam.trackPageView(
+        url: "3dsflutter//home",
+        title: widget.context.localeRepository().getString("home"));
     this.initialRepositories();
   }
 
@@ -110,7 +115,8 @@ class HomePageState extends State<HomePage> {
             children: [
               BannerHeadLine(
                 margin: EdgeInsets.only(
-                  top: (isTablet ? 125 : 85) + MediaQuery.of(context).padding.top,
+                  top: (isTablet ? 125 : 85) +
+                      MediaQuery.of(context).padding.top,
                   bottom: 8,
                 ),
                 context: widget.context,
@@ -133,7 +139,9 @@ class HomePageState extends State<HomePage> {
                 ),
                 context: widget.context,
                 config: widget.config,
-                title: widget.context.localeRepository().getString("product_new_arrival"),
+                title: widget.context
+                    .localeRepository()
+                    .getString("product_new_arrival"),
                 productRepository: this.newArrivalProductRepository,
               ),
               ProductHeadLine(
@@ -143,7 +151,9 @@ class HomePageState extends State<HomePage> {
                 ),
                 context: widget.context,
                 config: widget.config,
-                title: widget.context.localeRepository().getString("product_best_seller"),
+                title: widget.context
+                    .localeRepository()
+                    .getString("product_best_seller"),
                 productRepository: this.bestSellerProductRepository,
               ),
             ],
@@ -151,7 +161,37 @@ class HomePageState extends State<HomePage> {
         ),
         TopBarSearch(
           onSearch: (q) {},
-        )
+        ),
+        Positioned(
+          right: 16,
+          bottom: 16,
+          child: GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                return ScaffoldMiddleWare(
+                  context: widget.context,
+                  config: widget.config,
+                  child: CookiesPage(
+                    context: widget.context,
+                    config: widget.config,
+                  ),
+                );
+              }));
+            },
+            child: Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                color: colorPrimary,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.settings,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }

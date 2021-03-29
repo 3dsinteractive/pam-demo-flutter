@@ -51,21 +51,20 @@ class LaunchScreenState extends State<LaunchScreen> {
       await this.myContext.localeRepository().loadLocale();
 
       await AppNotificationService.initial();
-      Pam.appReady(
-        context: context,
-      );
+      await Pam.refreshConsentView(this.context, Pam.trackingConsentId() ?? "");
+
+      Pam.appReady();
 
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) =>
-              ScaffoldMiddleWare(
-                context: this.myContext,
-                config: this.config,
-                child: MainFeature(
-                  context: myContext,
-                  config: config,
-                ),
-              ),
+          builder: (context) => ScaffoldMiddleWare(
+            context: this.myContext,
+            config: this.config,
+            child: MainFeature(
+              context: myContext,
+              config: config,
+            ),
+          ),
         ),
       );
 
@@ -77,49 +76,53 @@ class LaunchScreenState extends State<LaunchScreen> {
         print("on_launch = $ms");
         // handler your logic here on pam message when app is openning
 
-        String productId = ms["id"];
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) =>
-                ScaffoldMiddleWare(
-                  context: this.myContext,
-                  config: this.config,
-                  child: ProductDetailPage(
-                    context: myContext,
-                    config: config,
-                    id: productId,
-                  ),
+        if (AppNotificationService.isAppClearIntent == true) {
+          String productId = ms["id"];
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => ScaffoldMiddleWare(
+                context: this.myContext,
+                config: this.config,
+                child: ProductDetailPage(
+                  context: myContext,
+                  config: config,
+                  id: productId,
                 ),
-          ),
-        );
+              ),
+            ),
+          );
+
+          AppNotificationService.clearIntent();
+        }
       });
       Pam.listen(PamStandardCallback.on_resume, (ms) {
         print("on_resume = $ms");
         // handler your logic here on pam message when app is openning
 
-        String productId = ms["id"];
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) =>
-                ScaffoldMiddleWare(
-                  context: this.myContext,
-                  config: this.config,
-                  child: ProductDetailPage(
-                    context: myContext,
-                    config: config,
-                    id: productId,
-                  ),
+        if (AppNotificationService.isAppClearIntent == true) {
+          String productId = ms["id"];
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => ScaffoldMiddleWare(
+                context: this.myContext,
+                config: this.config,
+                child: ProductDetailPage(
+                  context: myContext,
+                  config: config,
+                  id: productId,
                 ),
-          ),
-        );
+              ),
+            ),
+          );
+
+          AppNotificationService.clearIntent();
+        }
       });
       Pam.listen(PamStandardCallback.on_message, (ms) {
         print("on_message = $ms");
         // handler your logic here on pam message when app is opened after tap on notification
       });
 
-
-      await Pam.refreshConsentView(this.context, Pam.trackingConsentId() ?? "");
       await AppNotificationService.askNotificationPermission();
 
       widget.launchScreenRepository.toLoadedStatus();

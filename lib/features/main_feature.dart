@@ -14,6 +14,7 @@ import 'package:singh_architecture/repositories/page_repository.dart';
 import 'package:singh_architecture/styles/colors.dart';
 import 'package:singh_architecture/styles/fonts.dart';
 import 'package:singh_architecture/utils/object_helper.dart';
+import 'package:singh_architecture/widgets/commons/loading_stack.dart';
 
 class MainFeature extends StatefulWidget {
   final IContext context;
@@ -112,281 +113,291 @@ class MainFeatureState extends State<MainFeature> {
                 ),
               ),
               StreamBuilder<int>(
-                  stream: this.pageRepository.pageIndexSC.stream,
-                  builder: (context, snapshot) {
-                    return Container(
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                                color: colorGrayLight,
-                                blurRadius: 4,
-                                offset: Offset(0, -1))
-                          ]),
-                      padding: EdgeInsets.only(
-                        top: 6,
-                        bottom: 12 + MediaQuery.of(context).padding.bottom,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () {
-                                this.pageRepository.jumpTo(0);
-                              },
-                              child: Container(
-                                color: Colors.transparent,
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      height: 30,
-                                      width: 50,
-                                      child: Icon(
-                                        Icons.home_filled,
-                                        color:
-                                            this.pageRepository.currentPage == 0
-                                                ? colorPrimary
-                                                : colorGrayDark,
+                stream: this.pageRepository.pageIndexSC.stream,
+                builder: (context, snapshot) {
+                  return Container(
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                              color: colorGrayLight,
+                              blurRadius: 4,
+                              offset: Offset(0, -1))
+                        ]),
+                    padding: EdgeInsets.only(
+                      top: 6,
+                      bottom: 12 + MediaQuery.of(context).padding.bottom,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              this.pageRepository.jumpTo(0);
+                            },
+                            child: Container(
+                              color: Colors.transparent,
+                              child: Column(
+                                children: [
+                                  Container(
+                                    height: 30,
+                                    width: 50,
+                                    child: Icon(
+                                      Icons.home_filled,
+                                      color:
+                                      this.pageRepository.currentPage ==
+                                          0
+                                          ? colorPrimary
+                                          : colorGrayDark,
+                                    ),
+                                  ),
+                                  Container(
+                                    child: Text(
+                                      widget.context
+                                          .localeRepository()
+                                          .getString(Locales.home),
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontSize: s,
+                                        color: this
+                                            .pageRepository
+                                            .currentPage ==
+                                            0
+                                            ? colorPrimary
+                                            : colorGrayDark,
                                       ),
                                     ),
-                                    Container(
-                                      child: Text(
-                                        widget.context
-                                            .localeRepository()
-                                            .getString(Locales.home),
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          fontSize: s,
-                                          color:
-                                              this.pageRepository.currentPage ==
-                                                      0
-                                                  ? colorPrimary
-                                                  : colorGrayDark,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () {
-                                this.pageRepository.jumpTo(1);
-                              },
-                              child: Container(
-                                color: Colors.transparent,
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      child: Stack(
-                                        alignment: Alignment.center,
-                                        children: [
-                                          Container(
-                                            height: 30,
-                                            width: 50,
-                                            child: Icon(
-                                              Icons.shopping_cart,
-                                              color: this
-                                                          .pageRepository
-                                                          .currentPage ==
-                                                      1
-                                                  ? colorPrimary
-                                                  : colorGrayDark,
-                                            ),
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              this.pageRepository.jumpTo(1);
+                            },
+                            child: Container(
+                              color: Colors.transparent,
+                              child: Column(
+                                children: [
+                                  Container(
+                                    child: Stack(
+                                      alignment: Alignment.center,
+                                      children: [
+                                        Container(
+                                          height: 30,
+                                          width: 50,
+                                          child: Icon(
+                                            Icons.shopping_cart,
+                                            color: this
+                                                .pageRepository
+                                                .currentPage ==
+                                                1
+                                                ? colorPrimary
+                                                : colorGrayDark,
                                           ),
-                                          Positioned(
-                                            top: -3,
-                                            right: 1,
-                                            child: StreamBuilder<bool>(
-                                                stream: widget.context
+                                        ),
+                                        Positioned(
+                                          top: -3,
+                                          right: 1,
+                                          child: StreamBuilder<bool>(
+                                              stream: widget.context
+                                                  .repositories()
+                                                  .cartRepository()
+                                                  .isLoadingSC
+                                                  .stream,
+                                              builder: (context, snapshot) {
+                                                if (widget.context
                                                     .repositories()
                                                     .cartRepository()
-                                                    .isLoadingSC
-                                                    .stream,
-                                                builder: (context, snapshot) {
-                                                  if (widget.context
-                                                          .repositories()
-                                                          .cartRepository()
-                                                          .data
-                                                          ?.Products
-                                                          .length ==
-                                                      0) {
-                                                    return Container();
-                                                  }
+                                                    .data
+                                                    ?.Products
+                                                    .length ==
+                                                    0) {
+                                                  return Container();
+                                                }
 
-                                                  return Container(
-                                                    alignment: Alignment.center,
-                                                    padding: EdgeInsets.all(6),
-                                                    decoration: BoxDecoration(
-                                                      color: colorSecondary,
-                                                      shape: BoxShape.circle,
+                                                return Container(
+                                                  alignment:
+                                                  Alignment.center,
+                                                  padding:
+                                                  EdgeInsets.all(6),
+                                                  decoration: BoxDecoration(
+                                                    color: colorSecondary,
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                  child: Text(
+                                                    widget.context
+                                                        .repositories()
+                                                        .cartRepository()
+                                                        .data
+                                                        ?.Products
+                                                        .length
+                                                        .toString() ??
+                                                        "0",
+                                                    style: TextStyle(
+                                                      color: Colors.white,
                                                     ),
-                                                    child: Text(
-                                                      widget.context
-                                                              .repositories()
-                                                              .cartRepository()
-                                                              .data
-                                                              ?.Products
-                                                              .length
-                                                              .toString() ??
-                                                          "0",
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                      ),
-                                                    ),
-                                                  );
-                                                }),
-                                          )
-                                        ],
+                                                  ),
+                                                );
+                                              }),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    child: Text(
+                                      widget.context
+                                          .localeRepository()
+                                          .getString(Locales.cart),
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontSize: s,
+                                        color: this
+                                            .pageRepository
+                                            .currentPage ==
+                                            1
+                                            ? colorPrimary
+                                            : colorGrayDark,
                                       ),
                                     ),
-                                    Container(
-                                      child: Text(
-                                        widget.context
-                                            .localeRepository()
-                                            .getString(Locales.cart),
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          fontSize: s,
-                                          color:
-                                              this.pageRepository.currentPage ==
-                                                      1
-                                                  ? colorPrimary
-                                                  : colorGrayDark,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () {
-                                if (widget.context
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              if (widget.context
+                                  .repositories()
+                                  .authenticationRepository()
+                                  .isNotAuth) {
+                                widget.context
                                     .repositories()
                                     .authenticationRepository()
-                                    .isNotAuth) {
-                                  widget.context
-                                      .repositories()
-                                      .authenticationRepository()
-                                      .showDialogLogin(
-                                          localeRepository:
-                                              widget.context.localeRepository(),
-                                          callbackSuccess: () {
-                                            this.pageRepository.jumpTo(2);
-                                          },
-                                          onRegisterClick: () async {
-                                            await this.toRegisterPage();
-                                          });
-                                } else {
-                                  this.pageRepository.jumpTo(2);
-                                }
-                              },
-                              child: Container(
-                                color: Colors.transparent,
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      height: 30,
-                                      width: 50,
-                                      child: Icon(
-                                        Icons.notifications,
-                                        color:
-                                            this.pageRepository.currentPage == 2
-                                                ? colorPrimary
-                                                : colorGrayDark,
+                                    .showDialogLogin(
+                                    localeRepository: widget.context
+                                        .localeRepository(),
+                                    callbackSuccess: () {
+                                      this.pageRepository.jumpTo(2);
+                                    },
+                                    onRegisterClick: () async {
+                                      await this.toRegisterPage();
+                                    });
+                              } else {
+                                this.pageRepository.jumpTo(2);
+                              }
+                            },
+                            child: Container(
+                              color: Colors.transparent,
+                              child: Column(
+                                children: [
+                                  Container(
+                                    height: 30,
+                                    width: 50,
+                                    child: Icon(
+                                      Icons.notifications,
+                                      color:
+                                      this.pageRepository.currentPage ==
+                                          2
+                                          ? colorPrimary
+                                          : colorGrayDark,
+                                    ),
+                                  ),
+                                  Container(
+                                    child: Text(
+                                      widget.context
+                                          .localeRepository()
+                                          .getString(Locales.notification),
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontSize: s,
+                                        color: this
+                                            .pageRepository
+                                            .currentPage ==
+                                            2
+                                            ? colorPrimary
+                                            : colorGrayDark,
                                       ),
                                     ),
-                                    Container(
-                                      child: Text(
-                                        widget.context
-                                            .localeRepository()
-                                            .getString(Locales.notification),
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          fontSize: s,
-                                          color:
-                                              this.pageRepository.currentPage ==
-                                                      2
-                                                  ? colorPrimary
-                                                  : colorGrayDark,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () async {
-                                if (widget.context
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () async {
+                              if (widget.context
+                                  .repositories()
+                                  .authenticationRepository()
+                                  .isNotAuth) {
+                                widget.context
                                     .repositories()
                                     .authenticationRepository()
-                                    .isNotAuth) {
-                                  widget.context
-                                      .repositories()
-                                      .authenticationRepository()
-                                      .showDialogLogin(
-                                          localeRepository:
-                                              widget.context.localeRepository(),
-                                          callbackSuccess: () {
-                                            this.pageRepository.jumpTo(3);
-                                          },
-                                          onRegisterClick: () async {
-                                            await this.toRegisterPage();
-                                          });
-                                } else {
-                                  this.pageRepository.jumpTo(3);
-                                }
-                              },
-                              child: Container(
-                                color: Colors.transparent,
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      height: 30,
-                                      width: 50,
-                                      child: Icon(
-                                        Icons.account_box,
-                                        color:
-                                            this.pageRepository.currentPage == 3
-                                                ? colorPrimary
-                                                : colorGrayDark,
+                                    .showDialogLogin(
+                                    localeRepository: widget.context
+                                        .localeRepository(),
+                                    callbackSuccess: () {
+                                      this.pageRepository.jumpTo(3);
+                                    },
+                                    onRegisterClick: () async {
+                                      await this.toRegisterPage();
+                                    });
+                              } else {
+                                this.pageRepository.jumpTo(3);
+                              }
+                            },
+                            child: Container(
+                              color: Colors.transparent,
+                              child: Column(
+                                children: [
+                                  Container(
+                                    height: 30,
+                                    width: 50,
+                                    child: Icon(
+                                      Icons.account_box,
+                                      color:
+                                      this.pageRepository.currentPage ==
+                                          3
+                                          ? colorPrimary
+                                          : colorGrayDark,
+                                    ),
+                                  ),
+                                  Container(
+                                    child: Text(
+                                      widget.context
+                                          .localeRepository()
+                                          .getString(Locales.account),
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontSize: s,
+                                        color: this
+                                            .pageRepository
+                                            .currentPage ==
+                                            3
+                                            ? colorPrimary
+                                            : colorGrayDark,
                                       ),
                                     ),
-                                    Container(
-                                      child: Text(
-                                        widget.context
-                                            .localeRepository()
-                                            .getString(Locales.account),
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          fontSize: s,
-                                          color:
-                                              this.pageRepository.currentPage ==
-                                                      3
-                                                  ? colorPrimary
-                                                  : colorGrayDark,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
-                        ],
-                      ),
-                    );
-                  }),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
             ],
           ),
         );

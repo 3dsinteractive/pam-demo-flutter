@@ -9,8 +9,13 @@ class AppNotificationService {
   AppNotificationService._();
 
   static late PushConnector _connector;
+  static bool? isAppClearIntent;
 
   static Future<void> initial() async {
+    if (isAppClearIntent == null) {
+      isAppClearIntent = true;
+    }
+
     _connector = createPushConnector();
     _connector.configure(
       onLaunch: AppNotificationHandler._onLaunch,
@@ -25,25 +30,32 @@ class AppNotificationService {
       Pam.trackSavePush(token: _connector.token.value!);
     }
   }
+
+  static void clearIntent() {
+    isAppClearIntent = false;
+  }
 }
 
 class AppNotificationHandler {
   AppNotificationHandler._();
 
   static Future<void> _onLaunch(RemoteMessage rm) async {
-    if(!(await PamNotification.isPamMessageReceived(PamStandardCallback.on_launch, rm.data))){
+    if (!(await PamNotification.isPamMessageReceived(
+        PamStandardCallback.on_launch, rm.data))) {
       // handler your own notification
     }
   }
 
   static Future<void> _onResume(RemoteMessage rm) async {
-    if(!(await PamNotification.isPamMessageReceived(PamStandardCallback.on_resume, rm.data))){
+    if (!(await PamNotification.isPamMessageReceived(
+        PamStandardCallback.on_resume, rm.data))) {
       // handler your own notification
     }
   }
 
   static Future<void> _onMessage(RemoteMessage rm) async {
-    if(!(await PamNotification.isPamMessageReceived(PamStandardCallback.on_message, rm.data))){
+    if (!(await PamNotification.isPamMessageReceived(
+        PamStandardCallback.on_message, rm.data))) {
       // handler your own notification
     }
   }
