@@ -35,7 +35,7 @@ dependencies:
   rxdart: ^0.26.0
   visibility_detector: ^0.2.0-nullsafety.1
   flutter_local_notifications: ^5.0.0-nullsafety.1
-  pam_flutter: ^1.5.23
+  pam_flutter: ^1.5.36
   another_flushbar: ^1.10.17
   flutter_apns: ^1.5.0-dev.1
   firebase_analytics: ^7.1.1

@@ -123,7 +123,6 @@ class LaunchScreenState extends State<LaunchScreen> {
         // handler your logic here on pam message when app is opened after tap on notification
       });
 
-      await Pam.refreshConsentView(this.context, Pam.trackingConsentId() ?? "");
       await AppNotificationService.askNotificationPermission();
 
       widget.launchScreenRepository.toLoadedStatus();

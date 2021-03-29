@@ -32,6 +32,7 @@ class RegisterPage extends StatefulWidget {
 
 class RegisterPageState extends State<RegisterPage> {
   late bool? isAgree;
+  late bool? isAllowAll;
   ConsentMessageSettingModel? consentSetting;
 
   @override
@@ -39,6 +40,7 @@ class RegisterPageState extends State<RegisterPage> {
     super.initState();
 
     this.isAgree = false;
+    this.isAllowAll = false;
   }
 
   @override
@@ -394,28 +396,12 @@ class RegisterPageState extends State<RegisterPage> {
                             Checkbox(
                               value: this.isAgree,
                               onChanged: (value) async {
-                                if(value == true) {
-                                  this.consentSetting = await Pam.consentRequestView(context, Pam.contactingConsentId() ?? "", isSubmitTracking: false,);
-
-                                  if (this.consentSetting != null) {
-                                    if (this.consentSetting!.TermsAndConditions.IsAllowed == true && this.consentSetting!.PrivacyOverview.IsAllowed == true) {
-                                      this.isAgree = true;
-                                      widget.context
-                                          .repositories()
-                                          .authenticationRepository()
-                                          .forceValueNotify();
-                                    } else {
-                                      this.isAgree = false;
-                                      widget.context
-                                          .repositories()
-                                          .authenticationRepository()
-                                          .forceValueNotify();
-                                    }
-                                  }
-                                }else{
-                                  this.isAgree = value;
-                                  widget.context.repositories().authenticationRepository().forceValueNotify();
-                                }
+                                this.isAgree = value;
+                                this.isAllowAll = value;
+                                widget.context
+                                    .repositories()
+                                    .authenticationRepository()
+                                    .forceValueNotify();
                               },
                             ),
                             Expanded(
@@ -439,7 +425,16 @@ class RegisterPageState extends State<RegisterPage> {
                                 );
 
                                 if (this.consentSetting != null) {
-                                  if (this.consentSetting!.TermsAndConditions.IsAllowed == true && this.consentSetting!.PrivacyOverview.IsAllowed == true) {
+                                  if (this
+                                              .consentSetting!
+                                              .TermsAndConditions
+                                              .IsAllowed ==
+                                          true &&
+                                      this
+                                              .consentSetting!
+                                              .PrivacyOverview
+                                              .IsAllowed ==
+                                          true) {
                                     this.isAgree = true;
                                     widget.context
                                         .repositories()
@@ -468,8 +463,22 @@ class RegisterPageState extends State<RegisterPage> {
                       ),
                       PrimaryButton(
                         onClick: () async {
-                          await widget.context.repositories().authenticationRepository().mockLogin();
-                          await Pam.pdpaRepository(context).sendAllowConsentSettingWithConsentSetting(Pam.contactingConsentId() ?? "", this.consentSetting);
+                          await widget.context
+                              .repositories()
+                              .authenticationRepository()
+                              .mockLogin();
+
+                          if (this.isAllowAll == true) {
+                            Pam.pdpaRepository(context)
+                                .allowAllConsentSetting();
+                            Pam.pdpaRepository(context).sendAllowConsentSetting(
+                                Pam.contactingConsentId() ?? "");
+                          } else {
+                            await Pam.pdpaRepository(context)
+                                .sendAllowConsentSettingWithConsentSetting(
+                                    Pam.contactingConsentId() ?? "",
+                                    this.consentSetting);
+                          }
 
                           Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(
@@ -481,7 +490,7 @@ class RegisterPageState extends State<RegisterPage> {
                                   ),
                                 ),
                               ),
-                                  (route) => false);
+                              (route) => false);
                         },
                         isDisabled: !(this.isAgree ?? false),
                         width: double.infinity,

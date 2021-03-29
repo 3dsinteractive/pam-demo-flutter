@@ -244,6 +244,7 @@ class CookiesPageState extends State<CookiesPage> {
                         "${PamStandardSharePreferenceKey.latest_refresh_consent_status}_${Pam.trackingConsentId()}");
                     await widget.context.sharedPreferences().remove(
                         "${PamStandardSharePreferenceKey.latest_refresh_consent_status}_${Pam.contactingConsentId()}");
+                    await widget.context.sharedPreferences().removeAuthentication();
 
                     widget.context.repositories().authenticationRepository().forceValueNotify();
 
