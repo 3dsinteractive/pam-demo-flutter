@@ -395,12 +395,7 @@ class RegisterPageState extends State<RegisterPage> {
                               value: this.isAgree,
                               onChanged: (value) async {
                                 if(value == true) {
-                                  this.consentSetting =
-                                      await Pam.consentRequestView(
-                                    context,
-                                    Pam.contactingConsentId() ?? "",
-                                    isSubmitTracking: false,
-                                  );
+                                  this.consentSetting = await Pam.consentRequestView(context, Pam.contactingConsentId() ?? "", isSubmitTracking: false,);
 
                                   if (this.consentSetting != null) {
                                     if (this.consentSetting!.TermsAndConditions.IsAllowed == true && this.consentSetting!.PrivacyOverview.IsAllowed == true) {
@@ -426,7 +421,7 @@ class RegisterPageState extends State<RegisterPage> {
                             Expanded(
                               child: Container(
                                 child: Text(
-                                  "I Agree to Privacy Policy.settings",
+                                  "I Agree to Privacy Policy",
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     fontSize: s,

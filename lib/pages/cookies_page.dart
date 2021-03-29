@@ -101,7 +101,7 @@ class CookiesPageState extends State<CookiesPage> {
                     children: [
                       Container(
                         child: Text(
-                          "Logic Contact ID : ",
+                          "Login Contact ID : ",
                           style: TextStyle(
                             fontSize: p,
                             fontWeight: fontWeightBold,

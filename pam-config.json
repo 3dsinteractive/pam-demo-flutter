@@ -6,5 +6,5 @@
   "base-api": "https://stgx-mkt.pams.ai",
   "tracking-consent-id": "1qHkMGcSLHcJxyqZXRq6ovIM8GV",
   "contacting-consent-id": "1qHksFD60L3Nekkt45Jjbdisp1Z",
-  "refresh_expire_duration_minute": "5"
+  "refresh_expire_duration_minute": "0"
 }
