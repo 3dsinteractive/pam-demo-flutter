@@ -154,7 +154,6 @@ class SettingPageState extends State<SettingPage> {
                         .repositories()
                         .authenticationRepository()
                         .mockLogout();
-                    await Pam.userLogout();
 
                     Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(

@@ -82,230 +82,245 @@ class ProductBuyNowState extends State<ProductBuyNow> {
       child: Column(
         children: [
           Container(
-            margin: EdgeInsets.all(24),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            padding: EdgeInsets.only(
+              top: 16,
+              right: 16,
+            ),
+            alignment: Alignment.topRight,
+            child: GestureDetector(
+              onTap: () {
+                widget.dismiss();
+              },
+              child: Icon(Icons.close),
+            ),
+          ),
+          Container(
+            height: 300,
+            child: ListView(
               children: [
                 Container(
-                  height: 100,
-                  width: 100,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: CachedImage(
-                      image: widget.product!.ThumbnailURL,
-                      fit: BoxFit.scaleDown,
-                    ),
+                  margin: EdgeInsets.only(
+                    bottom: 24,
+                    left: 24,
+                    right: 24,
                   ),
-                ),
-                Expanded(
-                  child: Container(
-                    height: 100,
-                    padding: EdgeInsets.only(
-                      top: 8,
-                      bottom: 8,
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(
-                            left: 24,
-                          ),
-                          child: Text(
-                            widget.product!.Title,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: h6,
-                            ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: 100,
+                        width: 100,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: CachedImage(
+                            image: widget.product!.ThumbnailURL,
+                            fit: BoxFit.scaleDown,
                           ),
                         ),
-                        Container(
+                      ),
+                      Expanded(
+                        child: Container(
+                          height: 100,
+                          padding: EdgeInsets.only(
+                            top: 8,
+                            bottom: 8,
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(
+                                  left: 24,
+                                ),
+                                child: Text(
+                                  widget.product!.Title,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: h6,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                alignment: Alignment.topLeft,
+                                child: Container(
+                                  margin: EdgeInsets.only(
+                                    left: 24,
+                                  ),
+                                  padding: EdgeInsets.only(
+                                    top: 2,
+                                    bottom: 2,
+                                    left: 6,
+                                    right: 6,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: colorSecondary,
+                                    ),
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  child: Text(
+                                    "฿ ${widget.product!.Price.toString()}",
+                                    style: TextStyle(
+                                      height: 1,
+                                      color: colorSecondary,
+                                      fontSize: s,
+                                      fontWeight: fontWeightBold,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Divider(
+                  height: 0,
+                ),
+                Container(
+                  margin: EdgeInsets.all(24),
+                  child: Column(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(
+                          bottom: 8,
+                        ),
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          "สี",
+                          style: TextStyle(
+                            fontSize: p,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        child: Align(
                           alignment: Alignment.topLeft,
-                          child: Container(
-                            margin: EdgeInsets.only(
-                              left: 24,
-                            ),
-                            padding: EdgeInsets.only(
-                              top: 2,
-                              bottom: 2,
-                              left: 6,
-                              right: 6,
-                            ),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: colorSecondary,
-                              ),
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: Text(
-                              "฿ ${widget.product!.Price.toString()}",
-                              style: TextStyle(
-                                height: 1,
-                                color: colorSecondary,
-                                fontSize: s,
-                                fontWeight: fontWeightBold,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
+                          child: Wrap(
+                            children: List.generate(this.colors.length, (index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  this.mockColorSelected = index;
+                                  widget.cartRepository.forceValueNotify();
+                                },
+                                child: Container(
+                                  width: ((MediaQuery.of(context).size.width - 48) /
+                                      (isTablet ? 6 : 3)) -
+                                      8,
+                                  padding: EdgeInsets.only(
+                                    top: 6,
+                                    bottom: 6,
+                                  ),
+                                  margin: EdgeInsets.only(
+                                    bottom: 8,
+                                    left: 4,
+                                    right: 4,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: this.mockColorSelected == index
+                                        ? colorPrimaryLighter
+                                        : colorGrayLighter,
+                                    border: Border.all(
+                                      color: this.mockColorSelected == index
+                                          ? colorPrimaryLight
+                                          : colorGrayLight,
+                                    ),
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  child: Text(
+                                    this.colors[index],
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: this.mockColorSelected == index
+                                          ? colorPrimary
+                                          : Colors.black,
+                                      fontSize: s,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-                Container(
-                  alignment: Alignment.topRight,
-                  child: GestureDetector(
-                    onTap: () {
-                      widget.dismiss();
-                    },
-                    child: Icon(Icons.close),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Divider(
-            height: 0,
-          ),
-          Container(
-            margin: EdgeInsets.all(24),
-            child: Column(
-              children: [
-                Container(
-                  margin: EdgeInsets.only(
-                    bottom: 8,
-                  ),
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "สี",
-                    style: TextStyle(
-                      fontSize: p,
-                    ),
-                  ),
+                Divider(
+                  height: 0,
                 ),
                 Container(
-                  child: Align(
-                    alignment: Alignment.topLeft,
-                    child: Wrap(
-                      children: List.generate(this.colors.length, (index) {
-                        return GestureDetector(
-                          onTap: () {
-                            this.mockColorSelected = index;
-                            widget.cartRepository.forceValueNotify();
-                          },
-                          child: Container(
-                            width: ((MediaQuery.of(context).size.width - 48) /
-                                    (isTablet ? 6 : 3)) -
-                                8,
-                            padding: EdgeInsets.only(
-                              top: 6,
-                              bottom: 6,
-                            ),
-                            margin: EdgeInsets.only(
-                              bottom: 8,
-                              left: 4,
-                              right: 4,
-                            ),
-                            decoration: BoxDecoration(
-                              color: this.mockColorSelected == index
-                                  ? colorPrimaryLighter
-                                  : colorGrayLighter,
-                              border: Border.all(
-                                color: this.mockColorSelected == index
-                                    ? colorPrimaryLight
-                                    : colorGrayLight,
-                              ),
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: Text(
-                              this.colors[index],
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: this.mockColorSelected == index
-                                    ? colorPrimary
-                                    : Colors.black,
-                                fontSize: s,
-                              ),
-                            ),
+                  margin: EdgeInsets.all(24),
+                  child: Column(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(
+                          bottom: 8,
+                        ),
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          "ขนาด",
+                          style: TextStyle(
+                            fontSize: p,
                           ),
-                        );
-                      }),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Divider(
-            height: 0,
-          ),
-          Container(
-            margin: EdgeInsets.all(24),
-            child: Column(
-              children: [
-                Container(
-                  margin: EdgeInsets.only(
-                    bottom: 8,
-                  ),
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "ขนาด",
-                    style: TextStyle(
-                      fontSize: p,
-                    ),
-                  ),
-                ),
-                Container(
-                  child: Align(
-                    alignment: Alignment.topLeft,
-                    child: Wrap(
-                      children: List.generate(this.sizes.length, (index) {
-                        return GestureDetector(
-                          onTap: () {
-                            this.mockSizeSelected = index;
-                            widget.cartRepository.forceValueNotify();
-                          },
-                          child: Container(
-                            width: ((MediaQuery.of(context).size.width - 48) /
-                                    (isTablet ? 6 : 3)) -
-                                8,
-                            padding: EdgeInsets.only(
-                              top: 6,
-                              bottom: 6,
-                            ),
-                            margin: EdgeInsets.only(
-                              bottom: 8,
-                              left: 4,
-                              right: 4,
-                            ),
-                            decoration: BoxDecoration(
-                              color: this.mockSizeSelected == index
-                                  ? colorPrimaryLighter
-                                  : colorGrayLighter,
-                              border: Border.all(
-                                color: this.mockSizeSelected == index
-                                    ? colorPrimaryLight
-                                    : colorGrayLight,
-                              ),
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: Text(
-                              this.sizes[index],
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: this.mockSizeSelected == index
-                                    ? colorPrimary
-                                    : Colors.black,
-                                fontSize: s,
-                              ),
-                            ),
+                        ),
+                      ),
+                      Container(
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Wrap(
+                            children: List.generate(this.sizes.length, (index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  this.mockSizeSelected = index;
+                                  widget.cartRepository.forceValueNotify();
+                                },
+                                child: Container(
+                                  width: ((MediaQuery.of(context).size.width - 48) /
+                                      (isTablet ? 6 : 3)) -
+                                      8,
+                                  padding: EdgeInsets.only(
+                                    top: 6,
+                                    bottom: 6,
+                                  ),
+                                  margin: EdgeInsets.only(
+                                    bottom: 8,
+                                    left: 4,
+                                    right: 4,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: this.mockSizeSelected == index
+                                        ? colorPrimaryLighter
+                                        : colorGrayLighter,
+                                    border: Border.all(
+                                      color: this.mockSizeSelected == index
+                                          ? colorPrimaryLight
+                                          : colorGrayLight,
+                                    ),
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  child: Text(
+                                    this.sizes[index],
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: this.mockSizeSelected == index
+                                          ? colorPrimary
+                                          : Colors.black,
+                                      fontSize: s,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }),
                           ),
-                        );
-                      }),
-                    ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],

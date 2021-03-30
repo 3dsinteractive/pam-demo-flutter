@@ -233,6 +233,32 @@ class BaseDataRepository<T> implements IBaseDataRepository {
   }
 
   @override
+  Future<void> add({required Map<String, dynamic> payload, bool isMock: false}) async {
+    try {
+      this.toLoadingStatus();
+      late Map<String, dynamic> data;
+
+      if (isMock) {
+        await TimeHelper.sleep();
+        data = {"data": this.options.getMockItem()};
+      } else {
+        Response response =
+        await Requester.post(this.options.getAddUrl() ?? this.options.getBaseUrl(), payload);
+        Map<String, dynamic> js = json.decode(utf8.decode(response.bodyBytes));
+        data = js;
+      }
+
+      this._data = data["data"];
+      this.dataSC.add(this.data);
+
+      this.toLoadedStatus();
+    } catch (e) {
+      this.alertError(e);
+      this.toErrorStatus(e);
+    }
+  }
+
+  @override
   void forceValueNotify() {
     this._isLoadingSC.add(true);
     this._isLoadedSC.add(false);

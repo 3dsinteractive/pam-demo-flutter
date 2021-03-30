@@ -88,6 +88,11 @@ abstract class IBaseDataRepository<T> {
     bool isMock: false,
   });
 
+  Future<void> add({
+    required Map<String, dynamic> payload,
+    bool isMock: false,
+  });
+
   void forceValueNotify();
 
   void initial();

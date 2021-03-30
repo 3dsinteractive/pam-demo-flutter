@@ -1,4 +1,3 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pam_flutter/pam_flutter.dart';
@@ -70,7 +69,6 @@ class LaunchScreenState extends State<LaunchScreen> {
 
       Pam.listen(PamStandardCallback.on_token, (ms) {
         // handler your logic here on pam token
-        print("token receive = $ms");
       });
       Pam.listen(PamStandardCallback.on_launch, (ms) {
         print("on_launch = $ms");

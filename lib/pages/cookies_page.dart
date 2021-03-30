@@ -246,6 +246,10 @@ class CookiesPageState extends State<CookiesPage> {
                         "${PamStandardSharePreferenceKey.latest_refresh_consent_status}_${Pam.contactingConsentId()}");
                     await widget.context.sharedPreferences().removeAuthentication();
 
+                    Pam.pdpaRepository(context).clear();
+                    Pam.consentRepository(context).clear();
+                    Pam.userLogout();
+
                     widget.context.repositories().authenticationRepository().forceValueNotify();
 
                     // show dialog that delete success
