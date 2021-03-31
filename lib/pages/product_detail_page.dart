@@ -340,6 +340,9 @@ class ProductDetailPageState extends State<ProductDetailPage> {
                     price: this.productRepository.data!.Price,
                     quantity: quantity,
                   );
+                  Pam.trackCustomEvent(eventName: "event_name", {
+                    "key": "value",
+                  });
                 });
               },
               dismiss: () {
