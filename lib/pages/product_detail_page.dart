@@ -102,7 +102,8 @@ class ProductDetailPageState extends State<ProductDetailPage> {
                       children: [
                         Container(
                           margin: EdgeInsets.only(
-                            top: (isTablet ? 125 : 85) + MediaQuery.of(context).padding.top,
+                            top: (isTablet ? 125 : 85) +
+                                MediaQuery.of(context).padding.top,
                           ),
                           child: ProductSlider(
                             imageURLs:
@@ -164,19 +165,26 @@ class ProductDetailPageState extends State<ProductDetailPage> {
                                     Container(
                                       child: GestureDetector(
                                         onTap: () async {
-                                          this.productRepository.toLoadingStatus();
-                                          if(widget.context.repositories().authenticationRepository().isProductFavourite(widget.id)){
+                                          this
+                                              .productRepository
+                                              .toLoadingStatus();
+                                          if (widget.context
+                                              .repositories()
+                                              .authenticationRepository()
+                                              .isProductFavourite(widget.id)) {
                                             await widget.context
                                                 .repositories()
                                                 .authenticationRepository()
                                                 .mockUnFavourite(widget.id);
-                                          }else{
+                                          } else {
                                             await widget.context
                                                 .repositories()
                                                 .authenticationRepository()
                                                 .mockFavourite(widget.id);
                                           }
-                                          this.productRepository.toLoadedStatus();
+                                          this
+                                              .productRepository
+                                              .toLoadedStatus();
                                         },
                                         child: Icon(
                                           widget.context
@@ -341,9 +349,10 @@ class ProductDetailPageState extends State<ProductDetailPage> {
                     quantity: quantity,
                   );
 
-                  // Pam.trackCustomEvent(eventName: "event_name", payload: {
-                  //   "key": "value"
-                  // });
+                  // Pam.trackCustomEvent(
+                  //   eventName: "event_name",
+                  //   payload: {"key": "value"},
+                  // );
                 });
               },
               dismiss: () {
@@ -388,7 +397,8 @@ class ProductDetailPageState extends State<ProductDetailPage> {
             ),
           ),
           TopBar(
-            title: this.productRepository.data?.Title ?? widget.context.localeRepository().getString("product_detail"),
+            title: this.productRepository.data?.Title ??
+                widget.context.localeRepository().getString("product_detail"),
             prefixWidget: GestureDetector(
               onTap: () {
                 Navigator.of(context).pop();
