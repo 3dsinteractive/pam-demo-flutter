@@ -34,7 +34,11 @@ class RegisterPageState extends State<RegisterPage> {
   late bool? isContactingAgree;
   late bool? isContactingAllowAll;
 
+  late bool? isGroupContactingAgree;
+  late bool? isGroupContactingAllowAll;
+
   ConsentMessageSettingModel? contactingConsentSetting;
+  ConsentMessageSettingModel? groupContactingConsentSetting;
 
   late TextEditingController emailText;
   late TextEditingController passwordText;
@@ -47,6 +51,9 @@ class RegisterPageState extends State<RegisterPage> {
 
     this.isContactingAgree = false;
     this.isContactingAllowAll = false;
+
+    this.isGroupContactingAgree = false;
+    this.isGroupContactingAllowAll = false;
 
     this.emailText = TextEditingController();
     this.passwordText = TextEditingController();
@@ -492,6 +499,81 @@ class RegisterPageState extends State<RegisterPage> {
                             ],
                           ),
                         ),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Checkbox(
+                                materialTapTargetSize:
+                                MaterialTapTargetSize.shrinkWrap,
+                                value: this.isGroupContactingAgree,
+                                onChanged: (value) async {
+                                  this.isGroupContactingAgree = value;
+                                  this.isGroupContactingAllowAll = value;
+                                  widget.context
+                                      .repositories()
+                                      .authenticationRepository()
+                                      .forceValueNotify();
+                                },
+                              ),
+                              Expanded(
+                                child: Container(
+                                  child: Text(
+                                    "I Agree to Group Contacting",
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: s,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () async {
+                                  this.groupContactingConsentSetting =
+                                  await Pam.consentRequestView(
+                                    context,
+                                    Pam.groupContactingConsentId() ?? "",
+                                    isSubmitTracking: false,
+                                  );
+
+                                  if (this.groupContactingConsentSetting != null) {
+                                    if (this
+                                        .groupContactingConsentSetting!
+                                        .TermsAndConditions
+                                        .IsAllowed ==
+                                        true &&
+                                        this
+                                            .groupContactingConsentSetting!
+                                            .PrivacyOverview
+                                            .IsAllowed ==
+                                            true) {
+                                      this.isGroupContactingAgree = true;
+                                      widget.context
+                                          .repositories()
+                                          .authenticationRepository()
+                                          .forceValueNotify();
+                                    } else {
+                                      this.isGroupContactingAgree = false;
+                                      widget.context
+                                          .repositories()
+                                          .authenticationRepository()
+                                          .forceValueNotify();
+                                    }
+                                  }
+                                },
+                                child: Container(
+                                  child: Text(
+                                    "Settings",
+                                    style: TextStyle(
+                                        color: colorPrimary,
+                                        decoration: TextDecoration.underline),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                         PrimaryButton(
                           margin: EdgeInsets.only(
                             top: 16,
@@ -500,6 +582,7 @@ class RegisterPageState extends State<RegisterPage> {
                             if (formKey.currentState?.validate() == true) {
                               IPamResponse? pamResponse;
                               String? contactingConsentId;
+                              String? groupContactingConsentId;
 
                               if (this.isContactingAllowAll == true) {
                                 Pam.pdpaRepository(context)
@@ -516,10 +599,28 @@ class RegisterPageState extends State<RegisterPage> {
                               }
                               contactingConsentId = pamResponse?.ConsentId;
 
+                              if (this.isGroupContactingAllowAll == true) {
+                                Pam.pdpaRepository(context)
+                                    .allowAllConsentSetting();
+                                pamResponse = await Pam.pdpaRepository(context)
+                                    .sendAllowConsentSetting(
+                                    Pam.groupContactingConsentId() ?? "");
+                              } else {
+                                pamResponse = await Pam.pdpaRepository(context)
+                                    .sendAllowConsentSettingWithConsentSetting(
+                                  Pam.groupContactingConsentId() ?? "",
+                                  this.groupContactingConsentSetting,
+                                );
+                              }
+                              groupContactingConsentId = pamResponse?.ConsentId;
+
                               List<String> consentIds =
                               List<String>.empty(growable: true);
                               if (contactingConsentId != null) {
                                 consentIds = [...consentIds, contactingConsentId];
+                              }
+                              if (groupContactingConsentId != null) {
+                                consentIds = [...consentIds, groupContactingConsentId];
                               }
 
                               await widget.context
@@ -533,6 +634,7 @@ class RegisterPageState extends State<RegisterPage> {
                                   .repositories()
                                   .authenticationRepository()
                                   .isError) {
+
                                 await Navigator.of(context).pushAndRemoveUntil(
                                     MaterialPageRoute(
                                       builder: (context) => ScaffoldMiddleWare(
@@ -547,7 +649,7 @@ class RegisterPageState extends State<RegisterPage> {
                               }
                             }
                           },
-                          isDisabled: !(this.isContactingAgree ?? false),
+                          isDisabled: !((this.isContactingAgree ?? false) && (this.isGroupContactingAgree ?? false)),
                           width: double.infinity,
                           textColor: Colors.white,
                           title: widget.context

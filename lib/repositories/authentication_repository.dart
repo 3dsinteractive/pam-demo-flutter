@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:pam_flutter/pam_flutter.dart';
+import 'package:pam_flutter/types.dart';
 import 'package:pam_flutter/utils/requester.dart';
 import 'package:singh_architecture/configs/config.dart';
 import 'package:singh_architecture/cores/shared_preferences.dart';
@@ -157,9 +158,7 @@ class AuthenticationRepository extends BaseDataRepository {
           .setAuthentication(token: "token12345678", others: {
         "customer": this.registerData?.CustomerId ?? "invalid",
       });
-      print("logging in");
       await Pam.userLogin(this.registerData?.CustomerId ?? "invalid");
-      print("ok");
 
       this.toLoadedStatus();
     } catch (e) {

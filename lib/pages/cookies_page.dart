@@ -35,8 +35,8 @@ class CookiesPageState extends State<CookiesPage> {
       return "null";
     }
 
-    double coolDown = (Pam.refreshExpireDuration() - (DateTime.now().millisecondsSinceEpoch - expire)) / (1000);
-    return "$coolDown seconds";
+    double coolDown = ((Pam.refreshExpireDuration() * 1000) - (DateTime.now().millisecondsSinceEpoch - expire)) / (1000);
+    return "${coolDown < 0 ? 0 : coolDown} seconds";
   }
 
   @override
