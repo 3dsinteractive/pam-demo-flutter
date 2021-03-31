@@ -27,6 +27,7 @@ class AppNotificationService {
 
   static Future<void> askNotificationPermission() async {
     _connector.requestNotificationPermissions();
+    print("_connector = ${_connector.token.value}");
     if (_connector.token.value != null) {
       Pam.trackSavePush(token: _connector.token.value!);
     }
@@ -41,22 +42,19 @@ class AppNotificationHandler {
   AppNotificationHandler._();
 
   static Future<void> _onLaunch(RemoteMessage rm) async {
-    if (!(await PamNotification.isPamMessageReceived(
-        PamStandardCallback.on_launch, rm.data))) {
+    if (!(await PamNotification.isPamMessageReceived(PamStandardCallback.on_launch, rm.data))) {
       // handler your own notification
     }
   }
 
   static Future<void> _onResume(RemoteMessage rm) async {
-    if (!(await PamNotification.isPamMessageReceived(
-        PamStandardCallback.on_resume, rm.data))) {
+    if (!(await PamNotification.isPamMessageReceived(PamStandardCallback.on_resume, rm.data))) {
       // handler your own notification
     }
   }
 
   static Future<void> _onMessage(RemoteMessage rm) async {
-    if (!(await PamNotification.isPamMessageReceived(
-        PamStandardCallback.on_message, rm.data))) {
+    if (!(await PamNotification.isPamMessageReceived(PamStandardCallback.on_message, rm.data))) {
       // handler your own notification
     }
   }

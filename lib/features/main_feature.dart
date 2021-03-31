@@ -8,6 +8,7 @@ import 'package:singh_architecture/pages/account_page.dart';
 import 'package:singh_architecture/pages/base_page.dart';
 import 'package:singh_architecture/pages/cart_page.dart';
 import 'package:singh_architecture/pages/home_page.dart';
+import 'package:singh_architecture/pages/launch_screen.dart';
 import 'package:singh_architecture/pages/notification_page.dart';
 import 'package:singh_architecture/pages/register_page.dart';
 import 'package:singh_architecture/repositories/page_repository.dart';
@@ -284,7 +285,17 @@ class MainFeatureState extends State<MainFeature> {
                                     localeRepository: widget.context
                                         .localeRepository(),
                                     callbackSuccess: () {
-                                      this.pageRepository.jumpTo(2);
+                                      Navigator.of(context).pushAndRemoveUntil(
+                                          MaterialPageRoute(
+                                            builder: (context) => ScaffoldMiddleWare(
+                                              context: widget.context,
+                                              config: widget.config,
+                                              child: LaunchScreen(
+                                                launchScreenRepository: PageRepository(),
+                                              ),
+                                            ),
+                                          ),
+                                              (route) => false);
                                     },
                                     onRegisterClick: () async {
                                       await this.toRegisterPage();
@@ -345,7 +356,17 @@ class MainFeatureState extends State<MainFeature> {
                                     localeRepository: widget.context
                                         .localeRepository(),
                                     callbackSuccess: () {
-                                      this.pageRepository.jumpTo(3);
+                                      Navigator.of(context).pushAndRemoveUntil(
+                                          MaterialPageRoute(
+                                            builder: (context) => ScaffoldMiddleWare(
+                                              context: widget.context,
+                                              config: widget.config,
+                                              child: LaunchScreen(
+                                                launchScreenRepository: PageRepository(),
+                                              ),
+                                            ),
+                                          ),
+                                              (route) => false);
                                     },
                                     onRegisterClick: () async {
                                       await this.toRegisterPage();

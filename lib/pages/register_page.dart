@@ -635,7 +635,7 @@ class RegisterPageState extends State<RegisterPage> {
                                   .authenticationRepository()
                                   .isError) {
 
-                                await Navigator.of(context).pushAndRemoveUntil(
+                                Navigator.of(context).pushAndRemoveUntil(
                                     MaterialPageRoute(
                                       builder: (context) => ScaffoldMiddleWare(
                                         context: widget.context,

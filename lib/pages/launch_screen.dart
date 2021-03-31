@@ -10,6 +10,7 @@ import 'package:singh_architecture/pages/product_detail_page.dart';
 import 'package:singh_architecture/repositories/page_repository.dart';
 import 'package:singh_architecture/repositories/product_repository.dart';
 import 'package:singh_architecture/services/app_notification_service.dart';
+import 'package:singh_architecture/utils/time_helper.dart';
 
 class LaunchScreen extends StatefulWidget {
   final BasePageRepository launchScreenRepository;
@@ -51,70 +52,61 @@ class LaunchScreenState extends State<LaunchScreen> {
 
       await AppNotificationService.initial();
 
-      await Pam.refreshConsentView(this.context, Pam.trackingConsentId() ?? "");
+      await Pam.refreshConsentView(this.context, Pam.trackingConsentId());
       Pam.appReady(this.context);
 
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => ScaffoldMiddleWare(
-            context: this.myContext,
-            config: this.config,
-            child: MainFeature(
-              context: myContext,
-              config: config,
-            ),
+      Navigator.of(this.context).push(MaterialPageRoute(
+        builder: (context) => ScaffoldMiddleWare(
+          context: this.myContext,
+          config: this.config,
+          child: MainFeature(
+            context: myContext,
+            config: config,
           ),
         ),
-      );
+      ));
 
       Pam.listen(PamStandardCallback.on_token, (ms) {
-        // handler your logic here on pam token
+        print("token = $ms");
       });
+
       Pam.listen(PamStandardCallback.on_launch, (ms) {
         print("on_launch = $ms");
         // handler your logic here on pam message when app is openning
 
-        if (AppNotificationService.isAppClearIntent == true) {
-          String productId = ms["id"];
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => ScaffoldMiddleWare(
-                context: this.myContext,
-                config: this.config,
-                child: ProductDetailPage(
-                  context: myContext,
-                  config: config,
-                  id: productId,
-                ),
+        String productId = ms["id"];
+        Navigator.of(this.context).push(
+          MaterialPageRoute(
+            builder: (context) => ScaffoldMiddleWare(
+              context: this.myContext,
+              config: this.config,
+              child: ProductDetailPage(
+                context: myContext,
+                config: config,
+                id: productId,
               ),
             ),
-          );
-
-          AppNotificationService.clearIntent();
-        }
+          ),
+        );
       });
       Pam.listen(PamStandardCallback.on_resume, (ms) {
         print("on_resume = $ms");
         // handler your logic here on pam message when app is openning
 
-        if (AppNotificationService.isAppClearIntent == true) {
-          String productId = ms["id"];
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => ScaffoldMiddleWare(
-                context: this.myContext,
-                config: this.config,
-                child: ProductDetailPage(
-                  context: myContext,
-                  config: config,
-                  id: productId,
-                ),
+        String productId = ms["id"];
+        Navigator.of(this.context).push(
+          MaterialPageRoute(
+            builder: (context) => ScaffoldMiddleWare(
+              context: this.myContext,
+              config: this.config,
+              child: ProductDetailPage(
+                context: myContext,
+                config: config,
+                id: productId,
               ),
             ),
-          );
-
-          AppNotificationService.clearIntent();
-        }
+          ),
+        );
       });
       Pam.listen(PamStandardCallback.on_message, (ms) {
         print("on_message = $ms");
@@ -122,6 +114,7 @@ class LaunchScreenState extends State<LaunchScreen> {
       });
 
       await AppNotificationService.askNotificationPermission();
+      await TimeHelper.sleep(milliseconds: 2000);
 
       widget.launchScreenRepository.toLoadedStatus();
     } catch (e) {
